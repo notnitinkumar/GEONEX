@@ -49,6 +49,19 @@ padding: 2px 8px;
     color: white;
     text-decoration: none;
 }
+.loginbtn{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 200px;
+    border: none;
+    background-color: #000000;
+    color: white;
+}
+#loginbtnsymbol{
+    filter: invert(1);
+    height: 15px;
+}
 main{
     flex: 1;
    
@@ -90,19 +103,7 @@ main{
 .icon img{
     width: 70px;
 }
-.loginbtn{
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    width: 200px;
-    border: none;
-    background-color: #0f0f0f;
-    color: white;
-}
-#loginbtnsymbol{
-    filter: invert(1);
-    height: 15px;
-}
+
 .optionsbox h3{
     margin-bottom:10px;
     font-size:22px;

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stereonet Plotter</title>
+    <link rel="stylesheet" href="CSS/stereonet.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="Assets/images/Geonex logo.png" alt="Logo Image" />
+      </div>
+      <nav class="Navbar">
+        <ul>
+          <li class="navbuttons"><a href="index.html">Home</a></li>
+          <li class="navbuttons"><a href="">Learning</a></li>
+          <li class="navbuttons"><a href="">Your Work</a></li>
+        </ul>
+      </nav>
+      <div class="loginbtn">
+        Login
+        <img src="Assets/icons/login.png" alt="Login" id="loginbtnsymbol" />
+      </div>
+    </header>
+    <main>
+      <section class="Working">
+        <div class="leftsection">
+          <div class="datatype panel">
+            <h2>Select Plot Type</h2>
+            <button>Plane</button>
+            <button>Line</button>
+          </div>
+
+          <div class="datapoints panel">
+            <form id="dataForm">
+              <h2>Add Data Point</h2>
+
+              <label for="strike">Strike (0 – 360°)</label>
+              <input
+                id="strike"
+                type="number"
+                placeholder="e.g., 045"
+                required
+              />
+
+              <label for="dip">Dip (0–90°)</label>
+              <input id="dip" type="number" placeholder="e.g., 60" required />
+
+              <label for="label">Label</label>
+              <input id="label" type="text" placeholder="e.g., Bedding Plane" />
+
+              <label>Color</label>
+
+              <div class="color-row">
+                <input id="colorPicker" type="color" value="#ff4444" />
+                <input id="colorHex" type="text" value="#FF4444" />
+              </div>
+
+              <button type="submit" class="add-btn">
+                <span>+</span> Add Point
+              </button>
+            </form>
+          </div>
+
+          <!-- Data Import Panel -->
+          <div class="dataimport panel">
+            <h2>Import Data</h2>
+            <button class="add-btn upload"><img src="Assets/icons/upload.png" alt="Upload icon">Upload XLSX/SVG</button>
+            <p>
+              Excel format: columns named 'strike', 'dip', 'trend', 'plunge',
+              'label'
+            </p>
+          </div>
+        </div>
+
+        <!-- Plot Area -->
+        <div class="rightsection">
+          <div class="plot">
+            <div class="plot-container">
+              <div class="plot-header">
+                <h2>Stereonet Plot</h2>
+
+                <div class="toggle">
+                  <span>2D</span>
+                  <label class="switch">
+                    <input type="checkbox" />
+                    <span class="slider"></span>
+                  </label>
+                  <span>3D</span>
+                </div>
+
+                <div class="export-buttons">
+                  <button>PNG</button>
+                  <button>JPG</button>
+                  <button>PDF</button>
+                </div>
+              </div>
+
+              <div class="plot-area">
+                <canvas id="stereonetCanvas"></canvas>
+              </div>
+            </div>
+          </div>
+           <div class="savedplots">
+
+         <h2>Saved Plots</h2>
+         <table class="plotTable">
+           <thead>
+             <tr>
+               <th>Plot Type</th>
+               <th>Label</th>
+               <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        </div>
+      </section>
+      <!-- Table of saved plots -->
+       
+    </main>
+    <footer>
+      <div>
+        <p>&copy; 2026 GEONEX. All Rights Reserved.</p>
+      </div>
+    </footer>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>

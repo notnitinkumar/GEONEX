@@ -1,0 +1,371 @@
+/* Global Styles */
+body {
+  background-color: black;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  text-align: center;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  height: 100px;
+  margin: 5px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  border-bottom: 1px solid #222;
+
+}
+.logo {
+  width: 200px;
+  height: 90px;
+  margin: 2px;
+  font-size: 24px;
+  font-weight: bold;
+}
+.logo img {
+  height: 90px;
+}
+.Navbar {
+  height: 90px;
+  margin: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Navbar ul {
+  display: flex;
+  align-items: center;
+}
+.Navbar ul li {
+  list-style-type: none;
+  margin: 0px 5px;
+  padding: 2px 8px;
+}
+.Navbar ul li a {
+  color: white;
+  text-decoration: none;
+}
+.loginbtn {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 200px;
+  border: none;
+  background-color: #000000;
+  color: white;
+}
+#loginbtnsymbol {
+  filter: invert(1);
+  height: 15px;
+}
+h1 {
+  font-size: 36px;
+  /* color: #000; */
+  /* margin-bottom: ; */
+  text-align: center;
+  font-weight: 700;
+}
+
+h5 {
+  /* color: #000; */
+  font-size: medium;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.Working {
+  display: flex;
+  justify-content: space-between;
+  background-color: #0d0d0d;
+  padding-bottom: 50px;
+}
+.leftsection {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+.datatype button{
+  background-color: white;
+  color: rgb(0, 0, 0);
+  width: 45%;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.panel {
+  background: linear-gradient(145deg, #1a1a1a, #111);
+  padding: 30px;
+  width: 420px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 50px;
+}
+
+.panel h2 {
+  margin-bottom: 25px;
+  font-size: 26px;
+}
+.panel p{
+    color: #777;
+    font-size: small;
+}
+.panel label {
+  display: block;
+  margin-top: 18px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+/* inputs */
+
+.panel input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  background: #000;
+  color: white;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.panel input::placeholder {
+  color: #777;
+}
+
+/* color inputs row */
+
+.color-row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.color-row input[type="color"] {
+  width: 90px;
+  height: 45px;
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+/* add point button */
+
+.add-btn {
+  margin-top: 25px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  background: #0c0c3d;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-btn:hover {
+  background: #121255;
+}
+.upload{
+background-color: white;
+color: black;
+}
+.upload img{
+  height: 20px;
+}
+.upload:hover{
+    background-color: #e0e0e0;
+}
+.rightsection {
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items:center;
+}
+.plot{
+  display: flex;
+  justify-content: center;
+  align-items:flex-start;
+  margin-top: 50px;
+  height: 800px;
+  width: 100%;
+
+}
+.plot-container{
+  background:#0f0f0f;
+  border-radius:20px;
+  padding:25px;
+  color:white;
+  width:100%;
+  max-width:1000px;
+  height: 100%;
+  max-height: 725px;
+  box-shadow:0 0 30px rgba(0,0,0,0.6);
+  border:1px solid #1f1f1f;
+  margin-right: 40px;
+}
+
+.plot-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:20px;
+}
+
+.plot-header h2{
+font-size:24px;
+font-weight:600;
+}
+
+.toggle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#1a1a1a;
+  padding:6px 12px;
+  border-radius:20px;
+}
+
+.toggle span{
+  font-size:14px;
+  color:#ccc;
+}
+
+.export-buttons button{
+  background:#f1f1f1;
+  border:none;
+  padding:10px 16px;
+  margin-left:8px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
+}
+
+.export-buttons button:hover{
+  transform:translateY(-2px);
+  background:#e2e2e2;
+}
+
+.plot-area{
+  background:#000;
+  border-radius:15px;
+  padding:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:1px solid #222;
+  height: 595px;
+  /* margin: 50px 0px; */
+}
+
+canvas{
+  width:100%;
+  max-width:650px;
+  height:100%;
+}
+
+.switch {
+
+position:relative;
+display:inline-block;
+width:50px;
+height:26px;
+
+}
+
+.switch input {
+opacity:0;
+width:0;
+height:0;
+}
+
+.slider {
+
+position:absolute;
+cursor:pointer;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:#555;
+border-radius:26px;
+transition:0.3s;
+
+}
+
+.slider:before {
+
+position:absolute;
+content:"";
+height:20px;
+width:20px;
+left:3px;
+bottom:3px;
+background:white;
+border-radius:50%;
+transition:0.3s;
+
+}
+
+input:checked + .slider {
+
+background:#3b82f6;
+
+}
+
+input:checked + .slider:before {
+
+transform:translateX(24px);
+
+}
+.plot-area{
+box-shadow:0 0 25px rgba(255,255,255,0.05);
+}
+.export-buttons button{
+transition:0.2s;
+}
+.savedplots{
+margin-top:30px;
+background:#0f0f0f;
+  border-radius:20px;
+  padding:25px;
+  color:white;
+  width:100%;
+  max-width: 717px;
+  margin-right: 37px;
+  box-shadow:0 0 30px rgba(0,0,0,0.6);
+  border:1px solid #1f1f1f;
+}
+.plotTable{
+  width:100%;
+  max-width:800px;
+  margin:20px 0px;
+  border-collapse:collapse;
+  border: 1px solid white;
+}
+
+footer {
+  border-top: 1px solid #222;
+  padding: 20px;
+  color: #888;
+}

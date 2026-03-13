@@ -90,6 +90,7 @@ main{
     justify-content:center;
     padding:20px;
     transition:0.3s;
+cursor: pointer;
 }
 .optionsbox:hover{
     transform:translateY(-5px);

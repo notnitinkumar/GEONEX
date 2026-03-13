@@ -1,0 +1,11 @@
+strike,dip,label,color
+120,45,Bedding,#ff4444
+210,30,Fault,#00ff00
+60,70,Joint,#4488ff
+330,20,Layer,#ffaa00
+180,60,Cleavage,#ff00aa
+95,50,Fracture,#00ffff
+250,35,Vein,#88ff00
+45,75,Foliation,#ff8800
+300,40,Shear,#aa00ff
+135,55,Bedding,#00ffaa

@@ -94,14 +94,20 @@ h5 {
   align-items: center;
 }
 .datatype button{
-  background-color: white;
-  color: rgb(0, 0, 0);
   width: 45%;
   border: none;
   padding: 10px 20px;
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
+}
+.activebtn-dataype{
+  background-color: white;
+  color: black;
+}
+.deactivebtn-datatype{
+  background-color: #111111;
+  color: white;
 }
 .panel {
   background: linear-gradient(145deg, #1a1a1a, #111);
@@ -345,25 +351,40 @@ box-shadow:0 0 25px rgba(255,255,255,0.05);
 transition:0.2s;
 }
 .savedplots{
-margin-top:30px;
-background:#0f0f0f;
+  margin-top:30px;
+  background:#0f0f0f;
   border-radius:20px;
   padding:25px;
   color:white;
   width:100%;
   max-width: 717px;
+  max-height: 180px;
   margin-right: 37px;
   box-shadow:0 0 30px rgba(0,0,0,0.6);
   border:1px solid #1f1f1f;
+overflow: auto;
 }
 .plotTable{
   width:100%;
   max-width:800px;
   margin:20px 0px;
   border-collapse:collapse;
-  border: 1px solid white;
 }
 
+
+.plotTable th, .plotTable td{
+  border:1px solid #333;
+  padding:10px;
+}
+.plotTable td{
+  color: #777;
+}
+.dustbin{
+cursor :pointer;
+width : 20px;
+height :20px;
+filter :invert(100%); 
+}
 footer {
   border-top: 1px solid #222;
   padding: 20px;

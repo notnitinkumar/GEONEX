@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stereonet Plotter</title>
     <link rel="stylesheet" href="CSS/stereonet.css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
   <body>
     <header>
@@ -29,33 +28,50 @@
         <div class="leftsection">
           <div class="datatype panel">
             <h2>Select Plot Type</h2>
-            <button>Plane</button>
-            <button>Line</button>
+            <button id="Plane-plot" class="activebtn-datatype">Plane</button>
+            <button id="Line-plot" class="deactivebtn-datatype">Line</button>
           </div>
 
           <div class="datapoints panel">
             <form id="dataForm">
               <h2>Add Data Point</h2>
 
-              <label for="strike">Strike (0 – 360°)</label>
+              <label for="strike" id="nonangular">Strike (0 – 360°)</label>
               <input
                 id="strike"
                 type="number"
                 placeholder="e.g., 045"
+                name="strike"
                 required
               />
 
-              <label for="dip">Dip (0–90°)</label>
-              <input id="dip" type="number" placeholder="e.g., 60" required />
+              <label for="dip" id="angular">Dip (0–90°)</label>
+              <input
+                id="dip"
+                type="number"
+                placeholder="e.g., 60"
+                name="dip"
+                required
+              />
 
               <label for="label">Label</label>
-              <input id="label" type="text" placeholder="e.g., Bedding Plane" />
+              <input
+                id="label"
+                type="text"
+                placeholder="e.g., Bedding Plane"
+                name="label"
+              />
 
               <label>Color</label>
 
               <div class="color-row">
-                <input id="colorPicker" type="color" value="#ff4444" />
-                <input id="colorHex" type="text" value="#FF4444" />
+                <input
+                  id="colorPicker"
+                  type="color"
+                  value="#ff4444"
+                  name="color"
+                />
+                <input id="colorHex" type="text" value="#FF4444" name="color" />
               </div>
 
               <button type="submit" class="add-btn">
@@ -67,7 +83,12 @@
           <!-- Data Import Panel -->
           <div class="dataimport panel">
             <h2>Import Data</h2>
-            <button class="add-btn upload"><img src="Assets/icons/upload.png" alt="Upload icon">Upload XLSX/SVG</button>
+              <!-- Hidden file input for custom upload button -->
+            <input type="file" id="fileInput" accept=".csv,.txt,.xlsx,.svg" style="display:none"> 
+            <button class="add-btn upload" id="importbtn">
+              <img src="Assets/icons/upload.png" alt="Upload icon" />Upload
+              XLSX/SVG
+            </button>
             <p>
               Excel format: columns named 'strike', 'dip', 'trend', 'plunge',
               'label'
@@ -103,30 +124,30 @@
               </div>
             </div>
           </div>
-           <div class="savedplots">
 
-         <h2>Saved Plots</h2>
-         <table class="plotTable">
-           <thead>
-             <tr>
-               <th>Plot Type</th>
-               <th>Label</th>
-               <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
+          <!-- Table of saved plots -->
+          <div class="savedplots">
+            <h2>Saved Plots</h2>
+            <table class="plotTable" id="plotTable">
+              <thead>
+                <tr>
+                  <th>Plot Type</th>
+                  <th>Parameters</th>
+                  <th>Label</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </div>
       </section>
-      <!-- Table of saved plots -->
-       
     </main>
     <footer>
       <div>
         <p>&copy; 2026 GEONEX. All Rights Reserved.</p>
       </div>
     </footer>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="Js/stereonet.js"></script>
   </body>
 </html>

@@ -103,14 +103,14 @@
               <div class="plot-header">
                 <h2>Stereonet Plot</h2>
 
-                <div class="toggle">
+                <!-- <div class="toggle">
                   <span>2D</span>
                   <label class="switch">
-                    <input type="checkbox" />
+                    <input type="checkbox" id="plotModeToggle" />
                     <span class="slider"></span>
                   </label>
                   <span>3D</span>
-                </div>
+                </div> -->
 
                 <div class="export-buttons">
                   <button>PNG</button>
@@ -120,7 +120,7 @@
               </div>
 
               <div class="plot-area">
-                <canvas id="stereonetCanvas"></canvas>
+                <canvas id="stereonetCanvas" width="600" height="600"></canvas>
               </div>
             </div>
           </div>
@@ -148,6 +148,6 @@
         <p>&copy; 2026 GEONEX. All Rights Reserved.</p>
       </div>
     </footer>
-    <script src="Js/stereonet.js"></script>
+    <script type="module" src="Js/stereonet.js"></script>
   </body>
 </html>

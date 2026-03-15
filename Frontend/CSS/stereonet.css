@@ -285,12 +285,10 @@ font-weight:600;
 }
 
 canvas{
-  width:100%;
-  max-width:650px;
-  height:100%;
+  background-color:transparent !important;
 }
 
-.switch {
+/* .switch {
 
 position:relative;
 display:inline-block;
@@ -343,9 +341,9 @@ input:checked + .slider:before {
 
 transform:translateX(24px);
 
-}
+} */
 .plot-area{
-box-shadow:0 0 25px rgba(255,255,255,0.05);
+box-shadow:0 0 25px rgba(255, 255, 255, 0.373);
 }
 .export-buttons button{
 transition:0.2s;

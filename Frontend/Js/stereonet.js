@@ -1,3 +1,5 @@
+import { plotPole2D } from "./plot.js";
+import { drawStereonet2d } from "./plot.js";
 const planeBtn = document.querySelector('#Plane-plot');
 const lineBtn = document.querySelector('#Line-plot');
 
@@ -40,6 +42,17 @@ form.addEventListener("submit", function(e){
     const dip = formData.get("dip");
     const label = formData.get("label");
     const color = formData.get("color");
+
+    const canvas = document.getElementById("stereonetCanvas");
+
+    if (canvas) {
+        const strikeNum = parseFloat(strike);
+        const dipNum = parseFloat(dip);
+
+        if (!isNaN(strikeNum) && !isNaN(dipNum)) {
+            plotPole2D(canvas, strikeNum, dipNum, color);
+        }
+    }
 
     // Insert row into Saved Plots table
     const tableBody = document.querySelector("#plotTable tbody");
@@ -87,11 +100,9 @@ importBtn.addEventListener("click", () => {
 });
 
 fileInput.addEventListener("change", function(){
-
     const file = this.files[0];
-
+    
     if(!file) return;
-
     const reader = new FileReader();
 
     reader.onload = function(e){
@@ -131,7 +142,7 @@ function parseImportedData(data){
 
 }
 
-function addRowToTable(type, a, b, label){
+function addRowToTable(type, a, b, label) {
 
     const tableBody = document.querySelector("#plotTable tbody");
 
@@ -144,7 +155,7 @@ function addRowToTable(type, a, b, label){
 
     typeCell.textContent = type;
 
-    if(type === "Plane"){
+    if (type === "Plane") {
         paramsCell.textContent = `${a}, ${b}`; // strike,dip
     } else {
         paramsCell.textContent = `${a}, ${b}`; // trend,plunge
@@ -168,3 +179,12 @@ function addRowToTable(type, a, b, label){
     tableBody.appendChild(row);
 
 }
+
+
+// Draw base stereonet when the page loads
+    window.addEventListener("DOMContentLoaded", () => {
+    const canvas = document.getElementById("stereonetCanvas");
+    if (canvas) {
+        drawStereonet2d(canvas);
+    }
+});

@@ -17,6 +17,9 @@ header{
     align-items: center;
     padding: 0 40px;
     border-bottom:1px solid #222;
+    position:sticky;
+    top:0;
+    background-color: black;
 }
 .logo{
     width: 200px;
@@ -27,6 +30,7 @@ header{
 }
 .logo img{
 height: 90px;
+cursor: pointer;
 }
 .Navbar{
     height: 90px;
@@ -90,7 +94,7 @@ main{
     justify-content:center;
     padding:20px;
     transition:0.3s;
-cursor: pointer;
+    cursor: pointer;
 }
 .optionsbox:hover{
     transform:translateY(-5px);

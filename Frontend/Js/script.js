@@ -1,8 +1,16 @@
-document.querySelector("#stereonet-tool").addEventListener("click", function () {
-    // Code to open the stereonet tool goes here
-    console.log("Stereonet tool opened");
-    window.location.href = "stereonet.html"; // Redirect to the stereonet tool page
+const stereonetBtn = document.querySelector("#stereonet-tool");
+if (stereonetBtn) {
+    stereonetBtn.addEventListener("click", function () {
+        console.log("Stereonet tool opened");
+        window.location.href = "stereonet.html";
+    });
+}
 
-});
-
+const logo = document.querySelector("#geonex-logo");
+if (logo) {
+    logo.addEventListener("click", function () {
+        console.log("Geonex logo clicked");
+        window.location.href = "index.html";
+    });
+}
 

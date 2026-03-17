@@ -8,7 +8,7 @@ It allows users to plot planes and lines (trend–plunge), manage datasets, and 
 ---
 
 ## 🚀 Live Demo
-🔗  https://notnitinkumar.github.io/GEONEX/
+🔗  https://geonex-v1.vercel.app
 
 ---
 

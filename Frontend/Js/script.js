@@ -42,3 +42,16 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+document.querySelectorAll(".disabled").forEach(box => {
+  box.addEventListener("click", () => {
+   alert("Feature under development. Try Tools → Stereonet!");
+  });
+});
+
+document.querySelectorAll(".disabled-link").forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Feature under development. Try Tools → Stereonet!");
+  });
+});
+

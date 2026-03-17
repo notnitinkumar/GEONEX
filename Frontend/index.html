@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GEONEX</title>
+    <title>GEONEX - Your Geology Companion</title>
+    <link rel="icon" href="Assets/images/GEONEX Favicon.png" />
     <link rel="stylesheet" href="CSS/style.css" />
   </head>
   <body>
@@ -14,13 +15,14 @@
       <nav class="Navbar">
         <ul>
           <li class="navbuttons"><a href="index.html">Home</a></li>
-          <li class="navbuttons"><a href="">Learning</a></li>
-          <li class="navbuttons"><a href="">Your Work</a></li>
+          <li class="navbuttons disabled-link"><a href="">Learning</a></li>
+          <li class="navbuttons disabled-link"><a href="">Your Work</a></li>
         </ul>
       </nav>
-      <div class="loginbtn">Login
+      <!-- <div class="loginbtn">Login
         <img src="Assets/icons/login.png" alt="Login" id="loginbtnsymbol" />
-      </div>
+      </div> -->
+      <div class="guestmode">Guest Mode</div>
     </header>
     <main>
       <section class="hero">
@@ -32,9 +34,10 @@
         </p>
       </section>
       <section class="Options">
-        <div class="optionsbox">
+        <div class="optionsbox disabled">
           <div class="icon">📄</div>
           <h3>Notes</h3>
+          <span class="badge">Coming Soon</span>
           <p>
             Create and organize your geology notes, field observations, and
             research
@@ -49,9 +52,10 @@
           </p>
         </div>
 
-        <div class="optionsbox">
+        <div class="optionsbox disabled">
           <div class="icon">🎮</div>
           <h3>Games</h3>
+          <span class="badge">Coming Soon</span>
           <p>
             Test your knowledge with interactive geology quizzes and challenges
           </p>
@@ -64,6 +68,7 @@
         <span id="longitude">Long: --</span>
       </div>
       <div>
+        <p>Geonex Version 1.0 • Built by Nitin Kumar</p>
         <p>&copy; 2026 GEONEX. All Rights Reserved.</p>
       </div>
     </footer>

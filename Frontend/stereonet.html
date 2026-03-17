@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stereonet Plotter</title>
     <link rel="stylesheet" href="CSS/stereonet.css" />
+    <link rel="icon" href="Assets/images/GEONEX Favicon.png" />
   </head>
   <body>
     <header>
@@ -14,14 +15,15 @@
       <nav class="Navbar">
         <ul>
           <li class="navbuttons"><a href="index.html">Home</a></li>
-          <li class="navbuttons"><a href="">Learning</a></li>
-          <li class="navbuttons"><a href="">Your Work</a></li>
+          <li class="navbuttons disabled-link"><a href="">Learning</a></li>
+          <li class="navbuttons disabled-link"><a href="">Your Work</a></li>
         </ul>
       </nav>
-      <div class="loginbtn">
+      <!-- <div class="loginbtn">
         Login
         <img src="Assets/icons/login.png" alt="Login" id="loginbtnsymbol" />
-      </div>
+      </div> -->
+      <div class="guestmode">Guest Mode</div>
     </header>
     <main>
       <section class="Working">
@@ -143,12 +145,13 @@
         </div>
       </section>
     </main>
-   <footer>
+    <footer>
       <div class="latlong">
         <span id="latitude">Lat: --</span>
         <span id="longitude">Long: --</span>
       </div>
       <div>
+        <p>Geonex Version 1.0 • Built by Nitin Kumar</p>
         <p>&copy; 2026 GEONEX. All Rights Reserved.</p>
       </div>
     </footer>

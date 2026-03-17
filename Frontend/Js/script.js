@@ -55,3 +55,56 @@ document.querySelectorAll(".disabled-link").forEach(link => {
   });
 });
 
+
+// Hamburger smooth toggle (mobile menu)
+const hamburger = document.getElementById("hamburger");
+const navbar = document.getElementById("navbar");
+
+if (hamburger && navbar) {
+
+    hamburger.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        const isOpen = navbar.classList.toggle("active");
+
+        // accessibility
+        hamburger.setAttribute("aria-expanded", isOpen);
+
+        // optional body class for overlay/scroll lock
+        document.body.classList.toggle("menu-open", isOpen);
+    });
+
+    // prevent closing when clicking inside navbar
+    navbar.addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
+
+    // close when clicking outside
+    document.addEventListener("click", (e) => {
+        if (!navbar.contains(e.target) && !hamburger.contains(e.target)) {
+            navbar.classList.remove("active");
+            hamburger.setAttribute("aria-expanded", false);
+            document.body.classList.remove("menu-open");
+        }
+    });
+
+    // close when clicking a link
+    navbar.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            navbar.classList.remove("active");
+            hamburger.setAttribute("aria-expanded", false);
+            document.body.classList.remove("menu-open");
+        });
+    });
+}
+
+// Smooth scroll (optional enhancement for anchor links)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});

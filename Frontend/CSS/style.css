@@ -18,21 +18,31 @@ header{
     padding: 0 40px;
     border-bottom:1px solid #222;
     position:sticky;
+    z-index: 100;
     top:0;
     background-color: black;
+    overflow-x: hidden;
 }
+
 .logo{
-    width: 200px;
+    width: 20%;
     height: 90px;
     margin: 2px;
     font-size: 24px;
     font-weight: bold;
+    object-fit: contain;
+    display: flex;
+    align-items: center;
 }
 .logo img{
-height: 90px;
+height: 90%;
 cursor: pointer;
 }
+.hamburger {
+  display: none;
+}
 .Navbar{
+    width: 60%;
     height: 90px;
     margin: 2px;
     display: flex;
@@ -55,12 +65,13 @@ padding: 2px 8px;
 }
 .loginbtn{
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: end;
-    width: 200px;
+    width: 20%;
     border: none;
     background-color: #000000;
     color: white;
+    gap: 15px;
 }
 #loginbtnsymbol{
     filter: invert(1);
@@ -74,14 +85,24 @@ main{
     margin-top: 100px;
 }
 .brand{
-    font-size:100px;
+    font-size: clamp(32px, 8vw, 100px);
     margin: 40px;
+}
+.welcome{
+    font-size: clamp(12px, 4vw, 24px);
+    margin: 0 10vw;
+}
+.description{
+    color:#aaa;
+    font-size: clamp(10px, 2vw, 16px);
+margin: 20px 10vw;
 }
 .Options{
     display:flex;
     justify-content:center;
     gap:40px;
     margin:80px;
+    flex-wrap: wrap;
 }
 .optionsbox{
     background:#0f0f0f;
@@ -138,4 +159,55 @@ footer{
     font-size:14px;
     max-width:220px;
     
+}
+
+
+
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .logo{
+        width: 25%;
+        max-width: 120px;
+    }
+    .loginbtn{
+        width: 50%;
+        font-size: small;
+    }
+    .logo img{
+        height: 60%;
+    }
+    header{
+        height: 10vh;
+        padding: 0 20px;
+    }
+    .Navbar {
+    position: fixed;
+    top: 0;
+    right: -100%;   /* hidden initially */
+    height: 100vh;
+    width: 250px;
+    background: black;
+    display: flex;   /* IMPORTANT */
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 80px;
+    transition: right 0.3s ease;
+    z-index: 1000;
+
+  }
+
+  .Navbar.active {
+    right: 0;   /* slide in */
+  }
+
+  .Navbar ul {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .hamburger {
+    display: block;
+    z-index: 1100;
+  }
 }

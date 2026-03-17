@@ -251,14 +251,30 @@ function addRowToTable(type, a, b, label) {
 
 }
 
+function resizeCanvas(canvas) {
+    const rect = canvas.getBoundingClientRect();
+
+    canvas.width = rect.width;
+    canvas.height = rect.width; // keep square
+}
 
 // Draw base stereonet when the page loads
     window.addEventListener("DOMContentLoaded", () => {
     const canvas = document.getElementById("stereonetCanvas");
-    if (canvas) {
+        if (canvas) {
+        resizeCanvas(canvas);
         drawStereonet2d(canvas);
+        renderPlot();
     }
     });
+    window.addEventListener("resize", () => {
+    const canvas = document.getElementById("stereonetCanvas");
+
+    if (!canvas) return;
+
+    resizeCanvas(canvas);
+    renderPlot();   // redraw everything
+});
 
 //Export PNG
 const exportPNGBtn = document.querySelector("#exportPNG");

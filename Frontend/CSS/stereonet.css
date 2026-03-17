@@ -5,7 +5,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   text-align: center;
-
+  overflow-x: hidden;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -97,6 +97,9 @@ h5 {
   justify-content: space-between;
   background-color: #0d0d0d;
   padding-bottom: 50px;
+  width: 100%;
+  gap: 5vw;
+  overflow: hidden;
 }
 .leftsection {
   width: 45%;
@@ -124,7 +127,8 @@ h5 {
 .panel {
   background: linear-gradient(145deg, #1a1a1a, #111);
   padding: 30px;
-  width: 420px;
+  width: 25vw;
+  max-width: 400px;
   border-radius: 20px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
   color: white;
@@ -134,7 +138,7 @@ h5 {
 
 .panel h2 {
   margin-bottom: 25px;
-  font-size: 26px;
+  font-size: clamp(22px, 4vw, 28px);
 }
 .panel p {
   color: #777;
@@ -156,7 +160,7 @@ h5 {
   border: 1px solid #333;
   background: #000;
   color: white;
-  font-size: 15px;
+  font-size: clamp(14px, 2vw, 16px);
   box-sizing: border-box;
 }
 
@@ -223,8 +227,7 @@ h5 {
   justify-content: center;
   align-items: flex-start;
   margin-top: 50px;
-  height: 800px;
-  width: 100%;
+width: 100%;
 }
 .plot-container {
   background: #0f0f0f;
@@ -237,7 +240,7 @@ h5 {
   max-height: 725px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
   border: 1px solid #1f1f1f;
-  margin-right: 40px;
+  margin: 0 auto;
 }
 
 .plot-header {
@@ -249,7 +252,7 @@ h5 {
 }
 
 .plot-header h2 {
-  font-size: 24px;
+  font-size: clamp(18px, 4vw, 24px);
   font-weight: 600;
 }
 
@@ -291,12 +294,14 @@ h5 {
   justify-content: center;
   align-items: center;
   border: 1px solid #222;
-  height: 595px;
-  /* margin: 50px 0px; */
 }
 
 canvas {
   background-color: transparent !important;
+   width: 100%;
+  max-width: 600px;
+  height: auto;
+  aspect-ratio: 1 / 1; 
 }
 
 /* .switch {
@@ -360,15 +365,15 @@ transform:translateX(24px);
   transition: 0.2s;
 }
 .savedplots {
-  margin-top: 30px;
+  margin-top: 100px;
   background: #0f0f0f;
   border-radius: 20px;
   padding: 25px;
   color: white;
   width: 100%;
-  max-width: 717px;
+  max-width: 100%;
   max-height: 180px;
-  margin-right: 37px;
+  margin: 100px auto 0 auto;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
   border: 1px solid #1f1f1f;
   overflow: auto;
@@ -378,6 +383,10 @@ transform:translateX(24px);
   max-width: 800px;
   margin: 20px 0px;
   border-collapse: collapse;
+}
+
+.plotTable table {
+  width: 100%;
 }
 
 .plotTable th,
@@ -406,40 +415,107 @@ footer {
   margin: 20px;
 }
 /* Mobile responsiveness */
-@media (max-width: 600px) {
-    .logo{
-        width: 25%;
-        max-width: 120px;
-    }
-    .loginbtn{
-        width: 50%;
-        font-size: small;
-    }
-    .logo img{
-        height: 60%;
-    }
-    header{
-        height: 10vh;
-        padding: 0 20px;
-    }
-    .Navbar {
+@media (max-width: 900px) {
+  .logo {
+    width: 25%;
+    max-width: 120px;
+  }
+  .loginbtn {
+    width: 50%;
+    font-size: small;
+  }
+  .logo img {
+    height: 60%;
+  }
+  header {
+    flex-wrap: wrap;
+    height: auto;
+    gap: 10px;
+    padding: 0 20px;
+  }
+
+  .Working {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .leftsection,
+  .rightsection {
+    width: 100%;
+  }
+  
+  .rightsection {
+    align-items: center;
+  }
+
+  .panel {
+    width: 90vw;
+    max-width: none;
+    margin-top: 20px;
+  }
+
+  .plot {
+    margin-top: 20px;
+  }
+
+  .plot-container {
+    width: 100%;
+    margin-right: 0;
+    padding: 15px;
+    max-height: none;
+  }
+
+  .savedplots {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto; 
+    margin-top: 20px;
+  }
+
+  .plot-header {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .export-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+.savedplots{
+  display: flex;
+  flex-direction: column;
+align-items: center;
+}
+  .plotTable {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    margin: 0 auto;
+  }
+  .plotTable table {
+    width: 100%;
+  }
+ 
+  .Navbar {
     position: fixed;
     top: 0;
-    right: -100%;   /* hidden initially */
+    right: -100%; /* hidden initially */
     height: 100vh;
     width: 250px;
     background: black;
-    display: flex;   /* IMPORTANT */
+    display: flex; 
     flex-direction: column;
     justify-content: flex-start;
     padding-top: 80px;
     transition: right 0.3s ease;
     z-index: 1000;
-
   }
 
   .Navbar.active {
-    right: 0;   /* slide in */
+    right: 0; /* slide in */
   }
 
   .Navbar ul {
@@ -451,4 +527,5 @@ footer {
     display: block;
     z-index: 1100;
   }
+
 }

@@ -1,4 +1,4 @@
-import { plotPole2D } from "./plot.js";
+import { plotPole2D, plotPlane2D } from "./plot.js";
 import { drawStereonet2d } from "./plot.js";
 const planeBtn = document.querySelector('#Plane-plot');
 const lineBtn = document.querySelector('#Line-plot');
@@ -46,11 +46,20 @@ form.addEventListener("submit", function(e){
     const canvas = document.getElementById("stereonetCanvas");
 
     if (canvas) {
-        const strikeNum = parseFloat(strike);
-        const dipNum = parseFloat(dip);
+        const a = parseFloat(strike);
+        const b = parseFloat(dip);
 
-        if (!isNaN(strikeNum) && !isNaN(dipNum)) {
-            plotPole2D(canvas, strikeNum, dipNum, color);
+        if (!isNaN(a) && !isNaN(b)) {
+
+            const isPlane = planeBtn.classList.contains("activebtn-datatype");
+
+            if (isPlane) {
+                // Plane → draw great circle
+                plotPlane2D(canvas, a, b, color);
+            } else {
+                // Line → plot point (trend-plunge)
+                plotPole2D(canvas, a, b, color);
+            }
         }
     }
 
@@ -187,4 +196,4 @@ function addRowToTable(type, a, b, label) {
     if (canvas) {
         drawStereonet2d(canvas);
     }
-});
+    });

@@ -1,11 +1,12 @@
-import { projectPole, poleFromStrikeDip } from "./stereonetcalc.js";
+import { projectPole,generateGreatCircle } from "./stereonetcalc.js";
+
 
 export function plotPole2D(canvas, strike, dip, color="red") {
 
     const ctx = canvas.getContext("2d");
 
     const R = Math.min(canvas.width, canvas.height) / 2 * 0.9;
-    const {x,y} = projectPole(strike, dip, R);
+    const {x,y} = projectPole(strike, dip, R); //coordinates of pole on stereonet
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
@@ -18,28 +19,35 @@ export function plotPole2D(canvas, strike, dip, color="red") {
     ctx.fill();
 }
 
-export function plotPole3D(scene, strike, dip) {
+export function plotPlane2D(canvas, strike, dip, color = "blue") {
 
-    const pole = poleFromStrikeDip(strike,dip);
+    const ctx = canvas.getContext("2d");
 
-    const trend = pole.trend * Math.PI/180;
-    const plunge = pole.plunge * Math.PI/180;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
 
-    const x = Math.cos(plunge) * Math.sin(trend);
-    const y = Math.cos(plunge) * Math.cos(trend);
-    const z = Math.sin(plunge);
+    const R = Math.min(canvas.width, canvas.height) / 2 * 0.9;
 
-    const geometry = new THREE.SphereGeometry(0.03);
-    const material = new THREE.MeshBasicMaterial({color:0xff0000});
+    const orientations = generateGreatCircle(strike, dip);
 
-    const point = new THREE.Mesh(geometry,material);
+    ctx.beginPath();
+    ctx.strokeStyle = color;
 
-    point.position.set(x,y,z);
+    orientations.forEach((o, i) => {
 
-    scene.add(point);
+        const {x, y} = projectPole(o.trend, 90 - o.plunge, R); 
+        // convert trend-plunge → projection
+
+        const X = centerX + x;
+        const Y = centerY - y;
+
+        if(i === 0) ctx.moveTo(X, Y);
+        else ctx.lineTo(X, Y);
+
+    });
+
+    ctx.stroke();
 }
-
-
 
 export function drawStereonet2d(canvas) {
 
@@ -63,8 +71,8 @@ export function drawStereonet2d(canvas) {
     }
     for(let angle = 0; angle < 360; angle += 30){
         const rad = angle * Math.PI / 180;
-        const x = centerX + R * Math.cos(rad);
-        const y = centerY + R * Math.sin(rad);
+        const x = centerX + R * Math.sin(rad);
+        const y = centerY - R * Math.cos(rad);
         ctx.moveTo(centerX, centerY);
         ctx.lineTo(x, y);
     }
@@ -72,8 +80,11 @@ export function drawStereonet2d(canvas) {
 
     ctx.fillStyle = "white";
     ctx.font = "16px Arial";
-    ctx.fillText("N", centerX - 10, centerY - R - 10);
-    ctx.fillText("E", centerX + R + 10, centerY + 5);
-    ctx.fillText("S", centerX - 10, centerY + R + 20);
-    ctx.fillText("W", centerX - R - 20, centerY + 5);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.fillText("N", centerX, centerY - R - 15);
+    ctx.fillText("E", centerX + R + 15, centerY);
+    ctx.fillText("S", centerX, centerY + R + 15);
+    ctx.fillText("W", centerX - R - 15, centerY);
 }

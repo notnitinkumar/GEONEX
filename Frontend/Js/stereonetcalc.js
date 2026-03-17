@@ -44,7 +44,7 @@ export function projectPole(strike, dip, R = 250) {
 
 // --- Generate great circle (plane) points ---
 
-export function generateGreatCircle(strike, dip, steps = 180) {
+export function generateGreatCircle(strike, dip, steps = 360) {
 
     const points = [];
 
@@ -52,14 +52,18 @@ export function generateGreatCircle(strike, dip, steps = 180) {
 
     for (let i = 0; i <= steps; i++) {
 
-        const beta = degToRad(i * (360 / steps));
+        const beta = degToRad(i * (180 / steps));
 
         const x = Math.cos(beta);
         const y = Math.sin(beta) * Math.cos(dipRad);
         const z = Math.sin(beta) * Math.sin(dipRad);
 
-        const trend = normalizeAngle(radToDeg(Math.atan2(x, y)) + strike);
-        const plunge = radToDeg(Math.asin(z));
+        const trend = normalizeAngle(radToDeg(Math.atan2(y, x)) + strike);
+        let plunge = radToDeg(Math.asin(z));
+        // ensure lower hemisphere (positive plunge)
+        if (plunge < 0) {
+            plunge = -plunge;
+        }
 
         points.push({ trend, plunge });
     }

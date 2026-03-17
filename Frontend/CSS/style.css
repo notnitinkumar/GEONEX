@@ -123,3 +123,9 @@ footer{
     padding:20px;
     color:#888;
 }
+.latlong{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin:20px;
+}

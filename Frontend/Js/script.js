@@ -14,3 +14,31 @@ if (logo) {
     });
 }
 
+// Function to update latitude and longitude
+function updateLatLong() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            const latitude = position.coords.latitude.toFixed(4);
+            const longitude = position.coords.longitude.toFixed(4);
+            document.getElementById("latitude").textContent = `Lat: ${latitude}`;
+            document.getElementById("longitude").textContent = `Long: ${longitude}`;
+        }, function (error) {
+            console.error("Error getting location: ", error);
+            document.getElementById("latitude").textContent = "Lat: --";
+            document.getElementById("longitude").textContent = "Long: --";
+        });
+    } else {
+        console.error("Geolocation is not supported by this browser.");
+        document.getElementById("latitude").textContent = "Lat: --";
+        document.getElementById("longitude").textContent = "Long: --";
+    }
+}
+
+// Update latitude and longitude on page load
+window.addEventListener("DOMContentLoaded", () => {
+    const latlongContainer = document.querySelector(".latlong");
+    if (latlongContainer) {
+        updateLatLong();
+    }
+});
+

@@ -299,17 +299,15 @@ exportPdfBtn.addEventListener("click", function(){
 
     const canvas = document.getElementById("stereonetCanvas");
 
-    // Create temporary canvas (DO NOT modify original canvas)
+    // Create temporary canvas 
     const tempCanvas = document.createElement("canvas");
     tempCanvas.width = canvas.width;
     tempCanvas.height = canvas.height;
 
     const tempCtx = tempCanvas.getContext("2d");
 
-    // Draw original canvas onto temp canvas
     tempCtx.drawImage(canvas, 0, 0);
 
-    // Invert colors on temp canvas only
     invertforpdf(tempCanvas);
 
     const imgData = tempCanvas.toDataURL("image/png");
@@ -339,10 +337,9 @@ function invertforpdf(canvas) {
     const data = imageData.data;
 
     for (let i = 0; i < data.length; i += 4) {
-        data[i] = 255 - data[i];     // Invert Red
-        data[i + 1] = 255 - data[i + 1]; // Invert Green
-        data[i + 2] = 255 - data[i + 2]; // Invert Blue
-        // Alpha channel (data[i + 3]) remains unchanged
+        data[i] = 255 - data[i];     
+        data[i + 1] = 255 - data[i + 1]; 
+        data[i + 2] = 255 - data[i + 2]; 
     }
 
     ctx.putImageData(imageData, 0, 0);

@@ -188,7 +188,7 @@ footer{
     height: 100vh;
     width: 250px;
     background: black;
-    display: flex;   /* IMPORTANT */
+    display: flex;  
     flex-direction: column;
     justify-content: flex-start;
     padding-top: 80px;

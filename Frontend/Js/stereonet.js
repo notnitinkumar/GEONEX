@@ -259,3 +259,75 @@ function addRowToTable(type, a, b, label) {
         drawStereonet2d(canvas);
     }
     });
+
+//Export PNG
+const exportPNGBtn = document.querySelector("#exportPNG");
+
+exportPNGBtn.addEventListener("click", function(){
+    const canvas = document.getElementById("stereonetCanvas");
+    const link = document.createElement("a");
+    link.download = "stereonet_plot.png";
+    link.href = canvas.toDataURL();
+    link.click();
+});
+const exportPdfBtn = document.querySelector("#exportPDF");
+
+exportPdfBtn.addEventListener("click", function(){
+
+    if (!window.jspdf) {
+        alert("jsPDF library not loaded");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+
+    const canvas = document.getElementById("stereonetCanvas");
+
+    // Create temporary canvas (DO NOT modify original canvas)
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+
+    const tempCtx = tempCanvas.getContext("2d");
+
+    // Draw original canvas onto temp canvas
+    tempCtx.drawImage(canvas, 0, 0);
+
+    // Invert colors on temp canvas only
+    invertforpdf(tempCanvas);
+
+    const imgData = tempCanvas.toDataURL("image/png");
+
+    const pdf = new jsPDF();
+
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("stereonet_plot.pdf");
+});
+const exportJpgBtn = document.querySelector("#exportJPG");
+exportJpgBtn.addEventListener("click", function(){
+    const canvas = document.getElementById("stereonetCanvas");
+    const link = document.createElement("a");
+    link.download = "stereonet_plot.jpg";
+    link.href = canvas.toDataURL("image/jpeg");
+    link.click();
+});
+
+function invertforpdf(canvas) {
+
+    const ctx = canvas.getContext("2d");
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+        data[i] = 255 - data[i];     // Invert Red
+        data[i + 1] = 255 - data[i + 1]; // Invert Green
+        data[i + 2] = 255 - data[i + 2]; // Invert Blue
+        // Alpha channel (data[i + 3]) remains unchanged
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+}

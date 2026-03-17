@@ -1,8 +1,9 @@
 import { plotPole2D, plotPlane2D } from "./plot.js";
 import { drawStereonet2d } from "./plot.js";
+let dataset = [];
+
 const planeBtn = document.querySelector('#Plane-plot');
 const lineBtn = document.querySelector('#Line-plot');
-
 planeBtn.addEventListener('click', function () {
     //Change style of plane button to active and line to deactive
     planeBtn.classList.add('activebtn-datatype');
@@ -43,15 +44,27 @@ form.addEventListener("submit", function(e){
     const label = formData.get("label");
     const color = formData.get("color");
 
+    const a = parseFloat(strike);
+    const b = parseFloat(dip);
+
     const canvas = document.getElementById("stereonetCanvas");
 
-    if (canvas) {
-        const a = parseFloat(strike);
-        const b = parseFloat(dip);
+    if (!isNaN(a) && !isNaN(b)) {
 
-        if (!isNaN(a) && !isNaN(b)) {
+        const id = Date.now();
+        const isPlane = planeBtn.classList.contains("activebtn-datatype");
 
-            const isPlane = planeBtn.classList.contains("activebtn-datatype");
+        const dataPoint = {
+            id,
+            type: isPlane ? "plane" : "line",
+            strike: a,
+            dip: b,
+            color
+        };
+
+        dataset.push(dataPoint);
+
+        if (canvas) {
 
             if (isPlane) {
                 // Plane → draw great circle
@@ -61,44 +74,76 @@ form.addEventListener("submit", function(e){
                 plotPole2D(canvas, a, b, color);
             }
         }
-    }
 
-    // Insert row into Saved Plots table
-    const tableBody = document.querySelector("#plotTable tbody");
+        // Insert row into Saved Plots table
+        const tableBody = document.querySelector("#plotTable tbody");
 
-    const row = document.createElement("tr");
+        const row = document.createElement("tr");
 
-    const typeCell = document.createElement("td");
-    const labelCell = document.createElement("td");
-    const paramsCell = document.createElement("td");
-    const actionCell = document.createElement("td");
+        row.dataset.id = id; // store id in row for future reference
+        const typeCell = document.createElement("td");
+        const labelCell = document.createElement("td");
+        const paramsCell = document.createElement("td");
+        const actionCell = document.createElement("td");
 
-    // Determine plot type
-    const plotType = planeBtn.classList.contains("activebtn-datatype") ? "Plane" : "Line";
-    labelCell.textContent = label || "N/A";
-    typeCell.textContent = plotType;
-    paramsCell.textContent = `${strike}, ${dip}`;
+        // Determine plot type
+        const plotType = planeBtn.classList.contains("activebtn-datatype") ? "Plane" : "Line";
+        labelCell.textContent = label || "N/A";
+        typeCell.textContent = plotType;
+        paramsCell.textContent = `${strike}, ${dip}`;
 
-    const deleteBtn = document.createElement("img");
-    deleteBtn.src = "Assets/icons/dustbin.png";
-    deleteBtn.alt = "Delete";
-    deleteBtn.classList.add("dustbin");
-    deleteBtn.addEventListener("click", function(){
+        const deleteBtn = document.createElement("img");
+        deleteBtn.src = "Assets/icons/dustbin.png";
+        deleteBtn.alt = "Delete";
+        deleteBtn.classList.add("dustbin");
+        deleteBtn.addEventListener("click", function(){
+        const row = this.closest("tr");
+        const id = Number(row.dataset.id);
+        // remove from dataset
+        dataset = dataset.filter(p => p.id !== id);
+        // remove row from table
         row.remove();
+        // redraw everything
+        renderPlot();
+
     });
 
-    actionCell.appendChild(deleteBtn);
+        actionCell.appendChild(deleteBtn);
 
-    row.appendChild(typeCell);
-    row.appendChild(paramsCell);
-    row.appendChild(labelCell);
-    row.appendChild(actionCell);
+        row.appendChild(typeCell);
+        row.appendChild(paramsCell);
+        row.appendChild(labelCell);
+        row.appendChild(actionCell);
 
-    tableBody.appendChild(row);
+        tableBody.appendChild(row);
 
-    //Reset form after submit
-    form.reset();
+        //Reset form after submit
+        form.reset();
+    }
 });
+
+
+function renderPlot(){
+
+    const canvas = document.getElementById("stereonetCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // redraw grid
+    drawStereonet2d(canvas);
+
+    // redraw all data
+    dataset.forEach(p => {
+        if (p.type === "plane") {
+            plotPlane2D(canvas, p.strike, p.dip, p.color);
+        } else {
+            plotPole2D(canvas, p.strike, p.dip, p.color);
+        }
+    });
+
+}
 
 //Import data from file
 const importBtn = document.querySelector("#importbtn");
@@ -149,6 +194,8 @@ function parseImportedData(data){
 
     });
 
+    renderPlot();
+
 }
 
 function addRowToTable(type, a, b, label) {
@@ -156,6 +203,8 @@ function addRowToTable(type, a, b, label) {
     const tableBody = document.querySelector("#plotTable tbody");
 
     const row = document.createElement("tr");
+    const id = Date.now() + Math.random();
+    row.dataset.id = id;
 
     const typeCell = document.createElement("td");
     const paramsCell = document.createElement("td");
@@ -172,11 +221,24 @@ function addRowToTable(type, a, b, label) {
 
     labelCell.textContent = label || "N/A";
 
+    dataset.push({
+        id,
+        type: type.toLowerCase(),
+        strike: parseFloat(a),
+        dip: parseFloat(b),
+        color: "red"
+    });
+
     const deleteBtn = document.createElement("img");
     deleteBtn.src = "Assets/icons/dustbin.png";
     deleteBtn.classList.add("dustbin");
 
-    deleteBtn.addEventListener("click", () => row.remove());
+    deleteBtn.addEventListener("click", () => {
+        const id = Number(row.dataset.id);
+        dataset = dataset.filter(p => p.id !== id);
+        row.remove();
+        renderPlot();
+    });
 
     actionCell.appendChild(deleteBtn);
 

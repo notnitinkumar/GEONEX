@@ -161,6 +161,28 @@ footer{
     
 }
 
+.feedbackimg{
+    height: 5vh;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: invert(1);
+    cursor: pointer;
+}
+.circular{
+    background-color: black;
+    border-radius: 999px;
+    height: 6vh;
+    width: 6vh;
+    position: fixed;
+    bottom: 40px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 
 

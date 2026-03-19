@@ -108,3 +108,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+//Feedback Form
+const feedbackForm = document.getElementById("Feedback-Form"); 
+    feedbackForm.addEventListener("click", function () {
+        console.log("Feedback form opened");
+        window.open("https://forms.gle/hC2yyxk1n5M1MZK79", "_blank", "noopener noreferrer");
+    });

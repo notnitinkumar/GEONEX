@@ -1,9 +1,8 @@
-# GEONEX - Your Geology Companion
-# 🌍 Geonex – Stereonet Visualization Tool
+# 🌍 GEONEX – Your Geology Companion
 
-Geonex is an interactive web-based tool designed for geologists and earth science enthusiasts to visualize structural data using stereographic projection.
+Geonex is an interactive web-based tool designed for geologists and earth science enthusiasts to learn and visualize geology using various tools, resources and Games.
 
-It allows users to plot planes and lines (trend–plunge), manage datasets, and export high-quality visualizations — all within a clean and responsive interface.
+Currently our working tool of Stereonet Plot allows users to plot planes and lines (trend–plunge), manage datasets, and export high-quality visualizations — all within a clean and responsive interface.
 
 ---
 
@@ -54,29 +53,19 @@ It allows users to plot planes and lines (trend–plunge), manage datasets, and 
 
 ---
 
-## 📁 Project Structure
-Geonex/
-│── Frontend/
-│   ├── index.html
-│   ├── stereonet.html
-│   ├── CSS/
-│   ├── JS/
-│   └── Assets/
-
----
-
 ## 📌Current Status
 	•	Version: v1.0 (Phase 1)
+	•	Homepage architecture for future reference
 	•	Core stereonet functionality implemented
-	•	Notes & additional tools planned for future phases
 
 ---
 
 ## 🚧 Future Improvements
-	•	📝 Notes system (like Apple Notes / GoodNotes)
+	•	📝 Notes system 
 	•	🌐 3D stereonet visualization
 	•	🔐 User accounts & data persistence
 	•	📊 Advanced geological analysis tools
+	•	🎮 Games like Geological Wordle
 
 ---
 

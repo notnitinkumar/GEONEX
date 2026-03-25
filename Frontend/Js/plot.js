@@ -1,23 +1,4 @@
-import { projectPole,generateGreatCircle } from "./stereonetcalc.js";
-
-
-export function plotPole2D(canvas, strike, dip, color="red") {
-
-    const ctx = canvas.getContext("2d");
-
-    const R = Math.min(canvas.width, canvas.height) / 2 * 0.9;
-    const {x,y} = projectPole(strike, dip, R); //coordinates of pole on stereonet
-
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-
-    ctx.beginPath();
-    ctx.fillStyle = color;
-
-    ctx.arc(centerX + x, centerY - y, 4, 0, Math.PI*2);
-
-    ctx.fill();
-}
+import { projectPole, generateGreatCircle, stereographicProjection } from "./stereonetcalc.js";
 
 export function plotPlane2D(canvas, strike, dip, color = "blue") {
 
@@ -49,6 +30,25 @@ export function plotPlane2D(canvas, strike, dip, color = "blue") {
     ctx.stroke();
 }
 
+export function plotLine2D(canvas, trend, plunge, color = "green") {
+
+    const ctx = canvas.getContext("2d");
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    const R = Math.min(canvas.width, canvas.height) / 2 * 0.9;
+
+    // ✅ use same projection logic as rest of system
+    const { x, y } = stereographicProjection(trend, plunge, R);
+
+    ctx.beginPath();
+    ctx.fillStyle = color;
+
+    ctx.arc(centerX + x, centerY - y, 4, 0, Math.PI * 2);
+    ctx.fill();
+}
+
 export function drawStereonet2d(canvas) {
 
     const ctx = canvas.getContext("2d");
@@ -75,6 +75,15 @@ export function drawStereonet2d(canvas) {
         const y = centerY - R * Math.cos(rad);
         ctx.moveTo(centerX, centerY);
         ctx.lineTo(x, y);
+        if(angle<90 && angle>0)
+            ctx.fillText(angle, x + 10, y - 10);
+        if (angle < 180 && angle > 90)
+            ctx.fillText(angle, x + 15, y + 15);
+        if(angle<270 && angle>180)
+            ctx.fillText(angle, x - 15, y + 10);
+        if (angle < 360 && angle > 270)
+            ctx.fillText(angle, x - 15, y - 10);
+            
     }
     ctx.stroke();
 

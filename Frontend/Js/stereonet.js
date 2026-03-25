@@ -1,4 +1,4 @@
-import { plotPole2D, plotPlane2D } from "./plot.js";
+import { plotPlane2D, plotLine2D } from "./plot.js";
 import { drawStereonet2d } from "./plot.js";
 let dataset = [];
 
@@ -71,7 +71,7 @@ form.addEventListener("submit", function(e){
                 plotPlane2D(canvas, a, b, color);
             } else {
                 // Line → plot point (trend-plunge)
-                plotPole2D(canvas, a, b, color);
+                plotLine2D(canvas, a, b, color);
             }
         }
 
@@ -139,7 +139,7 @@ function renderPlot(){
         if (p.type === "plane") {
             plotPlane2D(canvas, p.strike, p.dip, p.color);
         } else {
-            plotPole2D(canvas, p.strike, p.dip, p.color);
+            plotLine2D(canvas, p.strike, p.dip, p.color);
         }
     });
 

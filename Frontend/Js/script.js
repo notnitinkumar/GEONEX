@@ -5,7 +5,13 @@ if (stereonetBtn) {
         window.location.href = "stereonet.html";
     });
 }
-
+const notesbtn = document.querySelector("notesfeature");
+if (notesfeature) {
+    notesfeature.addEventListener("click", function () {
+        console.log("Notes Opened");
+        window.location.href = "notes.html";
+    })
+}
 const logo = document.querySelector("#geonex-logo");
 if (logo) {
     logo.addEventListener("click", function () {

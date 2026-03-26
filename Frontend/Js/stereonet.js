@@ -2,6 +2,12 @@ import { plotPlane2D, plotLine2D } from "./plot.js";
 import { drawStereonet2d } from "./plot.js";
 let dataset = [];
 
+
+const backBtn = document.querySelector(".backbtn");
+backBtn.addEventListener('click', function () {
+    window.location.href = "index.html";
+});
+
 const planeBtn = document.querySelector('#Plane-plot');
 const lineBtn = document.querySelector('#Line-plot');
 planeBtn.addEventListener('click', function () {

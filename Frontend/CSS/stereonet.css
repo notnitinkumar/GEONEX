@@ -62,19 +62,68 @@ header {
   color: white;
   text-decoration: none;
 }
-.loginbtn {
-  display: flex;
-  align-items: flex-end;
-  justify-content: end;
-  width: 20%;
-  border: none;
-  background-color: #000000;
-  color: white;
-  gap: 15px;
+.login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    font-size: smaller;
+    background-color: white;
+    color: Black;
+    border-radius: 10px;
+    height: 30px;
+    width: 38%;
+    min-width: 110px;
+    cursor: pointer;
 }
-#loginbtnsymbol {
-  filter: invert(1);
-  height: 15px;
+.login:hover{
+    transform:translateY(-5px);
+    transform: scale(1.1);
+    transition: 0.3s;
+}
+.loginbtn{
+    display: flex;
+    align-items: flex-end;
+    justify-content: end;
+    width: 20%;
+    border: none;
+    background-color: #000000;
+    color: white;
+    gap: 15px;
+    min-height: 30px;
+    min-width: 110px;
+}
+#loginbtnsymbol{
+    height: 15px;
+}
+#Hamburger{
+    filter: invert(1);
+    height: 15px;
+}
+main{
+  flex: 1;
+}
+.backbtn{
+    display: flex;
+    background:none;
+    color:#888;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    margin: 10px 20px;
+    gap: 5px;
+    padding: 2px;
+    cursor: pointer;
+    min-height: 25px;
+}
+.backbtn img{
+color: #888;
+filter: invert(1);
+}
+.backbtn:hover{
+transform: scale(1.05);
+transition: 0.3s;
 }
 h1 {
   font-size: 36px;
@@ -437,6 +486,9 @@ footer {
 }
 /* Mobile responsiveness */
 @media (max-width: 900px) {
+  .login{
+    visibility: hidden;
+  }
   .logo {
     width: 25%;
     max-width: 120px;

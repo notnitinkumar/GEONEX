@@ -1,21 +1,18 @@
 const stereonetBtn = document.querySelector("#stereonet-tool");
 if (stereonetBtn) {
     stereonetBtn.addEventListener("click", function () {
-        console.log("Stereonet tool opened");
         window.location.href = "stereonet.html";
     });
 }
-const notesbtn = document.querySelector("notesfeature");
-if (notesfeature) {
-    notesfeature.addEventListener("click", function () {
-        console.log("Notes Opened");
+const notesbtn = document.querySelector("#notesfeature");
+if (notesbtn) {
+    notesbtn.addEventListener("click", function () {
         window.location.href = "notes.html";
     })
 }
 const logo = document.querySelector("#geonex-logo");
 if (logo) {
     logo.addEventListener("click", function () {
-        console.log("Geonex logo clicked");
         window.location.href = "index.html";
     });
 }
@@ -50,14 +47,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
 document.querySelectorAll(".disabled").forEach(box => {
   box.addEventListener("click", () => {
-   alert("Feature under development. Try Tools → Stereonet!");
+   alert("Feature under development.");
   });
 });
 
 document.querySelectorAll(".disabled-link").forEach(link => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
-    alert("Feature under development. Try Tools → Stereonet!");
+    alert("Feature under development.");
   });
 });
 

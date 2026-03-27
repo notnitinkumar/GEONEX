@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes Editor</title>
+    <link rel="stylesheet" href="CSS/noteseditor.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img
+          src="Assets/images/Geonex logo.png"
+          alt="Logo Image"
+          id="geonex-logo"
+        />
+      </div>
+      <nav class="Navbar" id="navbar">
+        <ul>
+          <li class="navbuttons"><a href="index.html">Home</a></li>
+          <li class="navbuttons disabled-link"><a href="">Learning</a></li>
+          <li class="navbuttons disabled-link"><a href="">Your Work</a></li>
+        </ul>
+      </nav>
+      <div class="loginbtn">
+        <div class="login">
+          <img
+            src="Assets/icons/Profile.png"
+            alt="Profile"
+            id="loginbtnsymbol"
+          />
+          Guest Mode
+        </div>
+        <div
+          class="hamburger"
+          id="hamburger"
+          aria-label="Open menu"
+          aria-controls="navbar"
+          aria-expanded="false"
+        >
+          <img
+            src="Assets/icons/hamburger.png"
+            alt="Hamburger Menu"
+            id="Hamburger"
+          />
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="zero">
+        <button class="backbtn">
+          <img src="Assets/icons/leftarrow.svg" alt="Back to Home" />
+          Back to Notes
+        </button>
+      </section>
+      <section class="one">
+        <div class="hero">
+          <div class="Headline">
+            <img src="Assets/icons/Notes.svg" alt="Notes">
+            <div class="tagline">
+              <h1 id="WorkType">New Note</h1>
+              <p class="description" id="WorkDesc">Create a Geology Note</p>
+            </div>
+          </div>
+          <div class="btnarea">
+            <button id="DeleteBtn">
+              <img src="Assets/icons/dustbin.png" alt="Delete">
+              Delete
+            </button>
+            <button id="SaveBtn">
+              <img src="Assets/icons/Save Note.svg" alt="Save Notes">
+               Save Note</button>
+            </button>
+          </div>
+        </div>
+      </section>
+      <section class="two">
+<div class="left">
+  <div class="titlearea">
+   <p>Note Title</p> 
+    <input type="text" placeholder=" Enter note title..." id="noteTitle">
+  </div>
+  <div class="contentarea">
+   <p>Note Content</p> 
+    <textarea id="noteContent" placeholder=" Start writing your note here...
+
+- Field Observations
+- Rock Descriptions
+- Structural Measurements
+- Analysis notes
+- Research findings"></textarea>
+  </div>
+</div>
+<div class="right">
+  <div class="colorbox">
+  <div class="color-header">
+    <img src="Assets/icons/colortool.svg" />
+    <h4>Note Color</h4>
+  </div>
+
+  <div class="color-grid">
+    <div class="color activecolor" style="background:#ff4d4d"></div>
+    <div class="color" style="background:#ff884d"></div>
+    <div class="color" style="background:#ffcc4d"></div>
+    <div class="color" style="background:#4dff4d"></div>
+
+    <div class="color" style="background:#4d4dff"></div>
+    <div class="color" style="background:#a64dff"></div>
+    <div class="color" style="background:#ff4da6"></div>
+    <div class="color" style="background:#888"></div>
+  </div>
+
+  <button class="fav-btn" id="FavBtn"><img src="Assets/icons/Favorites.min.svg" alt="Favorites"> Add to Favorites</button>
+</div>
+  <div class="catbox">
+    <h4>Category</h4>
+<select id="Category" name="Select">
+  <option value="Field Notes">Field Notes</option>
+  <option value="Mineralogy">Mineralogy</option>
+  <option value="Petrology">Petrology</option>
+  <option value="Raw Data">Raw Data</option>
+</select>
+  </div>
+  <!-- <div class="tagbox">
+    <div class="tagheader">
+      <img src="Assets/icons/tags.svg" alt="Tags">
+      <h4>Tags</h4>
+    </div>
+    <div class="tag">
+      <input type="text" placeholder="Add a tag..." id="tagtype">
+      <button id="Addtagbtn" class="btnarea">Add</button>
+    </div>
+  </div> -->
+</div>
+      </section>
+      <section class="feedback">
+        <div class="circular">
+          <img
+            src="Assets/icons/handshake.png"
+            alt="feedback"
+            class="feedbackimg"
+            id="Feedback-Form"
+          />
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="latlong">
+        <span id="latitude">Lat: --</span>
+        <span id="longitude">Long: --</span>
+      </div>
+      <div>
+        <p>Geonex Version 1.0 • Built by Nitin Kumar</p>
+        <p>&copy; 2026 GEONEX. All Rights Reserved.</p>
+      </div>
+    </footer>
+    <script src="Js/noteseditor.js"></script>
+    <script src="Js/script.js"></script>
+  </body>
+</html>

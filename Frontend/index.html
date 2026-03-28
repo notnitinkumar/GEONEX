@@ -6,16 +6,28 @@
     <title>GEONEX - Your Geology Companion</title>
     <link rel="icon" href="Assets/images/GEONEX Favicon.png" />
     <link rel="stylesheet" href="CSS/style.css" />
+    <link rel="stylesheet" href="CSS/utility.css">
   </head>
   <body>
     <header>
       <div class="logo">
-        <img
+        <!-- <img
           src="Assets/images/Geonex logo.png"
           alt="Logo Image"
           id="geonex-logo"
-        />
-        <!-- <img src="Assets/icons/iitrLogo.png" alt="iitrlogo" id="iitrlogo" /> -->
+        /> -->
+         <div class="iitrlogo">
+           <img src="Assets/images/iitroorkee.png" alt="IITR Logo" style="filter: invert(1);">
+           <div class="logotitle">
+             <span>
+               Indian Institute of Technology Roorkee
+              </span>
+              <span>
+                भारतीय प्रौद्योगिकी संस्थान रुड़की
+              </span>
+            </div>
+          </div>
+
       </div>
       <nav class="Navbar" id="navbar">
         <ul>
@@ -27,15 +39,23 @@
       <!-- <div class="loginbtn">Login
         <img src="Assets/icons/login.png" alt="Login" id="loginbtnsymbol" />
       </div> -->
-      <div class="loginbtn">
-        <div class="login">
-          <img
-            src="Assets/icons/Profile.png"
-            alt="Profile"
-            id="loginbtnsymbol"
-          />
+      <div class="logo logoRight">
+         <!-- Sign In/ Sign Up Add here later -->
+        <!-- <div class="login">
+          <img src="Assets/icons/Profile.png" alt="Profile" id="loginbtnsymbol">
           Guest Mode
-        </div>
+        </div> -->
+        <div class="ESClogo">
+          <div class="logotitle">
+            <span>
+              Department of Earth Sciences
+             </span>
+             <span>
+               भू विज्ञान विभाग
+             </span>
+           </div>
+           <img src="Assets/images/esc logo.png" alt="ESC Logo" >
+          </div>
         <div
           class="hamburger"
           id="hamburger"
@@ -53,7 +73,7 @@
     </header>
     <main>
       <section class="hero">
-        <p class="brand">GEONEX</p>
+        <img src="Assets/images/Geonex logo.png" alt="" class="brandlogo">
         <h1 class="welcome">Welcome to Your All-in-One Geology Companion</h1>
         <p class="description">
           Explore powerful tools, organize your research, and enhance your
@@ -90,7 +110,7 @@
       <section class="feedback">
         <div class="circular">
           <img
-            src="Assets/icons/handshake.png"
+            src="Assets/icons/help.png"
             alt="feedback"
             class="feedbackimg"
             id="Feedback-Form"

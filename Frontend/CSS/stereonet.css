@@ -1,140 +1,11 @@
-/* Global Styles */
-body {
-  background-color: black;
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  text-align: center;
-  overflow-x: hidden;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-header {
-  height: 100px;
-  margin: 5px 0px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 40px;
-  border-bottom: 1px solid #222;
-  position: sticky;
-  z-index: 100;
-  top: 0;
-  background-color: black;
-  overflow-x: hidden;
-}
-.logo {
-  width: 20%;
-  height: 90px;
-  margin: 2px;
-  font-size: 24px;
-  font-weight: bold;
-  object-fit: contain;
-  display: flex;
-  align-items: center;
-}
-.logo img {
-  height: 90%;
-  cursor: pointer;
-}
-.hamburger {
-  display: none;
-}
-.Navbar {
-  height: 60%;
-  margin: 2px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.Navbar ul {
-  display: flex;
-  align-items: center;
-}
-.Navbar ul li {
-  list-style-type: none;
-  margin: 0px 5px;
-  padding: 2px 8px;
-}
-.Navbar ul li a {
-  color: white;
-  text-decoration: none;
-}
-.login{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3px;
-    font-size: smaller;
-    background-color: white;
-    color: Black;
-    border-radius: 10px;
-    height: 30px;
-    width: 38%;
-    min-width: 110px;
-    cursor: pointer;
-}
-.login:hover{
-    transform:translateY(-5px);
-    transform: scale(1.1);
-    transition: 0.3s;
-}
-.loginbtn{
-    display: flex;
-    align-items: flex-end;
-    justify-content: end;
-    width: 20%;
-    border: none;
-    background-color: #000000;
-    color: white;
-    gap: 15px;
-    min-height: 30px;
-    min-width: 110px;
-}
-#loginbtnsymbol{
-    height: 15px;
-}
-#Hamburger{
-    filter: invert(1);
-    height: 15px;
-}
-main{
-  flex: 1;
-}
-.backbtn{
-    display: flex;
-    background:none;
-    color:#888;
-    border: none;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    margin: 10px 20px;
-    gap: 5px;
-    padding: 2px;
-    cursor: pointer;
-    min-height: 25px;
-}
-.backbtn img{
-color: #888;
-filter: invert(1);
-}
-.backbtn:hover{
-transform: scale(1.05);
-transition: 0.3s;
-}
+/* --------------- Main --------------- */
 h1 {
   font-size: 36px;
-  /* color: #000; */
-  /* margin-bottom: ; */
   text-align: center;
   font-weight: 700;
 }
 
 h5 {
-  /* color: #000; */
   font-size: medium;
   font-weight: 300;
   text-align: center;
@@ -147,7 +18,6 @@ h5 {
   background-color: #0d0d0d;
   padding-bottom: 50px;
   width: 100%;
-  gap: 5vw;
   overflow: hidden;
 }
 .leftsection {
@@ -200,7 +70,7 @@ h5 {
   font-weight: 500;
 }
 
-/* inputs */
+/* ------------------- inputs -------------------- */
 
 .panel input {
   width: 100%;
@@ -216,9 +86,6 @@ h5 {
 .panel input::placeholder {
   color: #777;
 }
-
-/* color inputs row */
-
 .color-row {
   display: flex;
   gap: 15px;
@@ -232,9 +99,6 @@ h5 {
   padding: 5px;
   cursor: pointer;
 }
-
-/* add point button */
-
 .add-btn {
   margin-top: 25px;
   width: 100%;
@@ -276,7 +140,7 @@ h5 {
   justify-content: center;
   align-items: flex-start;
   margin-top: 50px;
-width: 100%;
+  width: 100%;
 }
 .plot-container {
   background: #0f0f0f;
@@ -289,7 +153,8 @@ width: 100%;
   max-height: 725px;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
   border: 1px solid #1f1f1f;
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  margin-right: 50px;
 }
 
 .plot-header {
@@ -347,10 +212,10 @@ width: 100%;
 
 canvas {
   background-color: transparent !important;
-   width: 100%;
+  width: 100%;
   max-width: 600px;
   height: auto;
-  aspect-ratio: 1 / 1; 
+  aspect-ratio: 1 / 1;
 }
 
 /* .switch {
@@ -414,15 +279,14 @@ transform:translateX(24px);
   transition: 0.2s;
 }
 .savedplots {
+  margin-right: 50px;
   margin-top: 100px;
   background: #0f0f0f;
   border-radius: 20px;
   padding: 25px;
   color: white;
-  width: 100%;
-  max-width: 100%;
+  width: 85%;
   max-height: 180px;
-  margin: 100px auto 0 auto;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
   border: 1px solid #1f1f1f;
   overflow: auto;
@@ -452,82 +316,47 @@ transform:translateX(24px);
   height: 20px;
   filter: invert(100%);
 }
-.feedbackimg{
-    height: 5vh;
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    filter: invert(1);
-    cursor: pointer;
-}
-.circular{
-    background-color: black;
-    border-radius: 999px;
-    height: 6vh;
-    width: 6vh;
-    position: fixed;
-    bottom: 40px;
-    right: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-footer {
-  border-top: 1px solid #222;
-  padding: 20px;
-  color: #888;
-}
-.latlong {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 20px;
-}
 /* Mobile responsiveness */
-@media (max-width: 900px) {
-  .login{
-    visibility: hidden;
-  }
-  .logo {
-    width: 25%;
-    max-width: 120px;
-  }
-  .loginbtn {
-    width: 50%;
-    font-size: small;
-  }
-  .logo img {
-    height: 60%;
-  }
-  header {
-    flex-wrap: wrap;
-    height: auto;
-    gap: 10px;
-    padding: 0 20px;
-  }
-
+@media (max-width: 600px) {
   .Working {
     flex-direction: column;
     gap: 20px;
     padding: 20px;
+    width: 87%;
   }
 
   .leftsection,
   .rightsection {
     width: 100%;
   }
-  
+
   .rightsection {
     align-items: center;
   }
 
   .panel {
-    width: 90vw;
+    width: 70%;
     max-width: none;
     margin-top: 20px;
   }
-
+  .panel h2{
+    font-size: medium;
+  }
+  .datatype button{
+    font-size: small;
+    width: 40%;
+    padding: 10px 15px;
+  }
+  .add-btn{
+    font-size: medium;
+    padding: 10px 15px;
+  }
+  .panel label{
+    font-size: small;
+  }
+  .panel p{
+    font-size: 11px;
+  }
   .plot {
     margin-top: 20px;
   }
@@ -538,67 +367,39 @@ footer {
     padding: 15px;
     max-height: none;
   }
-
-  .savedplots {
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto; 
-    margin-top: 20px;
-  }
-
   .plot-header {
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
   }
-
   .export-buttons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    font-size: small;
   }
-.savedplots{
-  display: flex;
-  flex-direction: column;
-align-items: center;
-}
+  .savedplots {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
   .plotTable {
     display: block;
-    width: 100%;
+    width: 70%;
     overflow-x: auto;
     margin: 0 auto;
   }
-  .plotTable table {
+  .plotTable {
     width: 100%;
   }
- 
-  .Navbar {
-    position: fixed;
-    top: 0;
-    right: -100%; /* hidden initially */
-    height: 100vh;
-    width: 250px;
-    background: black;
-    display: flex; 
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 80px;
-    transition: right 0.3s ease;
-    z-index: 1000;
+  .plotTable {
+    font-size: x-small;
   }
-
-  .Navbar.active {
-    right: 0; /* slide in */
+  .plotTable img {
+    width: 10px;
+    height: auto;
   }
-
-  .Navbar ul {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .hamburger {
-    display: block;
-    z-index: 1100;
-  }
-
 }

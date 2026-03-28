@@ -1,0 +1,240 @@
+body {
+  background-color: black;
+  color: white;
+  font-family:Arial, Helvetica, sans-serif;
+  margin: 0;
+  text-align: center;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------------- Header and Navbar ---------------- */
+header {
+  height: 100px;
+  margin: 5px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  border-bottom: 1px solid #222;
+  position: sticky;
+  z-index: 100;
+  top: 0;
+  background-color: black;
+  overflow-x: hidden;
+}
+.iitrlogo {
+  height: 90%;
+  font-size: medium;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.iitrlogo span{
+  text-align: left;
+}
+.logotitle{
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  width: 30%;
+  height: 90px;
+  margin: 2px;
+  font-size: 24px;
+  font-weight: bold;
+  object-fit: contain;
+  display: flex;
+  align-items: center;
+}
+.flexend{
+  justify-content: flex-end;
+}
+.logo img {
+  height: 90%;
+  cursor: pointer;
+}
+.logoRight{
+justify-content: flex-end;
+}
+
+.ESClogo{
+  height: 90%;
+  font-size: medium;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-align: right;
+}
+.ESClogo img{
+  height: 100%;
+}
+.hamburger {
+  display: none;
+}
+.Navbar {
+  width: 40%;
+  height: 90px;
+  margin: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Navbar ul {
+  display: flex;
+  align-items: center;
+}
+.Navbar ul li {
+  list-style-type: none;
+  margin: 0px 5px;
+  padding: 2px 8px;
+}
+.Navbar ul li a {
+  color: white;
+  text-decoration: none;
+}
+/* .loginbtn {
+  display: flex;
+  align-items: flex-end;
+  justify-content: end;
+  width: 30%;
+  border: none;
+  background-color: #000000;
+  color: white;
+  gap: 15px;
+  min-height: 30px;
+  min-width: 110px;
+}
+#loginbtnsymbol {
+  height: 15px;
+} */
+#Hamburger {
+  filter: invert(1);
+  height: 15px;
+}
+
+/* -------------- Main---------------- */
+main {
+  flex: 1;
+}
+.backbtn {
+  display: flex;
+  background: none;
+  color: #888;
+  border: none;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin: 10px 20px;
+  gap: 5px;
+  padding: 2px;
+  cursor: pointer;
+  min-height: 25px;
+}
+.backbtn img {
+  color: #888;
+  filter: invert(1);
+}
+.backbtn:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
+}
+
+/* -------------- Footer ---------------- */
+footer {
+  border-top: 1px solid #222;
+  padding: 20px;
+  color: #888;
+}
+.latlong {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px;
+}
+
+/* -------------- Feedback Form ---------------- */
+.feedbackimg {
+  height: 4vh;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: invert(0.7);
+  cursor: pointer;
+}
+.circular {
+  background-color: black;
+  border-radius: 999px;
+  height: 6vh;
+  width: 6vh;
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* -------------- Mobile Responsiveness ---------------- */
+@media (max-width: 600px) {
+  .logo {
+    width: 50%;
+  }
+  .logo span{
+visibility: hidden;
+  }
+  .loginbtn {
+    width: 50%;
+    font-size: small;
+  }
+  .logo img {
+    height: 50%;
+  }
+  header {
+    height: 10vh;
+    padding: 0 20px;
+  }
+  .Navbar {
+    position: fixed;
+    top: 0;
+    right: -100%; /* hidden initially */
+    height: 100vh;
+    width: 250px;
+    background: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 80px;
+    transition: right 0.3s ease;
+    z-index: 1000;
+  }
+
+  .Navbar.active {
+    right: 0; /* slide in */
+  }
+
+  .Navbar ul {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .hamburger {
+    display: block;
+    z-index: 1100;
+  }
+  .hamburger img {
+    width: 20px;
+  }
+  .circular {
+    right: 10px;
+    bottom: 15px;
+  }
+  footer {
+    font-size: small;
+  }
+}

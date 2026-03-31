@@ -1,0 +1,86 @@
+/* -------------- Main---------------- */
+.one {
+  margin: 0 5vw;
+  padding: 0 2vw;
+}
+.two {
+  margin: 0 5vw;
+  padding: 0 2vw;
+}
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.tagline h1 {
+  display: flex;
+  margin: 15px 25px;
+}
+.description {
+  color: #aaa;
+  font-size: clamp(10px, 2vw, 16px);
+  margin: 0 25px;
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+}
+.datacount {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 80px;
+  flex-wrap: wrap;
+}
+.datacat{
+  background: #0f0f0f;
+  border: 1px solid #2c2c2c;
+  border-radius: 20px;
+  height: 160px;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.datacaticon{
+  width: 40px;
+}
+.projectwork{
+background: #0f0f0f;
+ border: 1px solid #2c2c2c;
+  border-radius: 20px;
+  height: 260px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  margin: 25px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.projecticon{
+  width: 50px;
+}
+.projectwork h2{
+  margin: 15px 0;
+}
+.projectwork p{
+  color: #aaa;
+  font-size: clamp(10px, 2vw, 16px);
+  text-align: center;
+  margin: 0 25px;
+}
+.comingsoon{
+  margin: 20px;
+  padding: 10px 20px;
+  background: #2c2c2c;
+  border-radius: 10px;
+  color: #aaa;
+  font-size: clamp(10px, 1.5vw, 14px);
+}

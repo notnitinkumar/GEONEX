@@ -1,11 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const backBtn = document.querySelector(".backbtn");
-  if (backBtn) {
-    backBtn.addEventListener("click", function () {
-      history.back();
-    });
-  }
-
+  
   let selectedColor = null;
 
   document.querySelectorAll(".color").forEach((color) => {

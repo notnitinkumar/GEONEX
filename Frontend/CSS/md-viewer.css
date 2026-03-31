@@ -1,0 +1,56 @@
+/* -------------- Main---------------- */
+.one {
+  margin: 0 5vw;
+  padding: 0 2vw;
+}
+.two {
+  margin: 0 5vw;
+  padding: 0 2vw;
+}
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.tagline h1 {
+  display: flex;
+  margin: 15px 25px;
+}
+.description {
+  color: #aaa;
+  font-size: clamp(10px, 2vw, 16px);
+  margin: 0 25px;
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+}
+.contentarea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.content{
+    width: 80%;
+    height: 60vh;
+    border: 1px solid #aaaaaa59;
+    border-radius:15px;
+    padding: 20px;
+    overflow-y: auto;
+    text-align: left;
+    margin: 20px;
+    color: #aaa;
+}
+
+@media (max-width: 600px) {
+  .one {
+    margin: 0 1vw;
+    padding: 0;
+  }
+  .two {
+    margin: 0 1vw;
+    padding: 0;
+  }
+  
+}

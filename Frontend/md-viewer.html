@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GEONEX - Your Geology Companion</title>
-    <link rel="icon" href="Assets/images/GEONEX Favicon.png" />
-    <link rel="stylesheet" href="CSS/style.css" />
+    <title></title>
+     <link rel="icon" href="Assets/images/GEONEX Favicon.png" />
     <link rel="stylesheet" href="CSS/utility.css">
+    <link rel="stylesheet" href="CSS/md-viewer.css">
   </head>
   <body>
     <header>
@@ -72,40 +72,25 @@
       </div>
     </header>
     <main>
-      <section class="hero">
-        <img src="Assets/images/Geonex logo.png" alt="" class="brandlogo">
-        <h1 class="welcome">Welcome to Your All-in-One Geology Companion</h1>
-        <p class="description">
-          Explore powerful tools, organize your research, and enhance your
-          geology knowledge
-        </p>
+      <section>
+        <button class="backbtn">
+          <img src="Assets/icons/leftarrow.svg" alt="Back to Home" />
+          Back to Home
+        </button>
       </section>
-      <section class="Options">
-        <div class="optionsbox" id="notesfeature">
-          <div class="icon">📄</div>
-          <h3>Notes</h3>
-          <p>
-            Create and organize your geology notes, field observations, and
-            research
-          </p>
+      <section class="one">
+        <div class="hero">
+          <div class="tagline">
+            <h1></h1>
+            <p class="description">
+            </p>
+          </div>
         </div>
-
-        <div class="optionsbox" id="stereonet-tool">
-          <div class="icon">🔧</div>
-          <h3>Tools</h3>
-          <p>
-            Access geological calculators, converters, and reference materials
-          </p>
+      </section>
+      <section class="two">
+        <div class="contentarea">
+            <div class="content"></div>
         </div>
-
-        <!-- <div class="optionsbox disabled">
-          <div class="icon">🎮</div>
-          <h3>Games</h3>
-          <span class="badge">Coming Soon</span>
-          <p>
-            Test your knowledge with interactive geology quizzes and challenges
-          </p>
-        </div> -->
       </section>
       <section class="feedback">
         <div class="circular">
@@ -128,7 +113,8 @@
         <p>&copy; 2026 GEONEX. All Rights Reserved.</p>
       </div>
     </footer>
-
     <script src="Js/script.js"></script>
+    <script src="Js/md-viewer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </body>
 </html>

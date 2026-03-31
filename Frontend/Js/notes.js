@@ -12,14 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-
-  const backBtn = document.querySelector(".backbtn");
-  if (backBtn) {
-    backBtn.addEventListener("click", function () {
-      window.location.href = "index.html";
-    });
-  }
-
+  
   // For New Note clear currentNote and open editor
   const NewNote = document.getElementById("newNoteBtn");
   if (NewNote) {

@@ -162,3 +162,11 @@ function createNoteElement(note) {
 
   return li;
 }
+
+//To prevent back button loop
+const backBtn = document.querySelector(".backbtn");
+if (backBtn) {
+  backBtn.addEventListener("click", function () {
+      window.location.href = "index.html";
+  });
+}

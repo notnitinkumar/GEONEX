@@ -6,3 +6,11 @@ document.querySelectorAll(".content-container li").forEach((item) => {
         window.location.href = "md-viewer.html";
     });
 });
+
+//To prevent back button loop
+const backBtn = document.querySelector(".backbtn");
+if (backBtn) {
+  backBtn.addEventListener("click", function () {
+      window.location.href = "index.html";
+  });
+}

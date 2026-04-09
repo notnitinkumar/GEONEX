@@ -99,14 +99,21 @@
                 required
               />
 
-              <label for="dip" id="angular">Dip (0–90°)</label>
-              <input
+                <label for="dip" id="angular">Dip (0–90°)</label>
+                <input
                 id="dip"
                 type="number"
                 placeholder="e.g., 60"
                 name="dip"
                 required
-              />
+                />
+                <label for="Dip Direction">Dip Direction</label>
+                <select id="dipDirection" name="dipDirection" >
+                  <option value="North">North</option>
+                  <option value="South">South</option>
+                  <option value="East">East</option>
+                  <option value="West">West</option>
+                </select>
 
               <label for="label">Label</label>
               <input

@@ -1,10 +1,9 @@
 import {
-  projectPole,
   generateGreatCircle,
   stereographicProjection,
 } from "./stereonetcalc.js";
 
-export function plotPlane2D(canvas, strike, dip, color = "blue") {
+export function plotPlane2D(canvas, strike, dip, dipDirection, color) {
   const ctx = canvas.getContext("2d");
 
   const centerX = canvas.width / 2;
@@ -12,13 +11,14 @@ export function plotPlane2D(canvas, strike, dip, color = "blue") {
 
   const R = (Math.min(canvas.width, canvas.height) / 2) * 0.9;
 
-  const orientations = generateGreatCircle(strike, dip);
+  const orientations = generateGreatCircle(strike, dip, dipDirection);
 
   ctx.beginPath();
   ctx.strokeStyle = color;
+  ctx.lineWidth = 1;
 
   orientations.forEach((o, i) => {
-    const { x, y } = projectPole(o.trend, 90 - o.plunge, R);
+    const { x, y } = stereographicProjection(o.trend, o.plunge, R);
     // convert trend-plunge → projection
 
     const X = centerX + x;
@@ -31,7 +31,7 @@ export function plotPlane2D(canvas, strike, dip, color = "blue") {
   ctx.stroke();
 }
 
-export function plotLine2D(canvas, trend, plunge, color = "green") {
+export function plotLine2D(canvas, trend, plunge, color) {
   const ctx = canvas.getContext("2d");
 
   const centerX = canvas.width / 2;
@@ -48,6 +48,8 @@ export function plotLine2D(canvas, trend, plunge, color = "green") {
   ctx.fill();
 }
 
+
+// ---------------- Stereonet background grid -------------------
 export function drawStereonet2d(canvas) {
   const ctx = canvas.getContext("2d");
 

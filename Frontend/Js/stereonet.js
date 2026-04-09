@@ -1,39 +1,36 @@
 import { plotPlane2D, plotLine2D } from "./plot.js";
 import { drawStereonet2d } from "./plot.js";
-import {
-  projectLine,
-  stereographicProjection,
-  poleFromStrikeDip,
-} from "./stereonetcalc.js";
 let dataset = [];
 
 const planeBtn = document.querySelector("#Plane-plot");
 const lineBtn = document.querySelector("#Line-plot");
 planeBtn.addEventListener("click", function () {
-  //Change style of plane button to active and line to deactive
+
   planeBtn.classList.add("activebtn-datatype");
   planeBtn.classList.remove("deactivebtn-datatype");
   lineBtn.classList.add("deactivebtn-datatype");
   lineBtn.classList.remove("activebtn-datatype");
 
-  //Planar data input form
   document.getElementById("nonangular").innerHTML = "Strike (0 – 360°)";
   document.getElementById("angular").innerHTML = "Dip (0–90°)";
+  document.getElementById("dipDirection").disabled = false;
+  document.getElementById("dipDirection").style.cursor = "pointer";
 });
 
 lineBtn.addEventListener("click", function () {
-  //Change style of line button to active and Plane to deactive
+
   lineBtn.classList.add("activebtn-datatype");
   lineBtn.classList.remove("deactivebtn-datatype");
   planeBtn.classList.add("deactivebtn-datatype");
   planeBtn.classList.remove("activebtn-datatype");
 
-  //Linear data input form
   document.getElementById("nonangular").innerHTML = "Trend (0 – 360°)";
   document.getElementById("angular").innerHTML = "Plunge (0–90°)";
+  document.getElementById("dipDirection").disabled = true;
+  document.getElementById("dipDirection").style.cursor = "not-allowed";
 });
 
-//Form data
+//----------------------Form data---------------------------
 const form = document.querySelector("#dataForm");
 
 form.addEventListener("submit", function (e) {
@@ -43,6 +40,7 @@ form.addEventListener("submit", function (e) {
 
   const strike = formData.get("strike");
   const dip = formData.get("dip");
+  const dipDirection = formData.get("dipDirection");
   const label = formData.get("label");
   const color = formData.get("color");
 
@@ -60,6 +58,8 @@ form.addEventListener("submit", function (e) {
       type: isPlane ? "plane" : "line",
       strike: a,
       dip: b,
+      dipDirection: dipDirection,
+      label,
       color,
     };
 
@@ -67,10 +67,10 @@ form.addEventListener("submit", function (e) {
 
     if (canvas) {
       if (isPlane) {
-        // Plane → draw great circle
-        plotPlane2D(canvas, a, b, color);
+        // Plane 
+        plotPlane2D(canvas, a, b, dipDirection, color);
       } else {
-        // Line → plot point (trend-plunge)
+        // Line 
         plotLine2D(canvas, a, b, color);
       }
     }
@@ -80,19 +80,19 @@ form.addEventListener("submit", function (e) {
 
     const row = document.createElement("tr");
 
-    row.dataset.id = id; // store id in row for future reference
+    row.dataset.id = id; // store id in row 
     const typeCell = document.createElement("td");
     const labelCell = document.createElement("td");
     const paramsCell = document.createElement("td");
     const actionCell = document.createElement("td");
 
     // Determine plot type
-    const plotType = planeBtn.classList.contains("activebtn-datatype")
+    const plotType = isPlane
       ? "Plane"
       : "Line";
     labelCell.textContent = label || "N/A";
     typeCell.textContent = plotType;
-    paramsCell.textContent = `${strike}, ${dip}`;
+    paramsCell.textContent = `${strike}, ${dip} (${dipDirection[0]})`;
 
     const deleteBtn = document.createElement("img");
     deleteBtn.src = "Assets/icons/dustbin.png";
@@ -136,7 +136,7 @@ function renderPlot() {
   // redraw all data
   dataset.forEach((p) => {
     if (p.type === "plane") {
-      plotPlane2D(canvas, p.strike, p.dip, p.color);
+      plotPlane2D(canvas, p.strike, p.dip,p.dipDirection, p.color);
     } else {
       plotLine2D(canvas, p.strike, p.dip, p.color);
     }
@@ -175,21 +175,21 @@ function parseImportedData(data) {
   const isLine = header.includes("trend") && header.includes("plunge");
 
   lines.forEach((line) => {
-    const [a, b, label] = line.split(",");
+    const [a, b, label, color] = line.split(",");
 
     if (isPlane) {
-      addRowToTable("Plane", a, b, label);
+      addRowToTable("Plane", a, b, label, color);
     }
 
     if (isLine) {
-      addRowToTable("Line", a, b, label);
+      addRowToTable("Line", a, b, label, color);
     }
   });
 
   renderPlot();
 }
 
-function addRowToTable(type, a, b, label) {
+function addRowToTable(type, a, b, label, color) {
   const tableBody = document.querySelector("#plotTable tbody");
 
   const row = document.createElement("tr");
@@ -216,7 +216,9 @@ function addRowToTable(type, a, b, label) {
     type: type.toLowerCase(),
     strike: parseFloat(a),
     dip: parseFloat(b),
-    color: "red",
+    dipDirection: "N", // default value for imported data
+    label,
+    color: color || "red",
   });
 
   const deleteBtn = document.createElement("img");

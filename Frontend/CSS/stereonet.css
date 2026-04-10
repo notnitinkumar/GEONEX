@@ -11,6 +11,70 @@ h5 {
   text-align: center;
   margin-bottom: 30px;
 }
+.menubar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0d0d0d;
+  border-bottom: 1px solid #1f1f1f;
+}
+.pbackbtn {
+  width: 45%;
+}
+.utilities {
+  height: 30px;
+  width: 55%;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #0d0d0d;
+}
+.utilities-nav {
+  padding: 0 20px;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: linear-gradient(145deg, #1a1a1a, #111);
+}
+.utilities ul {
+  display: flex;
+  width: 80%;
+  gap: clamp(2px, 1%, 50px);
+  justify-content: flex-end;
+  font-size: clamp(10px, 2vw, 16px);
+  color: #888;
+  list-style-type: none;
+  cursor: pointer;
+}
+.menu-item {
+  position: relative;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+.activebtn-menu {
+  /* color: white; */
+  background-color: #4242426a;
+}
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 10px 0;
+  min-width: 180px;
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+}
+.dropdown li {
+  padding: 10px 15px;
+  white-space: nowrap;
+}
 
 .Working {
   display: flex;
@@ -84,7 +148,7 @@ h5 {
 .panel input::placeholder {
   color: #777;
 }
-.panel select{
+.panel select {
   width: 100%;
   padding: 14px;
   border-radius: 12px;
@@ -225,7 +289,7 @@ canvas {
   aspect-ratio: 1 / 1;
   cursor: crosshair;
 }
-.point{
+.point {
   display: flex;
   gap: 50px;
   visibility: hidden;
@@ -352,22 +416,22 @@ transform:translateX(24px);
     max-width: none;
     margin-top: 20px;
   }
-  .panel h2{
+  .panel h2 {
     font-size: medium;
   }
-  .datatype button{
+  .datatype button {
     font-size: small;
     width: 40%;
     padding: 10px 15px;
   }
-  .add-btn{
+  .add-btn {
     font-size: medium;
     padding: 10px 15px;
   }
-  .panel label{
+  .panel label {
     font-size: small;
   }
-  .panel p{
+  .panel p {
     font-size: 11px;
   }
   .plot {

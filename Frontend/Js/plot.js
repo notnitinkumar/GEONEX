@@ -3,7 +3,7 @@ import {
   stereographicProjection,
 } from "./stereonetcalc.js";
 
-export function plotPlane2D(canvas, strike, dip, dipDirection, color) {
+export function plotPlane2D(canvas, strike, dip, dipDirection, color="cyan") {
   const ctx = canvas.getContext("2d");
 
   const centerX = canvas.width / 2;
@@ -19,7 +19,6 @@ export function plotPlane2D(canvas, strike, dip, dipDirection, color) {
 
   orientations.forEach((o, i) => {
     const { x, y } = stereographicProjection(o.trend, o.plunge, R);
-    // convert trend-plunge → projection
 
     const X = centerX + x;
     const Y = centerY - y;
@@ -31,7 +30,7 @@ export function plotPlane2D(canvas, strike, dip, dipDirection, color) {
   ctx.stroke();
 }
 
-export function plotLine2D(canvas, trend, plunge, color) {
+export function plotLine2D(canvas, trend, plunge, color="cyan") {
   const ctx = canvas.getContext("2d");
 
   const centerX = canvas.width / 2;

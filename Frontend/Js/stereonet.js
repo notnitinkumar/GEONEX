@@ -30,6 +30,47 @@ lineBtn.addEventListener("click", function () {
   document.getElementById("dipDirection").style.cursor = "not-allowed";
 });
 
+// -------------------Menu Bar----------------------
+
+const items = document.querySelectorAll(".menu-item");
+
+document.addEventListener("DOMContentLoaded", function () {
+   document.querySelectorAll(".dropdown").forEach(d => {
+        d.style.display = "none";
+    });
+});
+
+items.forEach(item => {
+  item.addEventListener("click", function(e) {
+    // Close others
+    document.querySelectorAll(".dropdown").forEach(d => {
+      if (d !== this.querySelector(".dropdown")) {
+        d.style.display = "none";
+      }
+    });
+
+    items.forEach(i => i.classList.remove("activebtn-menu"));
+    this.classList.add("activebtn-menu");
+
+    const dropdown = this.querySelector(".dropdown");
+    dropdown.style.display =
+      dropdown.style.display === "block" ? "none" : "block";
+
+    e.stopPropagation();
+  });
+});
+
+// Close menu when clicking outside
+document.addEventListener("click", () => {
+  document.querySelectorAll(".dropdown").forEach(d => {
+    d.style.display = "none";
+  });
+  items.forEach(i => i.classList.remove("activebtn-menu"));
+});
+
+
+
+
 //----------------------Form data---------------------------
 const form = document.querySelector("#dataForm");
 
@@ -402,7 +443,7 @@ canvas.addEventListener("mousemove", function (event) {
       `Dip : ${res.dip.toFixed(0)}°`;
     
     renderPlot();
-    plotPlane2D(canvas, res.strike, res.dip, "yellow");
+    plotPlane2D(canvas, res.strike, res.dip, "blue");
     
     
   } else {
@@ -439,3 +480,5 @@ canvas.addEventListener("mouseleave", () => {
   isDragging = false;
   renderPlot();
 });
+
+

@@ -6,7 +6,7 @@
     <title>Stereonet Plotter</title>
     <link rel="icon" href="Assets/images/GEONEX Favicon.png" />
     <link rel="stylesheet" href="CSS/stereonet.css" />
-    <link rel="stylesheet" href="CSS/utility.css">
+    <link rel="stylesheet" href="CSS/utility.css" />
   </head>
   <body>
     <header>
@@ -16,46 +16,43 @@
           alt="Logo Image"
           id="geonex-logo"
         /> -->
-         <div class="iitrlogo">
-           <img src="Assets/images/iitroorkee.png" alt="IITR Logo" style="filter: invert(1);">
-           <div class="logotitle">
-             <span>
-               Indian Institute of Technology Roorkee
-              </span>
-              <span>
-                भारतीय प्रौद्योगिकी संस्थान रुड़की
-              </span>
-            </div>
+        <div class="iitrlogo">
+          <img
+            src="Assets/images/iitroorkee.png"
+            alt="IITR Logo"
+            style="filter: invert(1)"
+          />
+          <div class="logotitle">
+            <span> Indian Institute of Technology Roorkee </span>
+            <span> भारतीय प्रौद्योगिकी संस्थान रुड़की </span>
           </div>
-
+        </div>
       </div>
       <nav class="Navbar" id="navbar">
         <ul>
           <li class="navbuttons"><a href="index.html">Home</a></li>
           <li class="navbuttons"><a href="learning.html">Learning</a></li>
-          <li class="navbuttons disabled-link"><a href="YourWork.html">Your Work</a></li>
+          <li class="navbuttons disabled-link">
+            <a href="YourWork.html">Your Work</a>
+          </li>
         </ul>
       </nav>
       <!-- <div class="loginbtn">Login
         <img src="Assets/icons/login.png" alt="Login" id="loginbtnsymbol" />
       </div> -->
       <div class="logo logoRight">
-         <!-- Sign In/ Sign Up Add here later -->
+        <!-- Sign In/ Sign Up Add here later -->
         <!-- <div class="login">
           <img src="Assets/icons/Profile.png" alt="Profile" id="loginbtnsymbol">
           Guest Mode
         </div> -->
         <div class="ESClogo">
           <div class="logotitle">
-            <span>
-              Department of Earth Sciences
-             </span>
-             <span>
-               भू विज्ञान विभाग
-             </span>
-           </div>
-           <img src="Assets/images/esc logo.png" alt="ESC Logo" >
+            <span> Department of Earth Sciences </span>
+            <span> भू विज्ञान विभाग </span>
           </div>
+          <img src="Assets/images/esc logo.png" alt="ESC Logo" />
+        </div>
         <div
           class="hamburger"
           id="hamburger"
@@ -72,11 +69,47 @@
       </div>
     </header>
     <main>
-      <section>
-        <button class="backbtn">
-            <img src="Assets/icons/leftarrow.svg" alt="Back to Home">
-          Back to Home
-        </button>
+      <section class="menubar">
+        <div class="pbackbtn">
+          <button class="backbtn">
+            <img src="Assets/icons/leftarrow.svg" alt="Back to Home" />
+            Back to Home
+          </button>
+        </div>
+        <div class="utilities">
+          <nav class="utilities-nav" id="">
+            <ul>
+              <li class="menu-item">
+                Calculations
+                <ul class="dropdown">
+                  <li>Plane from Poles</li>
+                  <li>Pole from Plane</li>
+                </ul>
+              </li>
+              <li class="menu-item">
+                Data
+                <ul class="dropdown">
+                  <li>Import Data</li>
+                  <li>Export Data</li>
+                </ul>
+              </li>
+              <li class="menu-item">
+                Plot
+                <ul class="dropdown">
+                  <li>2D Plot</li>
+                  <li>3D Plot</li>
+                </ul>
+              </li>
+              <li class="menu-item">
+                View
+                <ul class="dropdown">
+                  <li>Settings</li>
+                  <li>Help</li>
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </section>
       <section class="Working">
         <div class="leftsection">
@@ -99,21 +132,21 @@
                 required
               />
 
-                <label for="dip" id="angular">Dip (0–90°)</label>
-                <input
+              <label for="dip" id="angular">Dip (0–90°)</label>
+              <input
                 id="dip"
                 type="number"
                 placeholder="e.g., 60"
                 name="dip"
                 required
-                />
-                <label for="Dip Direction">Dip Direction</label>
-                <select id="dipDirection" name="dipDirection" >
-                  <option value="North">North</option>
-                  <option value="South">South</option>
-                  <option value="East">East</option>
-                  <option value="West">West</option>
-                </select>
+              />
+              <label for="Dip Direction">Dip Direction</label>
+              <select id="dipDirection" name="dipDirection">
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+              </select>
 
               <label for="label">Label</label>
               <input
@@ -144,8 +177,13 @@
           <!-- Data Import Panel -->
           <div class="dataimport panel">
             <h2>Import Data</h2>
-              <!-- Hidden file input for custom upload button -->
-            <input type="file" id="fileInput" accept=".csv,.txt,.xlsx,.svg" style="display:none"> 
+            <!-- Hidden file input for custom upload button -->
+            <input
+              type="file"
+              id="fileInput"
+              accept=".csv,.txt,.xlsx,.svg"
+              style="display: none"
+            />
             <button class="add-btn upload" id="importbtn">
               <img src="Assets/icons/upload.png" alt="Upload icon" />Upload
               XLSX/SVG
@@ -184,8 +222,8 @@
                 <canvas id="stereonetCanvas" width="600" height="600"></canvas>
               </div>
               <div class="point">
-                  <span><p>Trend :</p></span>
-                  <span><p>Plunge :</p></span>
+                <span><p>Trend :</p></span>
+                <span><p>Plunge :</p></span>
               </div>
             </div>
           </div>
@@ -212,7 +250,8 @@
           <img
             src="Assets/icons/help.png"
             alt="feedback"
-            class="feedbackimg" id="Feedback-Form"
+            class="feedbackimg"
+            id="Feedback-Form"
           />
         </div>
       </section>

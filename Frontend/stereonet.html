@@ -89,8 +89,8 @@
               <li class="menu-item">
                 Data
                 <ul class="dropdown">
-                  <li>Import Data</li>
-                  <li>Export Data</li>
+                  <li class="import-btn">Import Data</li>
+                  <li id="exportCSV">Export Data</li>
                 </ul>
               </li>
               <li class="menu-item">
@@ -184,7 +184,7 @@
               accept=".csv,.txt,.xlsx,.svg"
               style="display: none"
             />
-            <button class="add-btn upload" id="importbtn">
+            <button class="add-btn upload import-btn" id="importbtn">
               <img src="Assets/icons/upload.png" alt="Upload icon" />Upload
               XLSX/SVG
             </button>

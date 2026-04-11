@@ -318,12 +318,14 @@ function renderPlot() {
   });
 }
 
-// -------------------Import data from file--------------------
-const importBtn = document.querySelector("#importbtn");
+// ------------------- Import data from file --------------------
+const importBtn = document.querySelectorAll(".import-btn");
 const fileInput = document.querySelector("#fileInput");
 
-importBtn.addEventListener("click", () => {
-  fileInput.click();
+importBtn.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    fileInput.click();
+  });
 });
 
 fileInput.addEventListener("change", function () {
@@ -484,6 +486,39 @@ function invertforpdf(canvas) {
   }
 
   ctx.putImageData(imageData, 0, 0);
+}
+
+document.getElementById("exportCSV").addEventListener("click", exportDataToCSV);
+function exportDataToCSV() {
+  if (dataset.length === 0) {
+    alert("No data to export");
+    return;
+  }
+  const headers = ["Type", "Strike/Trend", "Dip/Plunge", "Dip Direction", "Label", "Color"];
+
+  const rows = dataset.map(p => [
+    p.type,
+    p.strike,
+    p.dip,
+    p.dipDirection || "",
+    p.label || "",
+    p.color || ""
+  ]);
+
+  const csvContent = [
+    headers.join(","),
+    ...rows.map(row => row.join(","))
+  ].join("\n");
+
+  const blob = new Blob([csvContent], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "geonex_data.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
 }
 
 // -------------------Mouse hover for trend/plunge and strike/dip--------------------

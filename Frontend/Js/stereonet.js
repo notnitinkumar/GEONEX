@@ -1,8 +1,4 @@
-import {
-  plotPlane2D,
-  plotLine2D,
-  drawStereonet2d,
-} from "./plot.js";
+import { plotPlane2D, plotLine2D, drawStereonet2d } from "./plot.js";
 let dataset = [];
 const planeBtn = document.querySelector("#Plane-plot");
 const lineBtn = document.querySelector("#Line-plot");
@@ -68,7 +64,14 @@ document.addEventListener("click", () => {
 });
 
 // ------------------- Data management ----------------------
-function AddToDataset({ type, strike, dip, dipDirection = "N", label = "N/A", color = "yellow" }) {
+function AddToDataset({
+  type,
+  strike,
+  dip,
+  dipDirection = "N",
+  label = "N/A",
+  color = "yellow",
+}) {
   const id = Date.now() + Math.random();
 
   const dataPoint = {
@@ -89,9 +92,15 @@ function removeFromDataset(id) {
   dataset = dataset.filter((p) => p.id !== id);
 }
 
-
 // ---------------------- Table Data Entry -------------------------
-function AddToTable({ id, type, strike, dip, dipDirection = "N", label = "N/A" }) {
+function AddToTable({
+  id,
+  type,
+  strike,
+  dip,
+  dipDirection = "N",
+  label = "N/A",
+}) {
   const tableBody = document.querySelector("#plotTable tbody");
 
   const row = document.createElement("tr");
@@ -148,15 +157,15 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
 
           if (isNaN(trend) || isNaN(plunge)) return;
 
-          const strike = (trend - 90 + 360) % 360;
+          const strike = (trend + 90) % 360;
           const dip = 90 - plunge;
           const dipDirection = trend;
 
           const dataPoint = AddToDataset({
             type: "plane",
-            strike,
-            dip,
-            dipDirection,
+            strike : strike,
+            dip: dip,
+            dipDirection:"N",
             label: "Derived",
             color: p.color,
           });
@@ -166,7 +175,7 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
       });
 
       renderPlot();
-    } else if (text === "Pole from Planes") {
+    } else if (text === "Plane to Pole") {
       dataset.forEach((p) => {
         if (p.type === "plane" && p.label !== "Derived") {
           const strike = p.strike;
@@ -177,7 +186,7 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
 
           let trend;
           if (dir === "South" || dir === "West") {
-            trend = (strike +270) % 360;
+            trend = (strike + 270) % 360;
           } else {
             trend = (strike + 90) % 360;
           }
@@ -198,14 +207,11 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
 
       renderPlot();
     }
-    document
-      .querySelectorAll(".dropdown")
-      .forEach((d) => (d.style.display = "none"));
-    items.forEach((i) => i.classList.remove("activebtn-menu"));
+
+document.querySelectorAll(".dropdown").forEach((d) => (d.style.display = "none"));
+  items.forEach((i) => i.classList.remove("activebtn-menu"));
   });
 });
-
-
 
 //----------------------Form data---------------------------
 const form = document.querySelector("#dataForm");
@@ -230,7 +236,7 @@ form.addEventListener("submit", function (e) {
     const id = Date.now();
     const isPlane = planeBtn.classList.contains("activebtn-datatype");
 
-    const dataPoint = {
+    const dataPoint = AddToDataset({
       id,
       type: isPlane ? "plane" : "line",
       strike: a,
@@ -238,9 +244,7 @@ form.addEventListener("submit", function (e) {
       dipDirection: dipDirection,
       label,
       color,
-    };
-
-    dataset.push(dataPoint);
+    });
 
     if (canvas) {
       if (isPlane) {
@@ -252,46 +256,8 @@ form.addEventListener("submit", function (e) {
       }
     }
 
-    // Insert row into Saved Plots table
-    const tableBody = document.querySelector("#plotTable tbody");
-
-    const row = document.createElement("tr");
-
-    row.dataset.id = id; // store id in row
-    const typeCell = document.createElement("td");
-    const labelCell = document.createElement("td");
-    const paramsCell = document.createElement("td");
-    const actionCell = document.createElement("td");
-
-    // Determine plot type
-    const plotType = isPlane ? "Plane" : "Line";
-    labelCell.textContent = label || "N/A";
-    typeCell.textContent = plotType;
-    paramsCell.textContent = `${strike}, ${dip} (${dipDirection[0]})`;
-
-    const deleteBtn = document.createElement("img");
-    deleteBtn.src = "Assets/icons/dustbin.png";
-    deleteBtn.alt = "Delete";
-    deleteBtn.classList.add("dustbin");
-    deleteBtn.addEventListener("click", function () {
-      const row = this.closest("tr");
-      const id = Number(row.dataset.id);
-      // remove from dataset
-      removeFromDataset(id);
-      // remove row from table
-      row.remove();
-      // redraw everything
-      renderPlot();
-    });
-
-    actionCell.appendChild(deleteBtn);
-
-    row.appendChild(typeCell);
-    row.appendChild(paramsCell);
-    row.appendChild(labelCell);
-    row.appendChild(actionCell);
-
-    tableBody.appendChild(row);
+    AddToTable(dataPoint);
+    renderPlot();
 
     //Reset form after submit
     form.reset();
@@ -383,7 +349,6 @@ function parseImportedData(data) {
   renderPlot();
 }
 
-
 function resizeCanvas(canvas) {
   const rect = canvas.getBoundingClientRect();
 
@@ -409,7 +374,6 @@ window.addEventListener("resize", () => {
   renderPlot(); // redraw everything
 });
 
-
 // ------------------- Reset Button --------------------
 const resetBtn = document.querySelector("#resetBtn");
 
@@ -419,7 +383,6 @@ resetBtn.addEventListener("click", function () {
   tableBody.innerHTML = "";
   renderPlot();
 });
-
 
 //---------------------Export setting-----------------------
 const exportPNGBtn = document.querySelector("#exportPNG");
@@ -494,20 +457,27 @@ function exportDataToCSV() {
     alert("No data to export");
     return;
   }
-  const headers = ["Type", "Strike/Trend", "Dip/Plunge", "Dip Direction", "Label", "Color"];
+  const headers = [
+    "Type",
+    "Strike/Trend",
+    "Dip/Plunge",
+    "Dip Direction",
+    "Label",
+    "Color",
+  ];
 
-  const rows = dataset.map(p => [
+  const rows = dataset.map((p) => [
     p.type,
     p.strike,
     p.dip,
     p.dipDirection || "",
     p.label || "",
-    p.color || ""
+    p.color || "",
   ]);
 
   const csvContent = [
     headers.join(","),
-    ...rows.map(row => row.join(","))
+    ...rows.map((row) => row.join(",")),
   ].join("\n");
 
   const blob = new Blob([csvContent], { type: "text/csv" });

@@ -82,8 +82,8 @@
               <li class="menu-item">
                 Calculations
                 <ul class="dropdown">
-                  <li>Plane from Poles</li>
-                  <li>Pole from Plane</li>
+                  <li>Plane to Pole</li>
+                  <li>Pole to Plane</li>
                 </ul>
               </li>
               <li class="menu-item">
@@ -212,9 +212,15 @@
                 </div> -->
 
                 <div class="export-buttons">
-                  <button id="exportPNG">PNG</button>
-                  <button id="exportJPG">JPG</button>
-                  <button id="exportPDF">PDF</button>
+                  <button id="resetBtn">Reset</button>
+                  <button id="export" class="menu-item">Export
+                    <ul class="dropdown export-dropdown">
+                  <li id="exportJPG">JPG</li>
+                  <li id="exportPNG">PNG</li>
+                  <li id="exportPDF">PDF</li>
+                </ul>
+                  </button>
+                  <!-- <button id="exportPDF">PDF</button> -->
                 </div>
               </div>
 

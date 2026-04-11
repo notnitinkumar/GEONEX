@@ -41,7 +41,7 @@ export function generateGreatCircle(strike, dip, dipDirection, steps = 360) {
 
     // Use dip direction to select correct hemisphere
     if (dipDirection !== undefined) {
-      if (dipDirection === "South" || dipDirection === "West") {
+      if (dipDirection === "North" || dipDirection === "East") {
         trend = normalizeAngle(trend + 180);
       }
     }

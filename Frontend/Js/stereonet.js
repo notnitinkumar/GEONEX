@@ -1,11 +1,12 @@
-import { plotPlane2D, plotLine2D } from "./plot.js";
-import { drawStereonet2d } from "./plot.js";
+import {
+  plotPlane2D,
+  plotLine2D,
+  drawStereonet2d,
+} from "./plot.js";
 let dataset = [];
-
 const planeBtn = document.querySelector("#Plane-plot");
 const lineBtn = document.querySelector("#Line-plot");
 planeBtn.addEventListener("click", function () {
-
   planeBtn.classList.add("activebtn-datatype");
   planeBtn.classList.remove("deactivebtn-datatype");
   lineBtn.classList.add("deactivebtn-datatype");
@@ -18,7 +19,6 @@ planeBtn.addEventListener("click", function () {
 });
 
 lineBtn.addEventListener("click", function () {
-
   lineBtn.classList.add("activebtn-datatype");
   lineBtn.classList.remove("deactivebtn-datatype");
   planeBtn.classList.add("deactivebtn-datatype");
@@ -30,26 +30,26 @@ lineBtn.addEventListener("click", function () {
   document.getElementById("dipDirection").style.cursor = "not-allowed";
 });
 
-// -------------------Menu Bar----------------------
+// ------------------- Menu Bar ----------------------
 
 const items = document.querySelectorAll(".menu-item");
 
 document.addEventListener("DOMContentLoaded", function () {
-   document.querySelectorAll(".dropdown").forEach(d => {
-        d.style.display = "none";
-    });
+  document.querySelectorAll(".dropdown").forEach((d) => {
+    d.style.display = "none";
+  });
 });
 
-items.forEach(item => {
-  item.addEventListener("click", function(e) {
+items.forEach((item) => {
+  item.addEventListener("click", function (e) {
     // Close others
-    document.querySelectorAll(".dropdown").forEach(d => {
+    document.querySelectorAll(".dropdown").forEach((d) => {
       if (d !== this.querySelector(".dropdown")) {
         d.style.display = "none";
       }
     });
 
-    items.forEach(i => i.classList.remove("activebtn-menu"));
+    items.forEach((i) => i.classList.remove("activebtn-menu"));
     this.classList.add("activebtn-menu");
 
     const dropdown = this.querySelector(".dropdown");
@@ -59,15 +59,151 @@ items.forEach(item => {
     e.stopPropagation();
   });
 });
-
 // Close menu when clicking outside
 document.addEventListener("click", () => {
-  document.querySelectorAll(".dropdown").forEach(d => {
+  document.querySelectorAll(".dropdown").forEach((d) => {
     d.style.display = "none";
   });
-  items.forEach(i => i.classList.remove("activebtn-menu"));
+  items.forEach((i) => i.classList.remove("activebtn-menu"));
 });
 
+// ------------------- Data management ----------------------
+function AddToDataset({ type, strike, dip, dipDirection = "N", label = "N/A", color = "yellow" }) {
+  const id = Date.now() + Math.random();
+
+  const dataPoint = {
+    id,
+    type,
+    strike,
+    dip,
+    dipDirection,
+    label,
+    color,
+  };
+
+  dataset.push(dataPoint);
+  return dataPoint;
+}
+
+function removeFromDataset(id) {
+  dataset = dataset.filter((p) => p.id !== id);
+}
+
+
+// ---------------------- Table Data Entry -------------------------
+function AddToTable({ id, type, strike, dip, dipDirection = "N", label = "N/A" }) {
+  const tableBody = document.querySelector("#plotTable tbody");
+
+  const row = document.createElement("tr");
+  row.dataset.id = id;
+
+  const typeCell = document.createElement("td");
+  const paramsCell = document.createElement("td");
+  const labelCell = document.createElement("td");
+  const actionCell = document.createElement("td");
+
+  typeCell.textContent = type === "plane" ? "Plane" : "Line";
+
+  if (type === "plane") {
+    paramsCell.textContent = `${strike.toFixed(0)}, ${dip.toFixed(0)} (${dipDirection[0]})`;
+  } else {
+    paramsCell.textContent = `${strike.toFixed(0)}, ${dip.toFixed(0)}`;
+  }
+
+  labelCell.textContent = label;
+
+  const deleteBtn = document.createElement("img");
+  deleteBtn.src = "Assets/icons/dustbin.png";
+  deleteBtn.classList.add("dustbin");
+
+  deleteBtn.addEventListener("click", () => {
+    const id = Number(row.dataset.id);
+    removeFromDataset(id);
+    row.remove();
+    renderPlot();
+  });
+
+  actionCell.appendChild(deleteBtn);
+
+  row.appendChild(typeCell);
+  row.appendChild(paramsCell);
+  row.appendChild(labelCell);
+  row.appendChild(actionCell);
+
+  tableBody.appendChild(row);
+}
+
+document.querySelectorAll(".dropdown li").forEach((opt) => {
+  opt.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    const canvas = document.getElementById("stereonetCanvas");
+    const text = opt.innerText.trim();
+
+    if (text === "Pole to Plane") {
+      dataset.forEach((p) => {
+        if (p.type === "line") {
+          const trend = p.strike;
+          const plunge = p.dip;
+
+          if (isNaN(trend) || isNaN(plunge)) return;
+
+          const strike = (trend - 90 + 360) % 360;
+          const dip = 90 - plunge;
+          const dipDirection = trend;
+
+          const dataPoint = AddToDataset({
+            type: "plane",
+            strike,
+            dip,
+            dipDirection,
+            label: "Derived",
+            color: p.color,
+          });
+
+          AddToTable(dataPoint);
+        }
+      });
+
+      renderPlot();
+    } else if (text === "Pole from Planes") {
+      dataset.forEach((p) => {
+        if (p.type === "plane" && p.label !== "Derived") {
+          const strike = p.strike;
+          const dip = p.dip;
+          const dir = p.dipDirection;
+
+          if (isNaN(strike) || isNaN(dip)) return;
+
+          let trend;
+          if (dir === "South" || dir === "West") {
+            trend = (strike +270) % 360;
+          } else {
+            trend = (strike + 90) % 360;
+          }
+
+          const plunge = 90 - dip;
+
+          const dataPoint = AddToDataset({
+            type: "line",
+            strike: trend,
+            dip: plunge,
+            label: "Derived",
+            color: p.color,
+          });
+
+          AddToTable(dataPoint);
+        }
+      });
+
+      renderPlot();
+    }
+    document
+      .querySelectorAll(".dropdown")
+      .forEach((d) => (d.style.display = "none"));
+    items.forEach((i) => i.classList.remove("activebtn-menu"));
+  });
+});
 
 
 
@@ -108,10 +244,10 @@ form.addEventListener("submit", function (e) {
 
     if (canvas) {
       if (isPlane) {
-        // Plane 
+        // Plane
         plotPlane2D(canvas, a, b, dipDirection, color);
       } else {
-        // Line 
+        // Line
         plotLine2D(canvas, a, b, color);
       }
     }
@@ -121,16 +257,14 @@ form.addEventListener("submit", function (e) {
 
     const row = document.createElement("tr");
 
-    row.dataset.id = id; // store id in row 
+    row.dataset.id = id; // store id in row
     const typeCell = document.createElement("td");
     const labelCell = document.createElement("td");
     const paramsCell = document.createElement("td");
     const actionCell = document.createElement("td");
 
     // Determine plot type
-    const plotType = isPlane
-      ? "Plane"
-      : "Line";
+    const plotType = isPlane ? "Plane" : "Line";
     labelCell.textContent = label || "N/A";
     typeCell.textContent = plotType;
     paramsCell.textContent = `${strike}, ${dip} (${dipDirection[0]})`;
@@ -143,7 +277,7 @@ form.addEventListener("submit", function (e) {
       const row = this.closest("tr");
       const id = Number(row.dataset.id);
       // remove from dataset
-      dataset = dataset.filter((p) => p.id !== id);
+      removeFromDataset(id);
       // remove row from table
       row.remove();
       // redraw everything
@@ -177,7 +311,7 @@ function renderPlot() {
   // redraw all data
   dataset.forEach((p) => {
     if (p.type === "plane") {
-      plotPlane2D(canvas, p.strike, p.dip,p.dipDirection, p.color);
+      plotPlane2D(canvas, p.strike, p.dip, p.dipDirection, p.color);
     } else {
       plotLine2D(canvas, p.strike, p.dip, p.color);
     }
@@ -219,69 +353,34 @@ function parseImportedData(data) {
     const [a, b, label, color] = line.split(",");
 
     if (isPlane) {
-      addRowToTable("Plane", a, b, label, color);
+      const dataPoint = AddToDataset({
+        type: "plane",
+        strike: parseFloat(a),
+        dip: parseFloat(b),
+        dipDirection: "N",
+        label,
+        color: color || "red",
+      });
+
+      AddToTable(dataPoint);
     }
 
     if (isLine) {
-      addRowToTable("Line", a, b, label, color);
+      const dataPoint = AddToDataset({
+        type: "line",
+        strike: parseFloat(a),
+        dip: parseFloat(b),
+        label,
+        color: color || "red",
+      });
+
+      AddToTable(dataPoint);
     }
   });
 
   renderPlot();
 }
 
-function addRowToTable(type, a, b, label, color) {
-  const tableBody = document.querySelector("#plotTable tbody");
-
-  const row = document.createElement("tr");
-  const id = Date.now() + Math.random();
-  row.dataset.id = id;
-
-  const typeCell = document.createElement("td");
-  const paramsCell = document.createElement("td");
-  const labelCell = document.createElement("td");
-  const actionCell = document.createElement("td");
-
-  typeCell.textContent = type;
-
-  if (type === "Plane") {
-    paramsCell.textContent = `${a}, ${b}`; // strike,dip
-  } else {
-    paramsCell.textContent = `${a}, ${b}`; // trend,plunge
-  }
-
-  labelCell.textContent = label || "N/A";
-
-  dataset.push({
-    id,
-    type: type.toLowerCase(),
-    strike: parseFloat(a),
-    dip: parseFloat(b),
-    dipDirection: "N", // default value for imported data
-    label,
-    color: color || "red",
-  });
-
-  const deleteBtn = document.createElement("img");
-  deleteBtn.src = "Assets/icons/dustbin.png";
-  deleteBtn.classList.add("dustbin");
-
-  deleteBtn.addEventListener("click", () => {
-    const id = Number(row.dataset.id);
-    dataset = dataset.filter((p) => p.id !== id);
-    row.remove();
-    renderPlot();
-  });
-
-  actionCell.appendChild(deleteBtn);
-
-  row.appendChild(typeCell);
-  row.appendChild(paramsCell);
-  row.appendChild(labelCell);
-  row.appendChild(actionCell);
-
-  tableBody.appendChild(row);
-}
 
 function resizeCanvas(canvas) {
   const rect = canvas.getBoundingClientRect();
@@ -307,6 +406,18 @@ window.addEventListener("resize", () => {
   resizeCanvas(canvas);
   renderPlot(); // redraw everything
 });
+
+
+// ------------------- Reset Button --------------------
+const resetBtn = document.querySelector("#resetBtn");
+
+resetBtn.addEventListener("click", function () {
+  dataset = [];
+  const tableBody = document.querySelector("#plotTable tbody");
+  tableBody.innerHTML = "";
+  renderPlot();
+});
+
 
 //---------------------Export setting-----------------------
 const exportPNGBtn = document.querySelector("#exportPNG");
@@ -375,8 +486,6 @@ function invertforpdf(canvas) {
   ctx.putImageData(imageData, 0, 0);
 }
 
-
-
 // -------------------Mouse hover for trend/plunge and strike/dip--------------------
 let isDragging = false;
 
@@ -441,11 +550,9 @@ canvas.addEventListener("mousemove", function (event) {
       `Strike : ${res.strike.toFixed(0)}°`;
     document.querySelector(".point span:nth-child(2) p").textContent =
       `Dip : ${res.dip.toFixed(0)}°`;
-    
+
     renderPlot();
-    plotPlane2D(canvas, res.strike, res.dip, "blue");
-    
-    
+    plotPlane2D(canvas, res.strike, res.dip, undefined, "blue");
   } else {
     const res = linedata(dx, dy, R);
 
@@ -480,5 +587,3 @@ canvas.addEventListener("mouseleave", () => {
   isDragging = false;
   renderPlot();
 });
-
-

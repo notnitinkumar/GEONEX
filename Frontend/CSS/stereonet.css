@@ -75,7 +75,11 @@ h5 {
   padding: 10px 15px;
   white-space: nowrap;
 }
-
+.export-dropdown {
+  background-color: white;
+  color: black;
+  min-width: 70px;
+}
 .Working {
   display: flex;
   justify-content: space-between;

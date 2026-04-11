@@ -47,7 +47,6 @@ export function plotLine2D(canvas, trend, plunge, color="cyan") {
   ctx.fill();
 }
 
-
 // ---------------- Stereonet background grid -------------------
 export function drawStereonet2d(canvas) {
   const ctx = canvas.getContext("2d");
@@ -57,7 +56,7 @@ export function drawStereonet2d(canvas) {
 
   const R = (canvas.height / 2) * 0.9;
   ctx.strokeStyle = "white";
-  ctx.lineWidth = 1.5;
+  ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.arc(centerX, centerY, R, 0, 2 * Math.PI);
   ctx.stroke();

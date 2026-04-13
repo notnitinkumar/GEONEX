@@ -51,3 +51,36 @@ export function generateGreatCircle(strike, dip, dipDirection, steps = 360) {
 
   return points;
 }
+
+// ----------------- Mean Vector Calculation -----------------
+export function calculateMeanVector(trends, plunges) {
+  const n = trends.length;
+  let sumX = 0,
+      sumY = 0,
+      sumZ = 0;
+
+  for (let i = 0; i < n; i++) {
+    let trend = trends[i];
+    let plunge = plunges[i];
+
+    // Ensure lower hemisphere
+    if (plunge < 0) {
+      plunge = -plunge;
+      trend = normalizeAngle(trend + 180);
+    }
+
+    const trendRad = degToRad(trend);
+    const plungeRad = degToRad(plunge);
+
+    sumX += Math.cos(plungeRad) * Math.cos(trendRad);
+    sumY += Math.cos(plungeRad) * Math.sin(trendRad);
+    sumZ += Math.sin(plungeRad);
+  }
+
+  const R = Math.sqrt(sumX * sumX + sumY * sumY + sumZ * sumZ);
+
+  const meanTrend = normalizeAngle(radToDeg(Math.atan2(sumY, sumX)));
+  const meanPlunge = radToDeg(Math.asin(sumZ / R));
+
+  return { trend: meanTrend, plunge: meanPlunge };
+}

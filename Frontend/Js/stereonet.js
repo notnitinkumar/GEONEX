@@ -1,4 +1,5 @@
-import { plotPlane2D, plotLine2D, drawStereonet2d } from "./plot.js";
+import { plotPlane2D, plotLine2D, drawStereonet2d, drawTriangleMarker } from "./plot.js";
+import { calculateMeanVector } from "./stereonetcalc.js";
 let dataset = [];
 const planeBtn = document.querySelector("#Plane-plot");
 const lineBtn = document.querySelector("#Line-plot");
@@ -163,9 +164,9 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
 
           const dataPoint = AddToDataset({
             type: "plane",
-            strike : strike,
+            strike: strike,
             dip: dip,
-            dipDirection:"N",
+            dipDirection: "N",
             label: "Derived",
             color: p.color,
           });
@@ -208,8 +209,10 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
       renderPlot();
     }
 
-document.querySelectorAll(".dropdown").forEach((d) => (d.style.display = "none"));
-  items.forEach((i) => i.classList.remove("activebtn-menu"));
+    document
+      .querySelectorAll(".dropdown")
+      .forEach((d) => (d.style.display = "none"));
+    items.forEach((i) => i.classList.remove("activebtn-menu"));
   });
 });
 
@@ -279,7 +282,12 @@ function renderPlot() {
     if (p.type === "plane") {
       plotPlane2D(canvas, p.strike, p.dip, p.dipDirection, p.color);
     } else {
+      if (p.label === "Mean Vector") {
+        drawTriangleMarker(canvas, p.strike, p.dip, p.color);
+      }
+      else
       plotLine2D(canvas, p.strike, p.dip, p.color);
+
     }
   });
 }
@@ -318,15 +326,25 @@ function parseImportedData(data) {
   const isLine = header.includes("trend") && header.includes("plunge");
 
   lines.forEach((line) => {
-    const [a, b, label, color] = line.split(",");
+    if (!line.trim()) return; // skip empty lines
+
+    const [a, b, label, color] = line.split(",").map((v) => v.trim());
+
+    const aNum = parseFloat(a);
+    const bNum = parseFloat(b);
+
+    if (isNaN(aNum) || isNaN(bNum)) {
+      console.warn("Invalid row skipped:", line);
+      return;
+    }
 
     if (isPlane) {
       const dataPoint = AddToDataset({
         type: "plane",
-        strike: parseFloat(a),
-        dip: parseFloat(b),
+        strike: aNum,
+        dip: bNum,
         dipDirection: "N",
-        label,
+        label: label || "N/A",
         color: color || "red",
       });
 
@@ -336,9 +354,9 @@ function parseImportedData(data) {
     if (isLine) {
       const dataPoint = AddToDataset({
         type: "line",
-        strike: parseFloat(a),
-        dip: parseFloat(b),
-        label,
+        strike: aNum,
+        dip: bNum,
+        label: label || "N/A",
         color: color || "red",
       });
 
@@ -591,4 +609,61 @@ canvas.addEventListener("mouseup", () => {
 canvas.addEventListener("mouseleave", () => {
   isDragging = false;
   renderPlot();
+});
+
+const MeanVector = document.getElementById("MeanVector");
+MeanVector.addEventListener("click", () => {
+  let trends = [];
+  let plunges = [];
+  dataset.forEach((p) => {
+    if (p.type === "plane") {
+      const strike = p.strike;
+      const dip = p.dip;
+      const dir = p.dipDirection;
+
+      let trend;
+      if (dir === "South" || dir === "West") {
+        trend = (strike + 270) % 360;
+      } else {
+        trend = (strike + 90) % 360;
+      }
+      const plunge = 90 - dip;
+
+      trends.push(trend);
+      plunges.push(plunge);
+    }
+
+    if (p.type === "line") {
+      trends.push(p.strike);
+      plunges.push(p.dip);
+    }
+  });
+
+  if (trends.length === 0) {
+    alert("No data available");
+    return;
+  }
+
+  const meanVector = calculateMeanVector(trends, plunges);
+
+  const dataPoint = AddToDataset({
+    type: "line",
+    strike: meanVector.trend,
+    dip: meanVector.plunge,
+    label: "Mean Vector",
+    color: "white",
+  });
+
+  AddToTable(dataPoint);
+  renderPlot();
+});
+
+const RoseDiagrams = document.getElementById("RoseDiagrams");
+RoseDiagrams.addEventListener("click", () => {
+  alert("Rose Diagrams functionality is under development. Stay tuned!");
+});
+
+const ContourPlots = document.getElementById("ContourPlots");
+ContourPlots.addEventListener("click", () => {
+  alert("Contour Plots functionality is under development. Stay tuned!");
 });

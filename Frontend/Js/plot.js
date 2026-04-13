@@ -108,3 +108,33 @@ export function drawStereonet2d(canvas) {
   ctx.fillText("S", centerX, centerY + R + offset);
   ctx.fillText("W", centerX - R - offset, centerY);
 }
+
+
+export function drawTriangleMarker(canvas, trend, plunge, color) {
+  const ctx = canvas.getContext("2d");
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  const R = (canvas.height / 2) * 0.9;
+
+  const trendRad = (trend * Math.PI) / 180;
+  const r = (1 - plunge / 90) * R;
+
+  const x = cx + r * Math.sin(trendRad);
+  const y = cy - r * Math.cos(trendRad);
+
+  const size = 6;
+
+  ctx.beginPath();
+  ctx.moveTo(x, y - size);
+  ctx.lineTo(x - size, y + size);
+  ctx.lineTo(x + size, y + size);
+  ctx.closePath();
+
+  ctx.fillStyle = color || "white";
+  ctx.fill();
+
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}

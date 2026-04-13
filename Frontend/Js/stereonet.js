@@ -1,4 +1,10 @@
-import { plotPlane2D, plotLine2D, drawStereonet2d, drawTriangleMarker } from "./plot.js";
+import {
+  plotPlane2D,
+  plotLine2D,
+  drawStereonet2d,
+  drawTriangleMarker,
+  drawRoseDiagram,
+} from "./plot.js";
 import { calculateMeanVector } from "./stereonetcalc.js";
 let dataset = [];
 const planeBtn = document.querySelector("#Plane-plot");
@@ -62,6 +68,32 @@ document.addEventListener("click", () => {
     d.style.display = "none";
   });
   items.forEach((i) => i.classList.remove("activebtn-menu"));
+});
+
+const screenToggle = document.querySelector(".screentoggle");
+const fullscreenBtn = document.getElementById("fullscreenBtn");
+screenToggle.addEventListener("click", () => {
+  const elem = document.documentElement;
+
+  if (!document.fullscreenElement) {
+    elem.requestFullscreen().catch((err) => {
+      alert(`Error attempting to enable full-screen mode: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
+});
+
+document.addEventListener("fullscreenchange", () => {
+  const header = document.querySelector("header");
+
+  if (document.fullscreenElement) {
+    if (header) header.style.display = "none";
+    fullscreenBtn.src = "Assets/icons/minimize-screen.svg";
+  } else {
+    if (header) header.style.display = "";
+    fullscreenBtn.src = "Assets/icons/maximize-screen.png";
+  }
 });
 
 // ------------------- Data management ----------------------
@@ -284,10 +316,7 @@ function renderPlot() {
     } else {
       if (p.label === "Mean Vector") {
         drawTriangleMarker(canvas, p.strike, p.dip, p.color);
-      }
-      else
-      plotLine2D(canvas, p.strike, p.dip, p.color);
-
+      } else plotLine2D(canvas, p.strike, p.dip, p.color);
     }
   });
 }
@@ -295,9 +324,11 @@ function renderPlot() {
 // ------------------- Import data from file --------------------
 const importBtn = document.querySelectorAll(".import-btn");
 const fileInput = document.querySelector("#fileInput");
+let wasFullscreen = false;
 
 importBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
+    wasFullscreen = !!document.fullscreenElement;
     fileInput.click();
   });
 });
@@ -312,6 +343,9 @@ fileInput.addEventListener("change", function () {
     const content = e.target.result;
 
     parseImportedData(content);
+    if (wasFullscreen && !document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
   };
 
   reader.readAsText(file);
@@ -660,7 +694,7 @@ MeanVector.addEventListener("click", () => {
 
 const RoseDiagrams = document.getElementById("RoseDiagrams");
 RoseDiagrams.addEventListener("click", () => {
-  alert("Rose Diagrams functionality is under development. Stay tuned!");
+  drawRoseDiagram(canvas, dataset, "line", 30);
 });
 
 const ContourPlots = document.getElementById("ContourPlots");

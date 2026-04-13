@@ -81,6 +81,11 @@ h5 {
   color: black;
   min-width: 70px;
 }
+#fullscreenBtn {
+  width: 13px;
+  /* height: 20px; */
+  filter: invert(100%);
+}
 .Working {
   display: flex;
   justify-content: space-between;

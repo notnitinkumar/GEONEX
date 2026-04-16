@@ -75,6 +75,7 @@ h5 {
   padding: 10px 15px;
   white-space: nowrap;
   font-size: small;
+  cursor: pointer;
 }
 .export-dropdown {
   background-color: white;
@@ -255,7 +256,6 @@ h5 {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #1a1a1a;
   padding: 6px 12px;
   border-radius: 20px;
 }
@@ -263,6 +263,14 @@ h5 {
 .toggle span {
   font-size: 14px;
   color: #ccc;
+}
+.toggle select {
+  background: #111;
+  color: white;
+  border: 1px solid #333;
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .export-buttons button {
@@ -292,7 +300,7 @@ h5 {
 }
 
 canvas {
-  background-color: transparent !important;
+  background-color: transparent ;
   width: 100%;
   max-width: 600px;
   height: auto;

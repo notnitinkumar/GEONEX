@@ -4,6 +4,8 @@ import {
   drawStereonet2d,
   drawTriangleMarker,
   drawRoseDiagram,
+  hoverPlane2D,
+  drawEqualAreaStereonet
 } from "./plot.js";
 import { calculateMeanVector } from "./stereonetcalc.js";
 let dataset = [];
@@ -299,6 +301,12 @@ form.addEventListener("submit", function (e) {
   }
 });
 
+const PlotModeSelect = document.getElementById("Plot Mode");
+PlotModeSelect.addEventListener("change", function () {
+  const mode = this.value;
+
+ renderPlot();
+});
 function renderPlot() {
   const canvas = document.getElementById("stereonetCanvas");
   const ctx = canvas.getContext("2d");
@@ -307,8 +315,12 @@ function renderPlot() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // redraw grid
-  drawStereonet2d(canvas);
-
+  if(PlotModeSelect.value === "Polar Plot") {
+    drawStereonet2d(canvas);
+  }
+  else if (PlotModeSelect.value === "Equal Area") {
+    drawEqualAreaStereonet(canvas);
+  }
   // redraw all data
   dataset.forEach((p) => {
     if (p.type === "plane") {
@@ -354,15 +366,15 @@ fileInput.addEventListener("change", function () {
 function parseImportedData(data) {
   const lines = data.trim().split("\n");
 
-  const header = lines.shift().toLowerCase();
-
-  const isPlane = header.includes("strike") && header.includes("dip");
-  const isLine = header.includes("trend") && header.includes("plunge");
+  // remove header
+  lines.shift();
 
   lines.forEach((line) => {
-    if (!line.trim()) return; // skip empty lines
+    if (!line.trim()) return;
 
-    const [a, b, label, color] = line.split(",").map((v) => v.trim());
+    const [type, a, b, dipDirection, label, color] = line
+      .split(",")
+      .map((v) => v.trim());
 
     const aNum = parseFloat(a);
     const bNum = parseFloat(b);
@@ -372,20 +384,18 @@ function parseImportedData(data) {
       return;
     }
 
-    if (isPlane) {
+    if (type === "plane") {
       const dataPoint = AddToDataset({
         type: "plane",
         strike: aNum,
         dip: bNum,
-        dipDirection: "N",
+        dipDirection: dipDirection || "N",
         label: label || "N/A",
         color: color || "red",
       });
 
       AddToTable(dataPoint);
-    }
-
-    if (isLine) {
+    } else if (type === "line") {
       const dataPoint = AddToDataset({
         type: "line",
         strike: aNum,
@@ -609,7 +619,7 @@ canvas.addEventListener("mousemove", function (event) {
       `Dip : ${res.dip.toFixed(0)}°`;
 
     renderPlot();
-    plotPlane2D(canvas, res.strike, res.dip, undefined, "blue");
+    hoverPlane2D(canvas, res.strike, res.dip, undefined, "cyan");
   } else {
     const res = linedata(dx, dy, R);
 
@@ -644,6 +654,8 @@ canvas.addEventListener("mouseleave", () => {
   isDragging = false;
   renderPlot();
 });
+
+// ------------------- Mean Vector Calculation --------------------
 
 const MeanVector = document.getElementById("MeanVector");
 MeanVector.addEventListener("click", () => {
@@ -692,9 +704,11 @@ MeanVector.addEventListener("click", () => {
   renderPlot();
 });
 
+// ------------------- Rose Diagram and Contour Plots --------------------
+
 const RoseDiagrams = document.getElementById("RoseDiagrams");
 RoseDiagrams.addEventListener("click", () => {
-  drawRoseDiagram(canvas, dataset, "line", 30);
+  drawRoseDiagram(canvas, dataset, "plane", 30);
 });
 
 const ContourPlots = document.getElementById("ContourPlots");

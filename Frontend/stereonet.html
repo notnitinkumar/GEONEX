@@ -101,8 +101,24 @@
                   <li id="MeanVector">Mean Vector</li>
                 </ul>
               </li>
-              <li class="menu-iterm screentoggle" style="display: flex; justify-content: center; align-items: center; gap: 5px; border: 1px solid rgba(255, 255, 255, 0.527); border-radius: 10px; padding: 3px; width: 30px;">
-                <img src="Assets/icons/maximize-screen.png" alt="Maximum Screen" id="fullscreenBtn" />
+              <li
+                class="menu-iterm screentoggle"
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  gap: 5px;
+                  border: 1px solid rgba(255, 255, 255, 0.527);
+                  border-radius: 10px;
+                  padding: 3px;
+                  width: 30px;
+                "
+              >
+                <img
+                  src="Assets/icons/maximize-screen.png"
+                  alt="Maximum Screen"
+                  id="fullscreenBtn"
+                />
               </li>
             </ul>
           </nav>
@@ -199,23 +215,23 @@
               <div class="plot-header">
                 <h2>Stereonet Plot</h2>
 
-                <!-- <div class="toggle">
-                  <span>2D</span>
-                  <label class="switch">
-                    <input type="checkbox" id="plotModeToggle" />
-                    <span class="slider"></span>
-                  </label>
-                  <span>3D</span>
-                </div> -->
+                <div class="toggle">
+                  <label for="Plot Mode">Plot Mode</label>
+                  <select id="Plot Mode" name="Plot Mode">
+                    <option value="Polar Plot">Polar Plot</option>
+                    <option value="Equal Area">Equal Area</option>
+                  </select>
+                </div>
 
                 <div class="export-buttons">
                   <button id="resetBtn">Reset</button>
-                  <button id="export" class="menu-item">Export
+                  <button id="export" class="menu-item">
+                    Export
                     <ul class="dropdown export-dropdown">
-                  <li id="exportJPG">JPG</li>
-                  <li id="exportPNG">PNG</li>
-                  <li id="exportPDF">PDF</li>
-                </ul>
+                      <li id="exportJPG">JPG</li>
+                      <li id="exportPNG">PNG</li>
+                      <li id="exportPDF">PDF</li>
+                    </ul>
                   </button>
                   <!-- <button id="exportPDF">PDF</button> -->
                 </div>
@@ -272,5 +288,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type="module" src="Js/stereonet.js"></script>
     <script type="module" src="Js/script.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
   </body>
 </html>

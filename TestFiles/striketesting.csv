@@ -1,0 +1,20 @@
+Type,Strike/Trend,Dip/Plunge,Dip Direction,Label,Color
+plane,0,80,North,,#ff4444
+plane,0,70,North,,#ff4444
+plane,0,60,North,,#ff4444
+plane,0,50,North,,#ff4444
+plane,0,40,North,,#ff4444
+plane,0,30,North,,#ff4444
+plane,0,20,North,,#ff4444
+plane,0,10,North,,#ff4444
+plane,0,0,North,,#ff4444
+plane,0,80,South,,#ffff00
+plane,0,70,South,,#ffff00
+plane,0,60,South,,#ffff44
+plane,0,0,South,,#ffff44
+plane,0,10,South,,#f2ff42
+plane,0,20,South,,#ffff44
+plane,0,30,South,,#ffff44
+plane,0,40,South,,#ffff44
+plane,0,50,South,,#ffff44
+plane,0,90,North,,#58ff42

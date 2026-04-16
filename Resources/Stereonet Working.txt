@@ -1,0 +1,28 @@
+Stereonet.js
+    1. Form data input logic
+    2. Import data from file
+    3. Table management
+    4. Export buttons
+    5. Mouse hover to get trend/plunge - strike dip
+
+
+Stereonetcalc.js
+    1. Angle conversion and Normalization
+    2. Trend Plunge to x-y coordinates
+    3. Pole from strikedip
+
+
+
+Plot.js
+    1. Stereonet Plotting
+    2. Pole Plotting
+    3. Plane plotting
+
+
+
+Working
+    Manual Entry
+        - Creates temperory datalines from form data with unique id's using Date.now() in the local storage of browser to display it in the Table
+        - Uses renderplot function to render plot from the data which further uses two function drawstereonet2d function to draw stereonet and Plotplane2d/plotline2d to plot data
+        - drawstereonet2d function : Written in the plot.js file it simply draws concentric circles, degree for the stereonet
+        - Plotplane2d function : It uses generateGreatCircle function which returns an array of {trend,plunge} and this array is further utilised by stereographicProjection function which convers these trend plunge points to x,y coordinates

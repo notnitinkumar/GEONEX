@@ -5,7 +5,8 @@ import {
   drawTriangleMarker,
   drawRoseDiagram,
   hoverPlane2D,
-  drawEqualAreaStereonet
+  drawEqualAreaStereonet,
+  drawContourPlots,
 } from "./plot.js";
 import { calculateMeanVector } from "./stereonetcalc.js";
 let dataset = [];
@@ -708,10 +709,11 @@ MeanVector.addEventListener("click", () => {
 
 const RoseDiagrams = document.getElementById("RoseDiagrams");
 RoseDiagrams.addEventListener("click", () => {
-  drawRoseDiagram(canvas, dataset, "plane", 30);
+  drawRoseDiagram(canvas, dataset);
 });
 
 const ContourPlots = document.getElementById("ContourPlots");
 ContourPlots.addEventListener("click", () => {
-  alert("Contour Plots functionality is under development. Stay tuned!");
+  drawContourPlots(canvas, dataset);
+  // renderPlot();
 });

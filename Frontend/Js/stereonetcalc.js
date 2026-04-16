@@ -21,7 +21,14 @@ export function stereographicProjection(trend, plunge, R = 250) {
 
   return { x, y };
 }
+// export function equalAreaProjection(trend, plunge, R = 250) {
+//   const r = R * Math.sqrt((90 - plunge) / 90);
 
+//   const x = r * Math.sin(degToRad(trend));
+//   const y = r * Math.cos(degToRad(trend));
+
+//   return { x, y };
+// }
 // --- Generate great circle (plane) points ---
 
 export function generateGreatCircle(strike, dip, dipDirection, steps = 360) {

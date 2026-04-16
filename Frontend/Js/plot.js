@@ -1,4 +1,3 @@
-// import * as d3 from "d3";
 import {
   generateGreatCircle,
   stereographicProjection,
@@ -288,19 +287,34 @@ export function drawTriangleMarker(canvas, trend, plunge, color) {
   ctx.stroke();
 }
 
-export function drawRoseDiagram(canvas, dataset, type = "plane", binSize = 30) {
+export function drawRoseDiagram(
+  canvas,
+  dataset,
+  {
+    type = "plane",     
+    binSize = 10,      
+    weighting = false  
+  } = {}
+) {
   const ctx = canvas.getContext("2d");
 
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
   const maxRadius = Math.min(cx, cy) * 0.9;
 
+  // PREPARE DATA
   let angles = dataset
-    .filter(p => p.type === type)
-    .map(p => p.strike);
+    .filter(d => d.type === type)
+    .map(d => ({
+      angle: d.strike,
+      weight: weighting ? (d.length || 1) : 1
+    }));
 
   if (type === "plane") {
-    angles = angles.map(a => a % 180);
+    angles = angles.map(d => ({
+      angle: d.angle % 180,
+      weight: d.weight
+    }));
   }
 
   if (angles.length === 0) return;
@@ -309,48 +323,119 @@ export function drawRoseDiagram(canvas, dataset, type = "plane", binSize = 30) {
   const binCount = Math.floor(range / binSize);
   const bins = new Array(binCount).fill(0);
 
-  angles.forEach(angle => {
+  // BINNING (WITH WEIGHT)
+  angles.forEach(({ angle, weight }) => {
     const index = Math.floor((angle % range) / binSize);
-    bins[index]++;
+    bins[index] += weight;
 
     if (type === "plane") {
       const mirrorIndex = (index + binCount / 2) % binCount;
-      bins[mirrorIndex]++;
+      bins[mirrorIndex] += weight;
     }
   });
 
-  const maxValue = Math.max(...bins);
+  const total = bins.reduce((a, b) => a + b, 0);
 
-  bins.forEach((count, i) => {
-    const angleStart = (i * binSize) * Math.PI / 180;
-    const angleEnd = ((i + 1) * binSize) * Math.PI / 180;
+  // normalize to percentage
+  const normalizedBins = bins.map(v => (v / total));
 
-    let start = angleStart;
-    let end = angleEnd;
-    if (type === "plane") {
-      const scale = 2;
-      start *= scale;
-      end *= scale;
-    }
+  const maxValue = Math.max(...normalizedBins);
 
-    const radius = (count / maxValue) * maxRadius;
+  // DRAW
+  normalizedBins.forEach((value, i) => {
+    const scale = type === "plane" ? 2 : 1;
+
+    const start = ((i * binSize) - 90) * Math.PI / 180 * scale;
+    const end   = (((i + 1) * binSize) - 90) * Math.PI / 180 * scale;
+
+    const radius = (value / maxValue) * maxRadius;
 
     ctx.beginPath();
     ctx.moveTo(cx, cy);
     ctx.arc(cx, cy, radius, start, end);
     ctx.closePath();
 
-    ctx.fillStyle = "rgba(255, 255, 255, 0.58)";
+    ctx.fillStyle = "rgba(0, 200, 255, 0.6)";
     ctx.fill();
 
     ctx.strokeStyle = "white";
     ctx.lineWidth = 1;
     ctx.stroke();
   });
+}
+export function drawContourPlots(canvas, dataset) {
+  const ctx = canvas.getContext("2d");
 
+  const width = canvas.width;
+  const height = canvas.height;
+
+  const cx = width / 2;
+  const cy = height / 2;
+
+  const R = (Math.min(width, height) / 2) * 0.9;
+
+  // CLIP TO STEREONET
+  ctx.save();
   ctx.beginPath();
-  ctx.arc(cx, cy, maxRadius, 0, 2 * Math.PI);
-  ctx.strokeStyle = "white";
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
+  ctx.arc(cx, cy, R, 0, Math.PI * 2);
+  ctx.clip();
+
+  // PROJECT DATA
+  const points = dataset
+    .filter(d => d.type === "line" || d.type === "plane")
+    .map(d => {
+      const { x, y } = stereographicProjection(
+        d.trend ?? d.strike,
+        d.plunge ?? d.dip,
+        R
+      );
+      return [cx + x, cy - y];
+    })
+    .filter(([x, y]) => {
+      const dx = x - cx;
+      const dy = y - cy;
+      return dx * dx + dy * dy <= R * R;
+    });
+
+  if (points.length < 5) {
+    console.warn("Not enough points for contour");
+    ctx.restore();
+    return;
+  }
+
+  // DENSITY (KDE)
+  const density = d3.contourDensity()
+    .x(d => d[0])
+    .y(d => d[1])
+    .size([width, height])
+    .bandwidth(25);
+
+  const contours = density(points);
+
+  // COLOR SCALE
+  const color = d3.scaleSequential(d3.interpolateTurbo)
+    .domain(d3.extent(contours, d => d.value));
+
+  // DRAW CONTOURS
+  const path = d3.geoPath(null, ctx);
+
+  contours.forEach(c => {
+    ctx.beginPath();
+    path(c);
+
+    ctx.fillStyle = color(c.value);
+    ctx.globalAlpha = 0.85;
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+
+  // Draw original points on top
+  ctx.fillStyle = "blue";
+  for (const [x, y] of points) {
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.restore();
 }

@@ -715,5 +715,4 @@ RoseDiagrams.addEventListener("click", () => {
 const ContourPlots = document.getElementById("ContourPlots");
 ContourPlots.addEventListener("click", () => {
   drawContourPlots(canvas, dataset);
-  // renderPlot();
 });

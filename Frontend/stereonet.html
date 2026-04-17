@@ -89,7 +89,15 @@
               <li class="menu-item">
                 Data
                 <ul class="dropdown">
-                  <li class="import-btn">Import Data</li>
+                  <li class="import-btn">
+                    Import Data
+                    <input
+                      type="file"
+                      id="fileInput"
+                      accept=".csv,.txt,.xlsx,.svg"
+                      style="display: none"
+                    />
+                  </li>
                   <li id="exportCSV">Export Data</li>
                 </ul>
               </li>
@@ -168,9 +176,6 @@
                 placeholder="e.g., Bedding Plane"
                 name="label"
               />
-
-              <label>Color</label>
-
               <div class="color-row">
                 <input
                   id="colorPicker"
@@ -178,33 +183,11 @@
                   value="#ff4444"
                   name="color"
                 />
-                <input id="colorHex" type="text" value="#FF4444" name="color" />
+                <button type="submit" class="add-btn">
+                  <span>+</span> Add Point
+                </button>
               </div>
-
-              <button type="submit" class="add-btn">
-                <span>+</span> Add Point
-              </button>
             </form>
-          </div>
-
-          <!-- Data Import Panel -->
-          <div class="dataimport panel">
-            <h2>Import Data</h2>
-            <!-- Hidden file input for custom upload button -->
-            <input
-              type="file"
-              id="fileInput"
-              accept=".csv,.txt,.xlsx,.svg"
-              style="display: none"
-            />
-            <button class="add-btn upload import-btn" id="importbtn">
-              <img src="Assets/icons/upload.png" alt="Upload icon" />Upload
-              XLSX/SVG
-            </button>
-            <p>
-              Excel format: columns named 'strike', 'dip', 'trend', 'plunge',
-              'label'
-            </p>
           </div>
         </div>
 

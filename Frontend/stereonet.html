@@ -37,15 +37,7 @@
           </li>
         </ul>
       </nav>
-      <!-- <div class="loginbtn">Login
-        <img src="Assets/icons/login.png" alt="Login" id="loginbtnsymbol" />
-      </div> -->
       <div class="logo logoRight">
-        <!-- Sign In/ Sign Up Add here later -->
-        <!-- <div class="login">
-          <img src="Assets/icons/Profile.png" alt="Profile" id="loginbtnsymbol">
-          Guest Mode
-        </div> -->
         <div class="ESClogo">
           <div class="logotitle">
             <span> Department of Earth Sciences </span>
@@ -82,8 +74,9 @@
               <li class="menu-item">
                 Calculations
                 <ul class="dropdown">
-                  <li>Plane to Pole</li>
-                  <li>Pole to Plane</li>
+                  <li id="Plane to Pole">Plane to Pole</li>
+                  <li id="Pole to Plane">Pole to Plane</li>
+                  <li id="Angle Between">Angle Between</li>
                 </ul>
               </li>
               <li class="menu-item">
@@ -110,7 +103,7 @@
                 </ul>
               </li>
               <li
-                class="menu-iterm screentoggle"
+                class="menu-item screentoggle"
                 style="
                   display: flex;
                   justify-content: center;
@@ -216,7 +209,6 @@
                       <li id="exportPDF">PDF</li>
                     </ul>
                   </button>
-                  <!-- <button id="exportPDF">PDF</button> -->
                 </div>
               </div>
 
@@ -244,6 +236,92 @@
               </thead>
               <tbody></tbody>
             </table>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="promptbox">
+          <h2>Enter Data</h2>
+          <button id="close" style="background-color: #0f0f0f;"><img src="Assets/icons/closebutton.png" alt="close"></button>
+          <div class="firstdata">
+            <div>
+              <span>Plane</span>
+                  <label class="switch">
+                    <!-- <input type="checkbox" /> -->
+                    <input type="checkbox" id="PlotModeToggle1" />
+                    <span class="slider"></span>
+                  </label>
+                  <span>Line</span>
+              </div>
+            <span>
+              <input
+                id="strike1"
+                type="number"
+                placeholder="Strike/Trend"
+                name="strike"
+                required
+              />
+            </span>
+            <span>
+              <input
+                id="dip1"
+                type="number"
+                placeholder="Dip/Plunge"
+                name="dip"
+                required
+              />
+            </span>
+            <span>
+              <select id="dipDirection1" name="dipDirection">
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+              </select>
+            </span>
+          </div>
+          <div class="secondata">
+            <div>
+              <span>Plane</span>
+                  <label class="switch">
+                    <!-- <input type="checkbox" /> -->
+                    <input type="checkbox" id="PlotModeToggle2" />
+                    <span class="slider"></span>
+                  </label>
+                  <span>Line</span>
+              </div>
+            <span>
+              <input
+                id="strike2"
+                type="number"
+                placeholder="Strike/Trend"
+                name="strike"
+                required
+              />
+            </span>
+            <span>
+              <input
+                id="dip2"
+                type="number"
+                placeholder="Dip/Plunge"
+                name="dip"
+                required
+              />
+            </span>
+            <span>
+              <select id="dipDirection2" name="dipDirection">
+                <option value="North">North</option>
+                <option value="South">South</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+              </select>
+            </span>
+          </div>
+          <div class="resultingAngle">
+            <span>
+              <button id="getAngle">Get Angle</button>
+            </span>
+            <span id="angleResult">Angle : --°</span>
           </div>
         </div>
       </section>

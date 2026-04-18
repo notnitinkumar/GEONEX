@@ -8,7 +8,12 @@ import {
   drawEqualAreaStereonet,
   drawContourPlots,
 } from "./plot.js";
-import { calculateMeanVector } from "./stereonetcalc.js";
+import {
+  calculateMeanVector,
+  angleBetweenLineAndPlane,
+  angleBetweenPlanes,
+  angleBetweenLines,
+} from "./stereonetcalc.js";
 let dataset = [];
 const planeBtn = document.querySelector("#Plane-plot");
 const lineBtn = document.querySelector("#Line-plot");
@@ -183,9 +188,7 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
     e.stopPropagation();
 
     const canvas = document.getElementById("stereonetCanvas");
-    const text = opt.innerText.trim();
-
-    if (text === "Pole to Plane") {
+    if (opt.id === "Pole to Plane") {
       dataset.forEach((p) => {
         if (p.type === "line") {
           const trend = p.strike;
@@ -211,7 +214,7 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
       });
 
       renderPlot();
-    } else if (text === "Plane to Pole") {
+    } else if (opt.id === "Plane to Pole") {
       dataset.forEach((p) => {
         if (p.type === "plane" && p.label !== "Derived") {
           const strike = p.strike;
@@ -242,6 +245,205 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
       });
 
       renderPlot();
+    } else if (opt.id === "Angle Between") {
+      document.querySelector(".promptbox").style.display = "block";
+
+      const closeBtn = document.getElementById("close");
+      const getAngleBtn = document.getElementById("getAngle");
+
+      // close handler (one-time)
+      closeBtn.addEventListener(
+        "click",
+        function () {
+          document.querySelector(".promptbox").style.display = "none";
+        },
+        { once: true },
+      );
+
+      const toggle1 = document.getElementById("PlotModeToggle1");
+      const toggle2 = document.getElementById("PlotModeToggle2");
+
+      const dipDir1 = document.getElementById("dipDirection1");
+      const dipDir2 = document.getElementById("dipDirection2");
+
+      function updateDipDirectionState() {
+        if (toggle1.checked) {
+          dipDir1.disabled = true;
+          dipDir1.style.cursor = "not-allowed";
+        } else {
+          dipDir1.disabled = false;
+          dipDir1.style.cursor = "pointer";
+        }
+
+        if (toggle2.checked) {
+          dipDir2.disabled = true;
+          dipDir2.style.cursor = "not-allowed";
+        } else {
+          dipDir2.disabled = false;
+          dipDir2.style.cursor = "pointer";
+        }
+      }
+
+      // attach listeners
+      toggle1.addEventListener("change", updateDipDirectionState);
+      toggle2.addEventListener("change", updateDipDirectionState);
+
+      // initial state
+      updateDipDirectionState();
+      // compute angle
+      const handler = function () {
+        let trend1, plunge1, strike1, dip1, dipdirection1;
+        let trend2, plunge2, strike2, dip2, dipdirection2;
+
+        if (toggle1.checked) {
+          trend1 = parseFloat(document.getElementById("strike1").value);
+          plunge1 = parseFloat(document.getElementById("dip1").value);
+        } else {
+          strike1 = parseFloat(document.getElementById("strike1").value);
+          dip1 = parseFloat(document.getElementById("dip1").value);
+          dipdirection1 = document.getElementById("dipDirection1").value;
+        }
+
+        if (toggle2.checked) {
+          trend2 = parseFloat(document.getElementById("strike2").value);
+          plunge2 = parseFloat(document.getElementById("dip2").value);
+        } else {
+          strike2 = parseFloat(document.getElementById("strike2").value);
+          dip2 = parseFloat(document.getElementById("dip2").value);
+          dipdirection2 = document.getElementById("dipDirection2").value;
+        }
+        let angle;
+
+        if (
+          !isNaN(trend1) &&
+          !isNaN(plunge1) &&
+          !isNaN(trend2) &&
+          !isNaN(plunge2)
+        ) {
+          const dp2 = AddToDataset({
+            type: "line",
+            strike: trend2,
+            dip: plunge2,
+            label: "",
+            color: "magenta",
+          });
+          const dp1 = AddToDataset({
+            type: "line",
+            strike: trend1,
+            dip: plunge1,
+            label: "",
+            color: "cyan",
+          });
+          AddToTable(dp2);
+          AddToTable(dp1);
+          angle = angleBetweenLines(trend1, plunge1, trend2, plunge2);
+        } else if (
+          !isNaN(strike1) &&
+          !isNaN(dip1) &&
+          !isNaN(strike2) &&
+          !isNaN(dip2)
+        ) {
+          angle = angleBetweenPlanes(
+            strike1,
+            dip1,
+            dipdirection1,
+            strike2,
+            dip2,
+            dipdirection2,
+          );
+          const dp1 = AddToDataset({
+            type: "plane",
+            strike: strike1,
+            dip: dip1,
+            dipDirection: dipdirection1,
+            label: "",
+            color: "cyan",
+          });
+          const dp2 = AddToDataset({
+            type: "plane",
+            strike: strike2,
+            dip: dip2,
+            dipDirection: dipdirection2,
+            label: "",
+            color: "magenta",
+          });
+          AddToTable(dp1);
+          AddToTable(dp2);
+        } else if (
+          !isNaN(strike1) &&
+          !isNaN(dip1) &&
+          !isNaN(trend2) &&
+          !isNaN(plunge2)
+        ) {
+          const dp1 = AddToDataset({
+            type: "plane",
+            strike: strike1,
+            dip: dip1,
+            dipDirection: dipdirection1,
+            label: "",
+            color: "cyan",
+          });
+          const dp2 = AddToDataset({
+            type: "line",
+            strike: trend2,
+            dip: plunge2,
+            label: "",
+            color: "magenta",
+          });
+          AddToTable(dp1);
+          AddToTable(dp2);
+          angle = angleBetweenLineAndPlane(
+            trend2,
+            plunge2,
+            strike1,
+            dip1,
+            dipdirection1,
+          );
+        } else if (
+          !isNaN(trend1) &&
+          !isNaN(plunge1) &&
+          !isNaN(strike2) &&
+          !isNaN(dip2)
+        ) {
+          const dp1 = AddToDataset({
+            type: "line",
+            strike: trend1,
+            dip: plunge1,
+            label: "",
+            color: "cyan",
+          });
+          const dp2 = AddToDataset({
+            type: "plane",
+            strike: strike2,
+            dip: dip2,
+            dipDirection: dipdirection2,
+            label: "",
+            color: "magenta",
+          });
+          AddToTable(dp1);
+          AddToTable(dp2);
+          angle = angleBetweenLineAndPlane(
+            trend1,
+            plunge1,
+            strike2,
+            dip2,
+            dipdirection2,
+          );
+        }
+        renderPlot();
+
+        const out = document.getElementById("angleResult");
+        if (angle !== undefined) {
+          out.textContent = `Angle: ${angle.toFixed(2)}°`;
+        } else {
+          out.textContent = "Invalid input";
+        }
+      };
+
+      // ensure we don't stack listeners
+      getAngleBtn.replaceWith(getAngleBtn.cloneNode(true));
+      const newGetAngleBtn = document.getElementById("getAngle");
+      newGetAngleBtn.addEventListener("click", handler);
     }
 
     document
@@ -306,7 +508,7 @@ const PlotModeSelect = document.getElementById("Plot Mode");
 PlotModeSelect.addEventListener("change", function () {
   const mode = this.value;
 
- renderPlot();
+  renderPlot();
 });
 function renderPlot() {
   const canvas = document.getElementById("stereonetCanvas");
@@ -316,10 +518,9 @@ function renderPlot() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // redraw grid
-  if(PlotModeSelect.value === "Polar Plot") {
+  if (PlotModeSelect.value === "Polar Plot") {
     drawStereonet2d(canvas);
-  }
-  else if (PlotModeSelect.value === "Equal Area") {
+  } else if (PlotModeSelect.value === "Equal Area") {
     drawEqualAreaStereonet(canvas);
   }
   // redraw all data

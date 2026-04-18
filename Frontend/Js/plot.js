@@ -287,81 +287,66 @@ export function drawTriangleMarker(canvas, trend, plunge, color) {
   ctx.stroke();
 }
 
-export function drawRoseDiagram(
-  canvas,
-  dataset,
-  {
-    type = "plane",     
-    binSize = 10,      
-    weighting = false  
-  } = {}
-) {
+export function drawRoseDiagram(canvas, dataset) {
   const ctx = canvas.getContext("2d");
 
-  const cx = canvas.width / 2;
-  const cy = canvas.height / 2;
-  const maxRadius = Math.min(cx, cy) * 0.9;
+  const width = canvas.width;
+  const height = canvas.height;
+  const cx = width / 2;
+  const cy = height / 2;
+  const maxRadius = Math.min(width, height) / 2 * 0.9;
 
-  // PREPARE DATA
-  let angles = dataset
-    .filter(d => d.type === type)
-    .map(d => ({
-      angle: d.strike,
-      weight: weighting ? (d.length || 1) : 1
-    }));
+  // 👉 Extract directional values (trend or strike)
+  const values = dataset.map(d => d.trend ?? d.strike);
 
-  if (type === "plane") {
-    angles = angles.map(d => ({
-      angle: d.angle % 180,
-      weight: d.weight
-    }));
-  }
+  const binCount = 12; // number of sectors (30° each)
+  const angleStep = 360 / binCount;
 
-  if (angles.length === 0) return;
+  // Create bins over 0–360
+  const bins = d3.bin()
+    .domain([0, 360])
+    .thresholds(d3.range(0, 361, angleStep))(values);
 
-  const range = type === "plane" ? 180 : 360;
-  const binCount = Math.floor(range / binSize);
-  const bins = new Array(binCount).fill(0);
+  // Radius scale
+  const rScale = d3.scaleLinear()
+    .domain([0, d3.max(bins, d => d.length)])
+    .range([0, maxRadius]);
 
-  // BINNING (WITH WEIGHT)
-  angles.forEach(({ angle, weight }) => {
-    const index = Math.floor((angle % range) / binSize);
-    bins[index] += weight;
+  // Draw sectors
+  bins.forEach((bin, i) => {
+    const startAngle = (bin.x0 * Math.PI) / 180;
+    const endAngle = (bin.x1 * Math.PI) / 180;
+    const r = rScale(bin.length);
 
-    if (type === "plane") {
-      const mirrorIndex = (index + binCount / 2) % binCount;
-      bins[mirrorIndex] += weight;
+    // Optional: color by majority type (simple approach)
+    let color = "rgba(0,145,255,0.4)";
+    if (bin.length > 0) {
+      const binItems = dataset.filter(d => {
+        const val = d.trend ?? d.strike;
+        return val >= bin.x0 && val < bin.x1;
+      });
+
+      if (binItems.length > 0 && binItems[0].color) {
+        color = binItems[0].color;
+      }
     }
-  });
-
-  const total = bins.reduce((a, b) => a + b, 0);
-
-  // normalize to percentage
-  const normalizedBins = bins.map(v => (v / total));
-
-  const maxValue = Math.max(...normalizedBins);
-
-  // DRAW
-  normalizedBins.forEach((value, i) => {
-    const scale = type === "plane" ? 2 : 1;
-
-    const start = ((i * binSize) - 90) * Math.PI / 180 * scale;
-    const end   = (((i + 1) * binSize) - 90) * Math.PI / 180 * scale;
-
-    const radius = (value / maxValue) * maxRadius;
 
     ctx.beginPath();
     ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, radius, start, end);
+    ctx.arc(cx, cy, r, startAngle, endAngle);
     ctx.closePath();
 
-    ctx.fillStyle = "rgba(0, 200, 255, 0.6)";
+    ctx.fillStyle = color;
     ctx.fill();
-
     ctx.strokeStyle = "white";
-    ctx.lineWidth = 1;
     ctx.stroke();
   });
+
+  // Optional: draw outer circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, maxRadius, 0, 2 * Math.PI);
+  ctx.strokeStyle = "#aaa";
+  ctx.stroke();
 }
 export function drawContourPlots(canvas, dataset) {
   const ctx = canvas.getContext("2d");

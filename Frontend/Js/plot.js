@@ -3,8 +3,13 @@ import {
   stereographicProjection,
 } from "./stereonetcalc.js";
 
-
-export function hoverPlane2D(canvas, strike, dip, dipDirection, color="cyan") {
+export function hoverPlane2D(
+  canvas,
+  strike,
+  dip,
+  dipDirection,
+  color = "cyan",
+) {
   const ctx = canvas.getContext("2d");
   ctx.save();
 
@@ -32,9 +37,9 @@ export function hoverPlane2D(canvas, strike, dip, dipDirection, color="cyan") {
 
   ctx.stroke();
   ctx.restore();
-} 
+}
 
-export function plotPlane2D(canvas, strike, dip, dipDirection, color="cyan") {
+export function plotPlane2D(canvas, strike, dip, dipDirection, color = "cyan") {
   const ctx = canvas.getContext("2d");
 
   const centerX = canvas.width / 2;
@@ -62,7 +67,7 @@ export function plotPlane2D(canvas, strike, dip, dipDirection, color="cyan") {
   ctx.stroke();
 }
 
-export function plotLine2D(canvas, trend, plunge, color="cyan") {
+export function plotLine2D(canvas, trend, plunge, color = "cyan") {
   const ctx = canvas.getContext("2d");
 
   const centerX = canvas.width / 2;
@@ -79,8 +84,7 @@ export function plotLine2D(canvas, trend, plunge, color="cyan") {
   ctx.fill();
 }
 
-function anglesAndDirection(canvas)
-{
+function anglesAndDirection(canvas) {
   const ctx = canvas.getContext("2d");
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
@@ -158,23 +162,24 @@ export function drawStereonet2d(canvas) {
     ctx.lineTo(x, y);
   }
   ctx.stroke();
-    anglesAndDirection(canvas);
+  anglesAndDirection(canvas);
 }
 export function drawEqualAreaStereonet(canvas, gridSpacing = 8) {
   const ctx = canvas.getContext("2d");
   const width = canvas.width;
   const height = canvas.height;
-  
+
   const centerX = width / 2;
   const centerY = height / 2;
   const R = (Math.min(width, height) / 2) * 0.9;
 
   ctx.clearRect(0, 0, width, height);
 
-  const projection = d3.geoAzimuthalEqualArea()
+  const projection = d3
+    .geoAzimuthalEqualArea()
     .scale(R / Math.SQRT2)
     .translate([centerX, centerY])
-    .rotate([0, 0])      
+    .rotate([0, 0])
     .clipAngle(90)
     .precision(0.1);
 
@@ -195,7 +200,7 @@ export function drawEqualAreaStereonet(canvas, gridSpacing = 8) {
     for (let lat = -90; lat <= 90; lat += 2) {
       const p = projection([lon, lat]);
       if (!p) continue;
-      
+
       if (!started) {
         ctx.moveTo(p[0], p[1]);
         started = true;
@@ -211,7 +216,7 @@ export function drawEqualAreaStereonet(canvas, gridSpacing = 8) {
     for (let lat = -90; lat <= 90; lat += 2) {
       const p = projection([lon, lat]);
       if (!p) continue;
-      
+
       if (!started) {
         ctx.moveTo(p[0], p[1]);
         started = true;
@@ -239,7 +244,7 @@ export function drawEqualAreaStereonet(canvas, gridSpacing = 8) {
     }
     ctx.stroke();
   }
-  for (let lat = 0-gridSpacing; lat > -90; lat -= gridSpacing) {
+  for (let lat = 0 - gridSpacing; lat > -90; lat -= gridSpacing) {
     ctx.beginPath();
     let started = false;
     for (let lon = -90; lon <= 90; lon += 2) {
@@ -294,59 +299,52 @@ export function drawRoseDiagram(canvas, dataset) {
   const height = canvas.height;
   const cx = width / 2;
   const cy = height / 2;
-  const maxRadius = Math.min(width, height) / 2 * 0.9;
+  const maxRadius = (Math.min(width, height) / 2) * 0.9;
 
-  // 👉 Extract directional values (trend or strike)
-  const values = dataset.map(d => d.trend ?? d.strike);
+  const bw = 30;
+  const binsCount = 360 / bw; 
+  const freq = new Array(binsCount).fill(0);
 
-  const binCount = 12; // number of sectors (30° each)
-  const angleStep = 360 / binCount;
-
-  // Create bins over 0–360
-  const bins = d3.bin()
-    .domain([0, 360])
-    .thresholds(d3.range(0, 361, angleStep))(values);
-
-  // Radius scale
-  const rScale = d3.scaleLinear()
-    .domain([0, d3.max(bins, d => d.length)])
-    .range([0, maxRadius]);
-
-  // Draw sectors
-  bins.forEach((bin, i) => {
-    const startAngle = (bin.x0 * Math.PI) / 180;
-    const endAngle = (bin.x1 * Math.PI) / 180;
-    const r = rScale(bin.length);
-
-    // Optional: color by majority type (simple approach)
-    let color = "rgba(0,145,255,0.4)";
-    if (bin.length > 0) {
-      const binItems = dataset.filter(d => {
-        const val = d.trend ?? d.strike;
-        return val >= bin.x0 && val < bin.x1;
-      });
-
-      if (binItems.length > 0 && binItems[0].color) {
-        color = binItems[0].color;
+  dataset.forEach((d) => {
+    let angle = 0;
+    if (d.type === "plane") {
+      let trend;
+      if (d.dipDirection === "South" || d.dipDirection === "West") {
+        trend = (d.strike + 270) % 360;
+      } else {
+        trend = (d.strike + 90) % 360;
       }
+      angle = trend;
+    } else {
+      const t = d.strike % 360;
+      angle = t;
     }
+    const safeIndex = Math.floor((angle % 360) / bw);
+
+    freq[safeIndex]++;
+  });
+  const maxCount = Math.max(...freq, 1);
+  for (let i = 0; i < binsCount; i++) {
+    const startDeg = i * bw;
+    const endDeg = (i + 1) * bw;
+
+    const r = Math.sqrt(freq[i] / maxCount) * maxRadius;
+
+    const start = (startDeg * Math.PI) / 180;
+    const end = (endDeg * Math.PI) / 180;
 
     ctx.beginPath();
     ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, startAngle, endAngle);
+    ctx.arc(cx, cy, r, start-Math.PI/2, end-Math.PI/2);
     ctx.closePath();
 
-    ctx.fillStyle = color;
+    ctx.fillStyle = "rgba(0, 100, 200, 0.3)";
     ctx.fill();
-    ctx.strokeStyle = "white";
-    ctx.stroke();
-  });
 
-  // Optional: draw outer circle
-  ctx.beginPath();
-  ctx.arc(cx, cy, maxRadius, 0, 2 * Math.PI);
-  ctx.strokeStyle = "#aaa";
-  ctx.stroke();
+    ctx.strokeStyle = "rgba(255,255,255,0.5)";
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  }
 }
 export function drawContourPlots(canvas, dataset) {
   const ctx = canvas.getContext("2d");
@@ -367,12 +365,12 @@ export function drawContourPlots(canvas, dataset) {
 
   // PROJECT DATA
   const points = dataset
-    .filter(d => d.type === "line" || d.type === "plane")
-    .map(d => {
+    .filter((d) => d.type === "line" || d.type === "plane")
+    .map((d) => {
       const { x, y } = stereographicProjection(
         d.trend ?? d.strike,
         d.plunge ?? d.dip,
-        R
+        R,
       );
       return [cx + x, cy - y];
     })
@@ -389,22 +387,24 @@ export function drawContourPlots(canvas, dataset) {
   }
 
   // DENSITY (KDE)
-  const density = d3.contourDensity()
-    .x(d => d[0])
-    .y(d => d[1])
+  const density = d3
+    .contourDensity()
+    .x((d) => d[0])
+    .y((d) => d[1])
     .size([width, height])
     .bandwidth(25);
 
   const contours = density(points);
 
   // COLOR SCALE
-  const color = d3.scaleSequential(d3.interpolateTurbo)
-    .domain(d3.extent(contours, d => d.value));
+  const color = d3
+    .scaleSequential(d3.interpolateTurbo)
+    .domain(d3.extent(contours, (d) => d.value));
 
   // DRAW CONTOURS
   const path = d3.geoPath(null, ctx);
 
-  contours.forEach(c => {
+  contours.forEach((c) => {
     ctx.beginPath();
     path(c);
 

@@ -295,6 +295,7 @@ export function drawTriangleMarker(canvas, trend, plunge, color) {
 export function drawRoseDiagram(canvas, dataset) {
   const ctx = canvas.getContext("2d");
 
+
   const width = canvas.width;
   const height = canvas.height;
   const cx = width / 2;
@@ -348,6 +349,7 @@ export function drawRoseDiagram(canvas, dataset) {
 }
 export function drawContourPlots(canvas, dataset) {
   const ctx = canvas.getContext("2d");
+
 
   const width = canvas.width;
   const height = canvas.height;

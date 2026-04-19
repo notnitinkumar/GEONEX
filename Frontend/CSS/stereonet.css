@@ -81,6 +81,14 @@ h5 {
   white-space: nowrap;
   font-size: small;
   cursor: pointer;
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+}
+.dropdown li img{
+  width: 20px;
+  margin-right: 5px;
+  display: none;
 }
 .export-dropdown {
   background-color: white;

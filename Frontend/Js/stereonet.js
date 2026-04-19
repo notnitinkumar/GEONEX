@@ -533,6 +533,15 @@ function renderPlot() {
       } else plotLine2D(canvas, p.strike, p.dip, p.color);
     }
   });
+
+  // redraw overlays if active
+  if (isrosemode) {
+    drawRoseDiagram(canvas, dataset);
+  }
+
+  if (iscountourmode) {
+    drawContourPlots(canvas, dataset);
+  }
 }
 
 // ------------------- Import data from file --------------------
@@ -908,12 +917,30 @@ MeanVector.addEventListener("click", () => {
 
 // ------------------- Rose Diagram and Contour Plots --------------------
 
+let isrosemode = false;
 const RoseDiagrams = document.getElementById("RoseDiagrams");
 RoseDiagrams.addEventListener("click", () => {
-  drawRoseDiagram(canvas, dataset);
+  if (!isrosemode) {
+    drawRoseDiagram(canvas, dataset); 
+    isrosemode = true;
+    RoseDiagrams.querySelector("img").style.display = "block"; 
+  }
+  else {
+    isrosemode = false;
+    RoseDiagrams.querySelector("img").style.display = "none"; 
+    renderPlot();
+  }
 });
-
+let iscountourmode = false;
 const ContourPlots = document.getElementById("ContourPlots");
 ContourPlots.addEventListener("click", () => {
-  drawContourPlots(canvas, dataset);
+  if (!iscountourmode) {
+    drawContourPlots(canvas, dataset);
+    iscountourmode = true;
+    ContourPlots.querySelector("img").style.display = "block"; 
+  } else {
+    iscountourmode = false;
+    ContourPlots.querySelector("img").style.display = "none";
+    renderPlot();
+  }
 });

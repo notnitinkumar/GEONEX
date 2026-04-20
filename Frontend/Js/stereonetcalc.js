@@ -321,29 +321,67 @@ export function binghamDistribution(dataset) {
 
 // ----------------- Von Mises Distribution -----------------
 export function vonMisesDistribution(dataset) {
-  const { trends, plunges } = getTrendsPlungesCoordinates(dataset);
-  const meanVector = calculateMeanVector(trends, plunges);
+  const { trends } = getTrendsPlungesCoordinates(dataset);
 
-  const N = dataset.length;
-  let R = 0;
-  for (let i = 0; i < N; i++) {
-    const t = degToRad(trends[i]);
-    const p = degToRad(plunges[i]);
-    const x = Math.cos(p) * Math.cos(t);
-    const y = Math.cos(p) * Math.sin(t);
-    const z = Math.sin(p);
-    R +=
-      meanVector.x * x + meanVector.y * y + meanVector.z * z;
+  const N = trends.length;
+  if (N === 0) return { meanTrend: 0, kappa: 0, R: 0 };
+
+  // Detect axial data 
+  const isAxial = dataset.some(d => d.type === "plane");
+
+  let C = 0, S = 0;
+
+  trends.forEach(t => {
+    let angle = degToRad(t);
+    if (isAxial) angle *= 2; // axial correction
+
+    C += Math.cos(angle);
+    S += Math.sin(angle);
+  });
+
+  C /= N;
+  S /= N;
+
+  const R = Math.sqrt(C*C + S*S);
+
+  // If completely dispersed, avoid unstable kappa
+  if (R === 0) {
+    return { meanTrend: 0, kappa: 0, R: 0 };
   }
 
-  R /= N;
+  let mean = radToDeg(Math.atan2(S, C));
+  if (mean < 0) mean += 360;
 
-  const kappa =
-    (R * (3 - R * R)) / (1 - R * R);
+  if (isAxial) {
+    mean /= 2; // reverse axial doubling
+    if (mean < 0) mean += 360;
+  }
+  
+  let kappa;
+  if (R < 0.53) {
+    kappa = 2*R + R**3 + (5*R**5)/6;
+  } else if (R < 0.85) {
+    kappa = -0.4 + 1.39*R + 0.43/(1 - R);
+  } else {
+    kappa = 1 / (R**3 - 4*R**2 + 3*R);
+  }
+
+  // --- derived statistics ---
+  const circularVariance = 1 - R;
+
+  // standard error in radians (approximation)
+  const stdErrorRad = Math.sqrt((1 - R) / (N * R));
+  const stdErrorDeg = radToDeg(stdErrorRad);
+
+  // 95% confidence (≈ 1.96 * std error)
+  const error95 = stdErrorDeg * 1.96;
 
   return {
-    meanTrend: meanVector.trend,
-    meanPlunge: meanVector.plunge,
+    meanTrend: mean,
     kappa: kappa,
+    R: R,
+    circularVariance: circularVariance,
+    stdError: stdErrorDeg,
+    error95: error95
   };
 }

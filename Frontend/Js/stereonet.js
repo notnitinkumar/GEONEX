@@ -15,6 +15,7 @@ import {
   angleBetweenLines,
   fisherDistribution,
   binghamDistribution,
+  vonMisesDistribution,
 } from "./stereonetcalc.js";
 let dataset = [];
 const planeBtn = document.querySelector("#Plane-plot");
@@ -1014,9 +1015,30 @@ document.getElementById("Bingham").addEventListener("click", () => {
 });
 
 document.getElementById("Von Mises").addEventListener("click", () => {
+  const points = vonMisesDistribution(dataset);
+
   document.getElementById("interpretationContent").insertAdjacentHTML("beforeend", `
-    <p><strong> ----------------------- Von Mises Distribution ${new Date().toLocaleDateString() + " " } at ${new Date().toLocaleTimeString()} -------------------------</strong></p>
-    <p>Von Mises distribution calculation not implemented yet.</p>
-    <p></p>
+    <p><strong>----------------------- Von Mises Distribution ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()} -----------------------</strong></p>
+
+    <table border="1" style="border-collapse: collapse; margin: 10px;">
+      <thead>
+        <tr>
+          <th>Mean Vector</th>
+          <th>Average Length (R)</th>
+          <th>Circular Variance</th>
+          <th>Kappa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>${points.meanTrend.toFixed(1)}° ± ${points.error95.toFixed(1)}°</td>
+          <td>${points.R.toFixed(4)}</td>
+          <td>${points.circularVariance.toFixed(4)}</td>
+          <td>${points.kappa.toFixed(2)}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>[vector mean; uncertainty is 1 standard error, for 95% confidence multiply by 1.96]</p>
   `);
 });

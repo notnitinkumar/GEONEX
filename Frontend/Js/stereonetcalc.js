@@ -21,14 +21,18 @@ export function stereographicProjection(trend, plunge, R = 250) {
 
   return { x, y };
 }
-// export function equalAreaProjection(trend, plunge, R = 250) {
-//   const r = R * Math.sqrt((90 - plunge) / 90);
 
-//   const x = r * Math.sin(degToRad(trend));
-//   const y = r * Math.cos(degToRad(trend));
+// ------------- Trend and Plunge to Cartesian ----------------
+export function toCartesian(trend, plunge) {
+  const tr = degToRad(trend);
+  const pl = degToRad(plunge);
 
-//   return { x, y };
-// }
+  const x = Math.cos(pl) * Math.sin(tr);
+  const y = Math.cos(pl) * Math.cos(tr);
+  const z = Math.sin(pl);
+
+  return { x, y, z };
+}
 // --- Generate great circle (plane) points ---
 
 export function generateGreatCircle(strike, dip, dipDirection, steps = 360) {
@@ -63,8 +67,8 @@ export function generateGreatCircle(strike, dip, dipDirection, steps = 360) {
 export function calculateMeanVector(trends, plunges) {
   const n = trends.length;
   let sumX = 0,
-      sumY = 0,
-      sumZ = 0;
+    sumY = 0,
+    sumZ = 0;
 
   for (let i = 0; i < n; i++) {
     let trend = trends[i];
@@ -94,7 +98,14 @@ export function calculateMeanVector(trends, plunges) {
 
 // ----------------- Angle Between ------------------
 
-export function angleBetweenPlanes(strike1, dip1, dipDirection1, strike2, dip2, dipDirection2) {
+export function angleBetweenPlanes(
+  strike1,
+  dip1,
+  dipDirection1,
+  strike2,
+  dip2,
+  dipDirection2,
+) {
   function pole(strike, dip) {
     const trend = normalizeAngle(strike + 90);
     const plunge = 90 - dip;
@@ -102,31 +113,35 @@ export function angleBetweenPlanes(strike1, dip1, dipDirection1, strike2, dip2, 
     const t = degToRad(trend);
     const p = degToRad(plunge);
 
-    return [
-      Math.cos(p) * Math.cos(t),
-      Math.cos(p) * Math.sin(t),
-      Math.sin(p)
-    ];
+    return [Math.cos(p) * Math.cos(t), Math.cos(p) * Math.sin(t), Math.sin(p)];
   }
 
   const n1 = pole(strike1, dip1);
   const n2 = pole(strike2, dip2);
 
-  const dot = n1[0]*n2[0] + n1[1]*n2[1] + n1[2]*n2[2];
+  const dot = n1[0] * n2[0] + n1[1] * n2[1] + n1[2] * n2[2];
   const angle = Math.acos(Math.min(1, Math.max(-1, dot)));
 
   return radToDeg(angle);
 }
 
 export function angleBetweenLines(trend1, plunge1, trend2, plunge2) {
-  const dot = Math.sin(degToRad(plunge1)) * Math.sin(degToRad(plunge2)) +
-              Math.cos(degToRad(plunge1)) * Math.cos(degToRad(plunge2)) *
-              Math.cos(degToRad(trend1 - trend2));
+  const dot =
+    Math.sin(degToRad(plunge1)) * Math.sin(degToRad(plunge2)) +
+    Math.cos(degToRad(plunge1)) *
+      Math.cos(degToRad(plunge2)) *
+      Math.cos(degToRad(trend1 - trend2));
 
   return radToDeg(Math.acos(Math.min(1, Math.max(-1, dot))));
 }
 
-export function angleBetweenLineAndPlane(trend, plunge, strike, dip, dipDirection) {
+export function angleBetweenLineAndPlane(
+  trend,
+  plunge,
+  strike,
+  dip,
+  dipDirection,
+) {
   // line vector
   const t = degToRad(trend);
   const p = degToRad(plunge);
@@ -134,7 +149,7 @@ export function angleBetweenLineAndPlane(trend, plunge, strike, dip, dipDirectio
   const line = [
     Math.cos(p) * Math.cos(t),
     Math.cos(p) * Math.sin(t),
-    Math.sin(p)
+    Math.sin(p),
   ];
 
   // plane normal (pole)
@@ -147,13 +162,167 @@ export function angleBetweenLineAndPlane(trend, plunge, strike, dip, dipDirectio
   const normal = [
     Math.cos(pp) * Math.cos(pt),
     Math.cos(pp) * Math.sin(pt),
-    Math.sin(pp)
+    Math.sin(pp),
   ];
 
-  const dot = line[0]*normal[0] + line[1]*normal[1] + line[2]*normal[2];
+  const dot = line[0] * normal[0] + line[1] * normal[1] + line[2] * normal[2];
 
   // angle between line and plane = 90 - angle(line, normal)
   const angle = Math.asin(Math.min(1, Math.max(-1, Math.abs(dot))));
 
   return radToDeg(angle);
 }
+
+function getTrendsPlungesCoordinates(dataset) {
+  const trends = [];
+  const plunges = [];
+  const coordiantes = [];
+  dataset.forEach((d) => {
+    if (d.type === "line") {
+      trends.push(d.strike);
+      plunges.push(d.dip);
+      coordiantes.push(toCartesian(d.strike, d.dip));
+    } else if (d.type === "plane") {
+      let poleTrend;
+      if (d.dipDirection === "South" || d.dipDirection === "West") {
+        poleTrend = (d.strike + 270) % 360;
+      } else {
+        poleTrend = (d.strike + 90) % 360;
+      }
+      const polePlunge = 90 - d.dip;
+      trends.push(poleTrend);
+      plunges.push(polePlunge);
+      coordiantes.push(toCartesian(poleTrend, polePlunge));
+    }
+  });
+  return { trends, plunges, coordiantes };
+}
+
+// function vectorToTrendPlunge(v) {
+//   let [x, y, z] = v;
+
+//   // normalize
+//   const mag = Math.sqrt(x * x + y * y + z * z);
+//   x /= mag;
+//   y /= mag;
+//   z /= mag;
+
+//   // force lower hemisphere (optional depending on your convention)
+//   if (z < 0) {
+//     x = -x;
+//     y = -y;
+//     z = -z;
+//   }
+
+//   // plunge = sin⁻¹(z)
+//   const plunge = (Math.asin(z) * 180) / Math.PI;
+
+//   // trend = tan⁻¹(y / x)
+//   let trend = (Math.atan2(y, x) * 180) / Math.PI;
+
+//   // convert to 0–360°
+//   if (trend < 0) trend += 360;
+
+//   return { trend, plunge };
+// }
+
+// ----------------- Fisher Vector Distribution -----------------
+export function fisherDistribution(dataset) {
+  const { trends, plunges, coordiantes } = getTrendsPlungesCoordinates(dataset);
+  const meanVector = calculateMeanVector(trends, plunges);
+
+  const N = dataset.length;
+  let X = 0,
+    Y = 0,
+    Z = 0;
+  coordiantes.forEach((c) => {
+    X += c.x;
+    Y += c.y;
+    Z += c.z;
+  });
+  const R = Math.sqrt(X * X + Y * Y + Z * Z);
+  const meanLength = R / N;
+  const kappa =
+    (meanLength * (3 - meanLength * meanLength)) /
+    (1 - meanLength * meanLength);
+  const confidence = 1 / Math.sqrt(kappa * N);
+  const alpha95 = radToDeg(
+    Math.acos(1 - ((N - R) / R) * (Math.pow(1 / confidence, 1 / (N - 1)) - 1)),
+  ); // 95% confidence cone angle
+  return {
+    meanTrend: meanVector.trend,
+    meanPlunge: meanVector.plunge,
+    kappa: kappa,
+    alpha95: alpha95,
+    meanLength: meanLength,
+  };
+}
+
+// export function binghamDistribution(dataset) {
+//   const { trends, plunges, coordiantes } = getTrendsPlungesCoordinates(dataset);
+
+//   const N = dataset.length;
+//   if (N === 0)
+//     return {
+//       eigenvalues: [0, 0, 0],
+//       eigenvectors: [
+//         [0, 0, 0],
+//         [0, 0, 0],
+//         [0, 0, 0],
+//       ],
+//       meanTrend: 0,
+//       meanPlunge: 0,
+//     };
+//   let X2 = 0,
+//     Y2 = 0,
+//     Z2 = 0;
+//   let XY = 0,
+//     XZ = 0,
+//     YZ = 0;
+
+//   coordiantes.forEach((c) => {
+//     X2 += c.x * c.x;
+//     Y2 += c.y * c.y;
+//     Z2 += c.z * c.z;
+//     XY += c.x * c.y;
+//     XZ += c.x * c.z;
+//     YZ += c.y * c.z;
+//   });
+
+//   const A = [
+//     [X2, XY, XZ],
+//     [XY, Y2, YZ],
+//     [XZ, YZ, Z2],
+//   ];
+
+//   const orientationTensor = A.map((row) => row.map((v) => v / N));
+
+//   const eig = numeric.eig(orientationTensor);
+
+//   const eigenvalues = eig.lambda.x;
+//   const eigenvectors = eig.E.x;
+
+//   // Sort eigenvalues and corresponding eigenvectors
+//   const sortedIndices = [0, 1, 2].sort(
+//     (a, b) => eigenvalues[b] - eigenvalues[a],
+//   );
+//   const sortedEigenvalues = sortedIndices.map((i) => eigenvalues[i]);
+//   const sortedEigenvectors = sortedIndices.map((i) => [
+//     eigenvectors[0][i],
+//     eigenvectors[1][i],
+//     eigenvectors[2][i],
+//   ]);
+//   const trend = [];
+//   const plunge = [];
+
+//   sortedEigenvectors.forEach((v) => {
+//     const tp = vectorToTrendPlunge(v);
+//     trend.push(tp.trend);
+//     plunge.push(tp.plunge);
+//   });
+//   return {
+//     eigenvalues: sortedEigenvalues,
+//     trend,
+//     plunge,
+//   };
+// }

@@ -425,6 +425,44 @@ transition:0.4s;
 .switch input:checked + .slider:before {
   transform: translateX(14px);
 }
+
+/* ------------------ Interpretations --------------------- */
+.interpreations {
+  margin-top: 50px;
+  background: linear-gradient(145deg, #1a1a1a, #111);
+  border-radius: 20px;
+  padding: 25px;
+  color: white;
+  width: 85%;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  border: 1px solid #1f1f1f;
+}
+.interpreations h2 {
+  font-size: clamp(22px, 4vw, 28px);
+  margin-bottom: 20px;
+}
+.box {
+  background: #111;
+  border-radius: 15px;
+  padding: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #222;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.box p {
+  color: #777;
+  font-size: small;
+}
+.box table{
+  color: #777;
+  font-size: small;
+  border-collapse: collapse;
+}
+
+/* ------------------ Plot Areas --------------------- */
 .plot-area {
   box-shadow: 0 0 25px rgba(255, 255, 255, 0.373);
 }

@@ -13,6 +13,8 @@ import {
   angleBetweenLineAndPlane,
   angleBetweenPlanes,
   angleBetweenLines,
+  fisherDistribution,
+  // binghamDistribution,
 } from "./stereonetcalc.js";
 let dataset = [];
 const planeBtn = document.querySelector("#Plane-plot");
@@ -943,4 +945,77 @@ ContourPlots.addEventListener("click", () => {
     ContourPlots.querySelector("img").style.display = "none";
     renderPlot();
   }
+});
+
+// ----------------- Fisher Vector Distribution -----------------
+document.getElementById("Fisher").addEventListener("click", () => {
+  const points = fisherDistribution(dataset);
+
+  document.getElementById("interpretationContent").insertAdjacentHTML("beforeend", `
+    <p><strong>--------------------- Fisher Vector Distribution ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()} -----------------------</strong></p>
+    
+    <table border="1" style="border-collapse: collapse; margin: 10px;">
+      <thead>
+        <tr>
+          <th>Total Points (N)</th>
+          <th>Mean Trend</th>
+          <th>Mean Plunge</th>
+          <th>Mean Length</th>
+          <th>Alpha 95</th>
+          <th>Kappa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>${dataset.length}</td>
+          <td>${points.meanTrend.toFixed(2)}</td>
+          <td>${points.meanPlunge.toFixed(2)}</td>
+          <td>${points.meanLength.toFixed(2)}</td>
+          <td>${points.alpha95.toFixed(2)}</td>
+          <td>${points.kappa.toFixed(2)}</td>
+        </tr>
+      </tbody>
+    </table>
+  `);
+});
+
+// document.getElementById("Bingham").addEventListener("click", () => {
+//   const points = binghamDistribution(dataset);
+//   const rows = [0, 1, 2].map(i => `
+//     <tr>
+//       <td>${i + 1}</td>
+//       <td>${points.eigenvalues[i].toFixed(4)}</td>
+//       <td>${points.trend[i].toFixed(2)}</td>
+//       <td>${points.plunge[i].toFixed(2)}</td>
+//       <td>${0.0}</td>
+//       <td>${0.0}</td>
+//     </tr>
+//   `).join("");
+//   document.getElementById("interpretationContent").insertAdjacentHTML("beforeend", `
+//     <p><strong>--------------------- Bingham Axial Distribution ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()} -----------------------</strong></p>
+    
+//     <table border="1" style="border-collapse: collapse; margin: 10px;">
+//       <thead>
+//         <tr>
+//           <th>Axis</th>
+//           <th>Eigenvalues</th>
+//           <th>Trend</th>
+//           <th>Plunge</th>
+//           <th>Alpha 95 min</th>
+//           <th>Alpha 95 max</th>
+//         </tr>
+//       </thead>
+//       <tbody>
+//         ${rows}
+//       </tbody>
+//     </table>
+//   `);
+// });
+
+document.getElementById("Von Mises").addEventListener("click", () => {
+  document.getElementById("interpretationContent").insertAdjacentHTML("beforeend", `
+    <p><strong> ----------------------- Von Mises Distribution ${new Date().toLocaleDateString() + " " } at ${new Date().toLocaleTimeString()} -------------------------</strong></p>
+    <p>Von Mises distribution calculation not implemented yet.</p>
+    <p></p>
+  `);
 });

@@ -14,7 +14,7 @@ import {
   angleBetweenPlanes,
   angleBetweenLines,
   fisherDistribution,
-  // binghamDistribution,
+  binghamDistribution,
 } from "./stereonetcalc.js";
 let dataset = [];
 const planeBtn = document.querySelector("#Plane-plot");
@@ -979,38 +979,39 @@ document.getElementById("Fisher").addEventListener("click", () => {
   `);
 });
 
-// document.getElementById("Bingham").addEventListener("click", () => {
-//   const points = binghamDistribution(dataset);
-//   const rows = [0, 1, 2].map(i => `
-//     <tr>
-//       <td>${i + 1}</td>
-//       <td>${points.eigenvalues[i].toFixed(4)}</td>
-//       <td>${points.trend[i].toFixed(2)}</td>
-//       <td>${points.plunge[i].toFixed(2)}</td>
-//       <td>${0.0}</td>
-//       <td>${0.0}</td>
-//     </tr>
-//   `).join("");
-//   document.getElementById("interpretationContent").insertAdjacentHTML("beforeend", `
-//     <p><strong>--------------------- Bingham Axial Distribution ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()} -----------------------</strong></p>
+document.getElementById("Bingham").addEventListener("click", () => {
+  const points = binghamDistribution(dataset);
+  const rows = [0, 1, 2].map(i => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${points.eigenvalues[i].toFixed(4)}</td>
+      <td>${points.trend[i].toFixed(2)}</td>
+      <td>${points.plunge[i].toFixed(2)}</td>
+      <td>${0.0}</td>
+      <td>${0.0}</td>
+    </tr>
+  `).join("");
+  document.getElementById("interpretationContent").insertAdjacentHTML("beforeend", `
+    <p><strong>--------------------- Bingham Axial Distribution ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()} -----------------------</strong></p>
     
-//     <table border="1" style="border-collapse: collapse; margin: 10px;">
-//       <thead>
-//         <tr>
-//           <th>Axis</th>
-//           <th>Eigenvalues</th>
-//           <th>Trend</th>
-//           <th>Plunge</th>
-//           <th>Alpha 95 min</th>
-//           <th>Alpha 95 max</th>
-//         </tr>
-//       </thead>
-//       <tbody>
-//         ${rows}
-//       </tbody>
-//     </table>
-//   `);
-// });
+    <table border="1" style="border-collapse: collapse; margin: 10px;">
+      <thead>
+        <tr>
+          <th>Axis</th>
+          <th>Eigenvalues</th>
+          <th>Trend</th>
+          <th>Plunge</th>
+          <th>Alpha 95 min</th>
+          <th>Alpha 95 max</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
+    <p> Best fit Great Circle (strike, dip RHR) (${points.bestFitPlane.strike.toFixed(0)}, ${points.bestFitPlane.dip.toFixed(0)})</p>
+  `);
+});
 
 document.getElementById("Von Mises").addEventListener("click", () => {
   document.getElementById("interpretationContent").insertAdjacentHTML("beforeend", `

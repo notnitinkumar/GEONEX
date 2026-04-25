@@ -427,7 +427,7 @@ transition:0.4s;
 }
 
 /* ------------------ Interpretations --------------------- */
-.interpreations {
+.interpretations {
   margin-top: 50px;
   background: linear-gradient(145deg, #1a1a1a, #111);
   border-radius: 20px;
@@ -449,7 +449,6 @@ transition:0.4s;
   border: 1px solid #222;
   min-height: 50px;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   max-height: 250px;
   overflow: auto;

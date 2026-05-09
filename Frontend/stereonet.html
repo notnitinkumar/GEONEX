@@ -80,7 +80,6 @@
                   <li id="Von Mises">Von Mises Distribution</li>
                   <li id="Fisher">Fisher Vector Distribution</li>
                   <li id="Bingham">Bingham Axial Distribution</li>
-                  
                 </ul>
               </li>
               <li class="menu-item">
@@ -102,8 +101,12 @@
                 Plot
                 <ul class="dropdown">
                   <li id="MeanVector">Mean Vector</li>
-                  <li id="ContourPlots"><img src="Assets/icons/tick.svg" alt="">Contour Plots</li>
-                  <li id="RoseDiagrams"><img src="Assets/icons/tick.svg" alt="">Rose Diagrams</li>
+                  <li id="ContourPlots">
+                    <img src="Assets/icons/tick.svg" alt="" />Contour Plots
+                  </li>
+                  <li id="RoseDiagrams">
+                    <img src="Assets/icons/tick.svg" alt="" />Rose Diagrams
+                  </li>
                 </ul>
               </li>
               <li
@@ -188,8 +191,7 @@
           </div>
           <div class="interpretations">
             <h2>Interpretations</h2>
-            <div id="interpretationContent" class="box">
-            </div>
+            <div id="interpretationContent" class="box"></div>
           </div>
         </div>
 
@@ -234,34 +236,37 @@
           <!-- Table of saved plots -->
           <div class="savedplots">
             <h2>Saved Plots</h2>
-            <table class="plotTable" id="plotTable">
-              <thead>
-                <tr>
-                  <th>Plot Type</th>
-                  <th>Parameters</th>
-                  <th>Label</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+            <div class="tableContainer">
+              <table class="plotTable" id="plotTable">
+                <thead>
+                  <tr>
+                    <th>Plot Type</th>
+                    <th>Parameters</th>
+                    <th>Label</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
       <section>
         <div class="promptbox">
           <h2>Enter Data</h2>
-          <button id="close" style="background-color: #0f0f0f;"><img src="Assets/icons/closebutton.png" alt="close"></button>
+          <button id="close" style="background-color: #0f0f0f">
+            <img src="Assets/icons/closebutton.png" alt="close" />
+          </button>
           <div class="firstdata">
             <div>
               <span>Plane</span>
-                  <label class="switch">
-                    <!-- <input type="checkbox" /> -->
-                    <input type="checkbox" id="PlotModeToggle1" />
-                    <span class="slider"></span>
-                  </label>
-                  <span>Line</span>
-              </div>
+              <label class="switch">
+                <input type="checkbox" id="PlotModeToggle1" />
+                <span class="slider"></span>
+              </label>
+              <span>Line</span>
+            </div>
             <span>
               <input
                 id="strike1"
@@ -292,13 +297,12 @@
           <div class="secondata">
             <div>
               <span>Plane</span>
-                  <label class="switch">
-                    <!-- <input type="checkbox" /> -->
-                    <input type="checkbox" id="PlotModeToggle2" />
-                    <span class="slider"></span>
-                  </label>
-                  <span>Line</span>
-              </div>
+              <label class="switch">
+                <input type="checkbox" id="PlotModeToggle2" />
+                <span class="slider"></span>
+              </label>
+              <span>Line</span>
+            </div>
             <span>
               <input
                 id="strike2"

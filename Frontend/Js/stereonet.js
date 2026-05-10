@@ -16,6 +16,7 @@ import {
   fisherDistribution,
   binghamDistribution,
   vonMisesDistribution,
+  directionCosines,
 } from "./stereonetcalc.js";
 let dataset = [];
 const planeBtn = document.querySelector("#Plane-plot");
@@ -469,9 +470,7 @@ document.querySelectorAll(".dropdown li").forEach((opt) => {
       newGetAngleBtn.addEventListener("click", handler);
     }
 
-    document
-      .querySelectorAll(".dropdown")
-      .forEach((d) => (d.style.display = "none"));
+    document.querySelectorAll(".dropdown").forEach((d) => (d.style.display = "none"));
     items.forEach((i) => i.classList.remove("activebtn-menu"));
   });
 });
@@ -1107,6 +1106,40 @@ document.getElementById("Von Mises").addEventListener("click", () => {
     </table>
 
     <p>[vector mean; uncertainty is 1 standard error, for 95% confidence multiply by 1.96]</p>
+  `);
+});
+
+// ------------------- Direction Cosines ---------------------
+document.getElementById("Direction cosines").addEventListener("click", () => {
+  const points = directionCosines(
+    dataset.filter((p) => p.include !== false)
+  );
+
+  const rows = points.map((p, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${p.l.toFixed(4)}</td>
+      <td>${p.m.toFixed(4)}</td>
+      <td>${p.n.toFixed(4)}</td>
+    </tr>
+  `).join("");
+
+  document.getElementById("interpretationContent").insertAdjacentHTML("beforeend", `
+    <p><strong>----------------------- Direction Cosines ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()} -----------------------</strong></p>
+
+    <table border="1" style="border-collapse: collapse; margin: 10px;">
+      <thead>
+        <tr>
+          <th>Point</th>
+          <th>l</th>
+          <th>m</th>
+          <th>n</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
   `);
 });
 

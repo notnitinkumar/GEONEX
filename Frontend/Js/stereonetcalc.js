@@ -387,4 +387,44 @@ export function vonMisesDistribution(dataset) {
     stdError: stdErrorDeg,
     error95: error95
   };
+
+}
+
+// ----------------- Direction Cosines -----------------
+export function directionCosines(dataset) {
+  dataset = dataset.filter((p) => p.include !== false);
+
+  const results = [];
+
+  dataset.forEach((d) => {
+    let trend, plunge;
+
+    if (d.type === "line") {
+      trend = d.trend ?? d.strike;
+      plunge = d.plunge ?? d.dip;
+    } else if (d.type === "plane") {
+      // use pole to plane
+      trend = (d.strike + 90) % 360;
+      plunge = 90 - d.dip;
+    } else {
+      return;
+    }
+
+    const t = degToRad(trend);
+    const p = degToRad(plunge);
+
+    const l = Math.cos(p) * Math.cos(t);
+    const m = Math.cos(p) * Math.sin(t);
+    const n = Math.sin(p);
+
+    results.push({
+      trend,
+      plunge,
+      l,
+      m,
+      n,
+    });
+  });
+
+  return results;
 }

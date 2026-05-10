@@ -218,6 +218,7 @@ function vectorToTrendPlunge(v) {
 
 // ----------------- Fisher Vector Distribution -----------------
 export function fisherDistribution(dataset) {
+  dataset = dataset.filter((p) => p.include !== false);
   const { trends, plunges, coordinates } = getTrendsPlungesCoordinates(dataset);
   const meanVector = calculateMeanVector(trends, plunges);
 
@@ -250,6 +251,7 @@ export function fisherDistribution(dataset) {
 
 // ----------------- Bingham Axial Distribution -----------------
 export function binghamDistribution(dataset) {
+  dataset = dataset.filter((p) => p.include !== false);
   const { trends, plunges, coordinates } = getTrendsPlungesCoordinates(dataset);
 
   const N = dataset.length;
@@ -321,6 +323,7 @@ export function binghamDistribution(dataset) {
 
 // ----------------- Von Mises Distribution -----------------
 export function vonMisesDistribution(dataset) {
+  dataset = dataset.filter((p) => p.include !== false);
   const { trends } = getTrendsPlungesCoordinates(dataset);
 
   const N = trends.length;

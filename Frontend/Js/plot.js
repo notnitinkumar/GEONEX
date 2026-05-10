@@ -311,7 +311,9 @@ export function drawRoseDiagram(canvas, dataset, binWidth = 30) {
   const binsCount = Math.max(1, Math.floor(360 / bw));
   const freq = new Array(binsCount).fill(0);
 
-  dataset.forEach((d) => {
+  dataset
+    .filter((d) => d.include !== false)
+    .forEach((d) => {
     let angle = 0;
     if (d.type === "plane") {
       let trend;
@@ -375,6 +377,7 @@ export function drawContourPlots(canvas, dataset) {
 
   // PROJECT DATA
   const points = dataset
+    .filter((d) => d.include !== false)
     .filter((d) => d.type === "line" || d.type === "plane")
     .map((d) => {
       const { x, y } = stereographicProjection(

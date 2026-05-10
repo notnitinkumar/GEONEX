@@ -115,6 +115,7 @@ function AddToDataset({
   dipDirection = "N",
   label = "N/A",
   color = "yellow",
+  include = true,
 }) {
   const id = Date.now() + Math.random();
 
@@ -126,6 +127,7 @@ function AddToDataset({
     dipDirection,
     label,
     color,
+    include,
   };
 
   dataset.push(dataPoint);
@@ -144,11 +146,28 @@ function AddToTable({
   dip,
   dipDirection = "N",
   label = "N/A",
+  include = true,
 }) {
   const tableBody = document.querySelector("#plotTable tbody");
 
   const row = document.createElement("tr");
   row.dataset.id = id;
+
+  const includeCell = document.createElement("td");
+  const includeCheckbox = document.createElement("input");
+  includeCheckbox.type = "checkbox";
+  includeCheckbox.checked = include;
+
+  includeCheckbox.addEventListener("change", () => {
+    const rowId = Number(row.dataset.id);
+    const item = dataset.find((p) => p.id === rowId);
+    if (item) {
+      item.include = includeCheckbox.checked;
+      renderPlot();
+    }
+  });
+
+  includeCell.appendChild(includeCheckbox);
 
   const typeCell = document.createElement("td");
   const paramsCell = document.createElement("td");
@@ -178,6 +197,7 @@ function AddToTable({
 
   actionCell.appendChild(deleteBtn);
 
+  row.appendChild(includeCell);
   row.appendChild(typeCell);
   row.appendChild(paramsCell);
   row.appendChild(labelCell);
@@ -527,7 +547,7 @@ function renderPlot() {
     drawEqualAreaStereonet(canvas);
   }
   // redraw all data
-  dataset.forEach((p) => {
+  dataset.filter((p) => p.include !== false).forEach((p) => {
     if (p.type === "plane") {
       plotPlane2D(canvas, p.strike, p.dip, p.dipDirection, p.color);
     } else {

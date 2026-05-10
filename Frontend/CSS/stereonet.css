@@ -462,10 +462,9 @@ canvas {
   padding: 25px 5px;
   margin-bottom: 15px;
   border: 1px solid #222;
-  min-height: 120px;
+  height: 120px;
   display: flex;
   flex-direction: column;
-  max-height: 250px;
   overflow: auto;
 }
 .box p {

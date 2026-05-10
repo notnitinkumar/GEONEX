@@ -86,10 +86,14 @@ export function plotLine2D(canvas, trend, plunge, color = "cyan") {
 
 function anglesAndDirection(canvas) {
   const ctx = canvas.getContext("2d");
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
+  const logicalSize = canvas.logicalSize || canvas.clientWidth || canvas.width;
+  const renderSize = canvas.width || logicalSize;
+  const scaleFactor = renderSize / logicalSize;
 
-  const R = (canvas.height / 2) * 0.9;
+  const centerX = renderSize / 2;
+  const centerY = renderSize / 2;
+
+  const R = (renderSize / 2) * 0.9;
   ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
   ctx.beginPath();
   for (let angle = 0; angle < 360; angle += 30) {
@@ -98,15 +102,28 @@ function anglesAndDirection(canvas) {
     const y = centerY - R * Math.cos(rad);
 
     // Responsive font for mobile
-    let dx = 10,
-      dy = 10;
+    let dx = 10 * scaleFactor,
+      dy = 10 * scaleFactor;
 
     if (window.innerWidth <= 600) {
-      dx = 6;
-      dy = 6;
+      dx = 6 * scaleFactor;
+      dy = 6 * scaleFactor;
     }
 
     ctx.fillStyle = "white";
+
+    // keep labels readable during high-resolution export
+    let fontSize = 14;
+    let offset = 15;
+
+    if (window.innerWidth <= 600) {
+      fontSize = 10;
+      offset = 8;
+    }
+
+    ctx.font = `${Math.max(12, fontSize)}px Arial`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
 
     if (angle < 90 && angle > 0) ctx.fillText(angle, x + dx, y - dy);
     if (angle < 180 && angle > 90) ctx.fillText(angle, x + dx + 5, y + dy + 5);
@@ -124,6 +141,7 @@ function anglesAndDirection(canvas) {
     fontSize = 10;
     offset = 8;
   }
+
 
   ctx.font = `${fontSize}px Arial`;
   ctx.textAlign = "center";

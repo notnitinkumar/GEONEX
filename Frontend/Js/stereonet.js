@@ -647,9 +647,13 @@ function parseImportedData(data) {
 
 function resizeCanvas(canvas) {
   const rect = canvas.getBoundingClientRect();
+  const size = rect.width;
 
-  canvas.width = rect.width;
-  canvas.height = rect.width; // keep square
+  canvas.width = size;
+  canvas.height = size; // keep square
+
+  // store visible geometry size so plotting + export use same center/radius
+  canvas.logicalSize = size;
 }
 
 // Draw base stereonet when the page loads
@@ -683,12 +687,55 @@ resetBtn.addEventListener("click", function () {
 //---------------------Export setting-----------------------
 const exportPNGBtn = document.querySelector("#exportPNG");
 
-exportPNGBtn.addEventListener("click", function () {
+function exportHighResImage(format = "png") {
   const canvas = document.getElementById("stereonetCanvas");
+
+  // Save original canvas state
+  const originalWidth = canvas.width;
+  const originalHeight = canvas.height;
+  const originalLogicalSize = canvas.logicalSize || originalWidth;
+  const originalStyleWidth = canvas.style.width;
+  const originalStyleHeight = canvas.style.height;
+
+  // Temporarily increase actual resolution
+  const exportSize = originalLogicalSize * exportScale;
+
+  canvas.width = exportSize;
+  canvas.height = exportSize;
+
+  // Geometry must match the new size
+  canvas.logicalSize = exportSize;
+
+  // Keep visible size same in UI
+  canvas.style.width = `${originalLogicalSize}px`;
+  canvas.style.height = `${originalLogicalSize}px`;
+
+  // Redraw at high resolution
+  renderPlot();
+
+  // Export
   const link = document.createElement("a");
-  link.download = "stereonet_plot.png";
-  link.href = canvas.toDataURL();
+  link.download = `stereonet_plot.${format}`;
+  link.href =
+    format === "jpg"
+      ? canvas.toDataURL("image/jpeg", 1.0)
+      : canvas.toDataURL("image/png");
+
   link.click();
+
+  // Restore original canvas
+  canvas.width = originalWidth;
+  canvas.height = originalHeight;
+  canvas.logicalSize = originalLogicalSize;
+  canvas.style.width = originalStyleWidth;
+  canvas.style.height = originalStyleHeight;
+
+  // Redraw normal version
+  renderPlot();
+}
+
+exportPNGBtn.addEventListener("click", function () {
+  exportHighResImage("png");
 });
 const exportPdfBtn = document.querySelector("#exportPDF");
 
@@ -726,11 +773,7 @@ exportPdfBtn.addEventListener("click", function () {
 });
 const exportJpgBtn = document.querySelector("#exportJPG");
 exportJpgBtn.addEventListener("click", function () {
-  const canvas = document.getElementById("stereonetCanvas");
-  const link = document.createElement("a");
-  link.download = "stereonet_plot.jpg";
-  link.href = canvas.toDataURL("image/jpeg");
-  link.click();
+  exportHighResImage("jpg");
 });
 
 function invertforpdf(canvas) {
@@ -1068,7 +1111,7 @@ document.getElementById("Von Mises").addEventListener("click", () => {
 });
 
 // ----------------- Settings -----------------
-const BinWidth = document.getElementById("binwidth") || document.getElementById("BinWidth");
+const BinWidth = document.getElementById("binwidth");
 if (!BinWidth) {
   console.warn("Bin Width menu trigger not found");
 }
@@ -1103,4 +1146,37 @@ BinWidth?.addEventListener("click", () => {
       renderPlot();
     }
   });
+});
+
+let exportScale = 3;
+const ExportScale = document.getElementById("exportScale");
+ExportScale.addEventListener("click", () => {
+  const promptBox = document.querySelector(".promptbox3");
+  const closeBtn = document.getElementById("close3");
+  const applyBtn = document.getElementById("changeExportScale");
+  const input = document.getElementById("exportScaleInput");
+
+  promptBox.style.display = "block";
+  input.value = exportScale;
+
+  closeBtn.replaceWith(closeBtn.cloneNode(true));
+  applyBtn.replaceWith(applyBtn.cloneNode(true));
+
+  const newCloseBtn = document.getElementById("close3");
+  const newApplyBtn = document.getElementById("changeExportScale");
+
+  newCloseBtn.addEventListener("click", () => {
+    promptBox.style.display = "none";
+  });
+
+  newApplyBtn.addEventListener("click", () => {
+  const newScale = parseInt(input.value);
+
+  if (!isNaN(newScale) && newScale > 0 && newScale <= 10) {
+    exportScale = newScale;
+  } else {
+    exportScale = 3;
+  }
+  promptBox.style.display = "none";
+});
 });

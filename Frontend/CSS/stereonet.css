@@ -380,6 +380,11 @@ canvas {
   box-sizing: border-box;
   cursor: pointer;
 }
+.promptbox p{
+  color: #777;
+  font-size: small;
+  margin: 5px;
+}
 #angleResult {
   font-size: small;
   color: #ccc;

@@ -113,8 +113,10 @@
               Settings
                 <ul class="dropdown">
                   <li id="binwidth"><img src="Assets/icons/tick.svg" alt="">Bin Width</li>
+                  <li id="exportScale"><img src="Assets/icons/tick.svg" alt="">Export Scale</li>
                 </ul>
               </li>
+
               <li
                 class="menu-item screentoggle"
                 style="
@@ -368,6 +370,22 @@
               placeholder="Enter bin width"
             />
             <button id="applyBinWidth" class="changeBtn">Change</button>
+          </div>
+        </div>
+        <div class="promptbox promptbox3">
+          <h2>Export Scale</h2>
+          <p>Enter the scale for export (e.g., 2 for 2x)</p>
+          <button id="close3" style="background-color: #0f0f0f; margin-top: 10px;">
+            <img src="Assets/icons/closebutton.png" alt="close" />
+          </button>
+
+          <div>
+            <input
+              type="number"
+              id="exportScaleInput"
+              placeholder="Enter export scale (e.g., 2 for 2x)"
+            />
+            <button id="changeExportScale" class="changeBtn">Change</button>
           </div>
         </div>
         

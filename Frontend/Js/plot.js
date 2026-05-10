@@ -292,7 +292,7 @@ export function drawTriangleMarker(canvas, trend, plunge, color) {
   ctx.stroke();
 }
 
-export function drawRoseDiagram(canvas, dataset) {
+export function drawRoseDiagram(canvas, dataset, binWidth = 30) {
   const ctx = canvas.getContext("2d");
 
 
@@ -302,8 +302,13 @@ export function drawRoseDiagram(canvas, dataset) {
   const cy = height / 2;
   const maxRadius = (Math.min(width, height) / 2) * 0.9;
 
-  const bw = 30;
-  const binsCount = 360 / bw; 
+  let bw = parseInt(binWidth);
+
+  if (isNaN(bw) || bw <= 0 || bw > 180) {
+    bw = 30;
+  }
+
+  const binsCount = Math.max(1, Math.floor(360 / bw));
   const freq = new Array(binsCount).fill(0);
 
   dataset.forEach((d) => {
@@ -320,7 +325,10 @@ export function drawRoseDiagram(canvas, dataset) {
       const t = d.strike % 360;
       angle = t;
     }
-    const safeIndex = Math.floor((angle % 360) / bw);
+    const safeIndex = Math.min(
+      freq.length - 1,
+      Math.floor((angle % 360) / bw)
+    );
 
     freq[safeIndex]++;
   });
@@ -426,5 +434,3 @@ export function drawContourPlots(canvas, dataset) {
 
   ctx.restore();
 }
-
-

@@ -306,6 +306,7 @@ h5 {
 
 canvas {
   background-color: transparent ;
+  display: block;
   width: 100%;
   max-width: 600px;
   height: auto;
@@ -332,6 +333,7 @@ canvas {
   border: 1px solid #1f1f1f;
   display: none;
   font-size: small;
+  z-index: 9999;
 }
 .promptbox img{
   filter: invert(1) contrast(1.1); 
@@ -350,6 +352,10 @@ canvas {
   color: white;
   font-size: clamp(8px, 1vw, 12px);
   box-sizing: border-box;
+}
+
+.promptbox2 input {
+  width: 60%;
 }
 .promptbox button {
   width: 25%;
@@ -424,6 +430,18 @@ transition:0.4s;
 
 .switch input:checked + .slider:before {
   transform: translateX(14px);
+}
+
+.changeBtn{
+  width: 25%;
+  padding: 5px 5px;
+  margin: 5px;
+  border-radius: 8px;
+  border: none;
+  background: white;
+  color: black;
+  font-size: clamp(8px, 1vw, 12px);
+  cursor: pointer;
 }
 
 /* ------------------ Interpretations --------------------- */

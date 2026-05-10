@@ -539,7 +539,7 @@ function renderPlot() {
 
   // redraw overlays if active
   if (isrosemode) {
-    drawRoseDiagram(canvas, dataset);
+    drawRoseDiagram(canvas, dataset, binWidth);
   }
 
   if (iscountourmode) {
@@ -921,10 +921,11 @@ MeanVector.addEventListener("click", () => {
 // ------------------- Rose Diagram and Contour Plots --------------------
 
 let isrosemode = false;
+let binWidth = 30;
 const RoseDiagrams = document.getElementById("RoseDiagrams");
 RoseDiagrams.addEventListener("click", () => {
   if (!isrosemode) {
-    drawRoseDiagram(canvas, dataset); 
+    drawRoseDiagram(canvas, dataset,binWidth); 
     isrosemode = true;
     RoseDiagrams.querySelector("img").style.display = "block"; 
   }
@@ -980,6 +981,7 @@ document.getElementById("Fisher").addEventListener("click", () => {
   `);
 });
 
+// ------------------- Binghamstatiscal Distribution ---------------------
 document.getElementById("Bingham").addEventListener("click", () => {
   const points = binghamDistribution(dataset);
   const rows = [0, 1, 2].map(i => `
@@ -1014,6 +1016,8 @@ document.getElementById("Bingham").addEventListener("click", () => {
   `);
 });
 
+//  ------------------- Von Mises Distribution ---------------------
+
 document.getElementById("Von Mises").addEventListener("click", () => {
   const points = vonMisesDistribution(dataset);
 
@@ -1041,4 +1045,42 @@ document.getElementById("Von Mises").addEventListener("click", () => {
 
     <p>[vector mean; uncertainty is 1 standard error, for 95% confidence multiply by 1.96]</p>
   `);
+});
+
+// ----------------- Settings -----------------
+const BinWidth = document.getElementById("binwidth") || document.getElementById("BinWidth");
+if (!BinWidth) {
+  console.warn("Bin Width menu trigger not found");
+}
+BinWidth?.addEventListener("click", () => {
+  const promptBox = document.querySelector(".promptbox2");
+  const closeBtn = document.getElementById("close2");
+  const applyBtn = document.getElementById("applyBinWidth");
+  const input = document.getElementById("binWidthInput");
+
+  promptBox.style.display = "block";
+  input.value = binWidth;
+
+  closeBtn.replaceWith(closeBtn.cloneNode(true));
+  applyBtn.replaceWith(applyBtn.cloneNode(true));
+
+  const newCloseBtn = document.getElementById("close2");
+  const newApplyBtn = document.getElementById("applyBinWidth");
+
+  newCloseBtn.addEventListener("click", () => {
+    promptBox.style.display = "none";
+  });
+
+  newApplyBtn.addEventListener("click", () => {
+    const newWidth = parseInt(input.value);
+
+    if (!isNaN(newWidth) && newWidth > 0 && newWidth <= 180) {
+      binWidth = newWidth;
+    } else {
+      binWidth = 30;
+    }
+    if (isrosemode) {
+      renderPlot();
+    }
+  });
 });

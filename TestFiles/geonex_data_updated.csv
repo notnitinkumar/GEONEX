@@ -1,0 +1,17 @@
+Type,Strike/Trend,Dip/Plunge,Dip Direction,Label,Color
+line,120,23,,,#ff4444
+line,351,20,,Line_1,#44ff44
+plane,2,60,92.0,Plane_2,#4444ff
+line,74,22,,Line_3,#4444ff
+plane,319,46,49.0,Plane_4,#ff4444
+line,92,17,,Line_5,#888888
+line,139,16,,Line_6,#44ffff
+line,116,76,,Line_7,#888888
+plane,101,70,191.0,Plane_8,#4444ff
+plane,342,76,72.0,Plane_9,#4444ff
+line,33,12,,Line_10,#4444ff
+line,172,23,,Line_11,#ff44ff
+plane,117,74,207.0,Plane_12,#ff4444
+line,265,1,,Line_13,#ff4444
+line,143,29,,Line_14,#ff4444
+line,269,47,,Line_15,#44ffff

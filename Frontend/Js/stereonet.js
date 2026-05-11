@@ -658,10 +658,13 @@ function resizeCanvas(canvas) {
 // Draw base stereonet when the page loads
 window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("stereonetCanvas");
+
   if (canvas) {
     resizeCanvas(canvas);
-    drawStereonet2d(canvas);
-    renderPlot();
+    
+    setTimeout(() => {
+      renderPlot();
+    }, 50);
   }
 });
 window.addEventListener("resize", () => {
@@ -686,7 +689,7 @@ resetBtn.addEventListener("click", function () {
 //---------------------Export setting-----------------------
 const exportPNGBtn = document.querySelector("#exportPNG");
 
-function exportHighResImage(format = "png") {
+async function exportHighResImage(format = "png") {
   const canvas = document.getElementById("stereonetCanvas");
 
   // Save original canvas state
@@ -711,6 +714,9 @@ function exportHighResImage(format = "png") {
 
   // Redraw at high resolution
   renderPlot();
+
+  // allow browser to finish repaint before exporting
+  await new Promise((resolve) => requestAnimationFrame(resolve));
 
   // Export
   const link = document.createElement("a");
@@ -738,14 +744,19 @@ exportPNGBtn.addEventListener("click", function () {
 });
 const exportPdfBtn = document.querySelector("#exportPDF");
 
-exportPdfBtn.addEventListener("click", function () {
+exportPdfBtn.addEventListener("click", async function () {
   if (!window.jspdf) {
-    alert("jsPDF library not loaded");
-    return;
+    const script = document.createElement("script");
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+
+    await new Promise((resolve, reject) => {
+      script.onload = resolve;
+      script.onerror = reject;
+      document.body.appendChild(script);
+    });
   }
 
   const { jsPDF } = window.jspdf;
-
   const canvas = document.getElementById("stereonetCanvas");
 
   // Create temporary canvas
@@ -754,7 +765,6 @@ exportPdfBtn.addEventListener("click", function () {
   tempCanvas.height = canvas.height;
 
   const tempCtx = tempCanvas.getContext("2d");
-
   tempCtx.drawImage(canvas, 0, 0);
 
   invertforpdf(tempCanvas);
@@ -987,9 +997,9 @@ let binWidth = 30;
 const RoseDiagrams = document.getElementById("RoseDiagrams");
 RoseDiagrams.addEventListener("click", () => {
   if (!isrosemode) {
-    drawRoseDiagram(canvas, dataset,binWidth); 
     isrosemode = true;
-    RoseDiagrams.querySelector("img").style.display = "block"; 
+    RoseDiagrams.querySelector("img").style.display = "block";
+    renderPlot();
   }
   else {
     isrosemode = false;
@@ -1001,9 +1011,9 @@ let iscountourmode = false;
 const ContourPlots = document.getElementById("ContourPlots");
 ContourPlots.addEventListener("click", () => {
   if (!iscountourmode) {
-    drawContourPlots(canvas, dataset);
     iscountourmode = true;
-    ContourPlots.querySelector("img").style.display = "block"; 
+    ContourPlots.querySelector("img").style.display = "block";
+    renderPlot();
   } else {
     iscountourmode = false;
     ContourPlots.querySelector("img").style.display = "none";

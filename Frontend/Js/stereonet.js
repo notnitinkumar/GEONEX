@@ -10,6 +10,7 @@ import {
 } from "./plot.js";
 import {
   calculateMeanVector,
+  meanVectorFromDataset,
   angleBetweenLineAndPlane,
   angleBetweenPlanes,
   angleBetweenLines,
@@ -945,38 +946,12 @@ canvas.addEventListener("mouseleave", () => {
 
 const MeanVector = document.getElementById("MeanVector");
 MeanVector.addEventListener("click", () => {
-  let trends = [];
-  let plunges = [];
-  dataset.forEach((p) => {
-    if (p.type === "plane") {
-      const strike = p.strike;
-      const dip = p.dip;
-      const dir = p.dipDirection;
+  const meanVector = meanVectorFromDataset(dataset);
 
-      let trend;
-      if (dir === "South" || dir === "West") {
-        trend = (strike + 270) % 360;
-      } else {
-        trend = (strike + 90) % 360;
-      }
-      const plunge = 90 - dip;
-
-      trends.push(trend);
-      plunges.push(plunge);
-    }
-
-    if (p.type === "line") {
-      trends.push(p.strike);
-      plunges.push(p.dip);
-    }
-  });
-
-  if (trends.length === 0) {
+  if (!meanVector) {
     alert("No data available");
     return;
   }
-
-  const meanVector = calculateMeanVector(trends, plunges);
 
   const dataPoint = AddToDataset({
     type: "line",

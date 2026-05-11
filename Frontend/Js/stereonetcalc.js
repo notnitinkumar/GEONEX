@@ -96,6 +96,45 @@ export function calculateMeanVector(trends, plunges) {
   return { trend: meanTrend, plunge: meanPlunge };
 }
 
+export function meanVectorFromDataset(dataset) {
+  let trends = [];
+  let plunges = [];
+
+  dataset
+    .filter((p) => p.include !== false)
+    .forEach((p) => {
+      if (p.type === "plane") {
+        const strike = p.strike;
+        const dip = p.dip;
+        const dir = p.dipDirection;
+
+        let trend;
+
+        if (dir === "South" || dir === "West") {
+          trend = (strike + 270) % 360;
+        } else {
+          trend = (strike + 90) % 360;
+        }
+
+        const plunge = 90 - dip;
+
+        trends.push(trend);
+        plunges.push(plunge);
+      }
+
+      if (p.type === "line") {
+        trends.push(p.strike);
+        plunges.push(p.dip);
+      }
+    });
+
+  if (trends.length === 0) {
+    return null;
+  }
+
+  return calculateMeanVector(trends, plunges);
+}
+
 // ----------------- Angle Between ------------------
 
 export function angleBetweenPlanes(
